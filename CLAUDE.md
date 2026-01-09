@@ -59,6 +59,48 @@ touch .claude/context/context_$new.md
 - **Lint**: `bun run lint`
 - **Install deps**: `bun install`
 
+## UI Testing Workflow (MANDATORY)
+
+### Rule: Always Test UI Changes Visually
+
+After ANY UI-related work, the `ui-tester` agent MUST be triggered to verify changes using the Claude IDE extension.
+
+### When to Trigger ui-tester
+
+Trigger `ui-tester` agent after:
+- Creating new components (via `/component` or manually)
+- Modifying existing components in `src/components/`
+- Any styling changes (Tailwind, CSS)
+- Layout modifications
+- After `ui-developer` agent completes
+
+### UI Testing Process
+
+1. **Ensure dev server is running**: `bun dev`
+2. **Trigger ui-tester agent** to verify changes
+3. **Use Claude IDE extension** to:
+   - Capture screenshot of the component/page
+   - Visually verify the output
+   - Check responsive behavior
+4. **Report issues** found in the context file
+5. **Fix issues** before marking UI task complete
+
+### Agent Chain for UI Work
+
+```
+ui-developer → ui-tester → (fix if needed) → code-reviewer
+```
+
+### IDE Extension Usage
+
+After UI changes, use the Claude IDE extension to:
+1. Open browser at `http://localhost:3000`
+2. Navigate to the changed component/page
+3. Capture screenshot or share view
+4. Verify visual output matches expectations
+
+**NEVER mark a UI task as complete without visual verification.**
+
 ## Tech Stack
 - **Runtime**: Bun (package manager + runtime)
 - **Framework**: Next.js 14+ with TypeScript
