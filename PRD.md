@@ -129,11 +129,32 @@ MUN delegates researching drug trafficking in Latin America face challenges:
 | **Framework** | Next.js 14+ (App Router) | SSR/SSG, React ecosystem, Vercel deploy |
 | **Language** | TypeScript | Type safety, better DX |
 | **Map Library** | react-simple-maps | Lightweight, SVG-based, perfect for country selection |
+| **UI Components** | shadcn/ui | Beautiful, accessible components built on Radix UI |
 | **Styling** | TailwindCSS | Rapid UI development, consistent design |
 | **Data** | Static JSON | No backend needed, fast builds |
 | **Deployment** | Vercel | Zero-config Next.js hosting |
 
-### 7.2 Why react-simple-maps over Leaflet?
+### 7.2 Why shadcn/ui?
+
+| Benefit | Description |
+|---------|-------------|
+| **Ownership** | Components copied to your project, fully customizable |
+| **Accessibility** | Built on Radix UI primitives with ARIA support |
+| **Consistency** | Design system with tokens and variants |
+| **Copy-paste** | No package dependencies, just source code |
+| **Tailwind** | Uses Tailwind CSS for styling |
+
+**shadcn Components Used:**
+- `Sheet` - Slide-in country panel
+- `Card` - Statistics and program cards
+- `Badge` - Role badges (Producer, Transit, etc.)
+- `Tooltip` - Country hover tooltips
+- `Skeleton` - Loading placeholders
+- `Button` - Actions and controls
+- `ScrollArea` - Scrollable content areas
+- `Separator` - Visual dividers
+
+### 7.3 Why react-simple-maps over Leaflet?
 
 | Criteria | react-simple-maps | react-leaflet |
 |----------|------------------|---------------|
@@ -143,7 +164,7 @@ MUN delegates researching drug trafficking in Latin America face challenges:
 | SSR compatibility | Works out of box | Requires dynamic import |
 | Use case fit | Data visualization ✅ | Navigation/routing |
 
-### 7.3 Project Structure
+### 7.4 Project Structure
 
 ```
 interactive-map-mun/

@@ -104,10 +104,19 @@ After UI changes, use the Claude IDE extension to:
 ## Tech Stack
 - **Runtime**: Bun (package manager + runtime)
 - **Framework**: Next.js 14+ with TypeScript
-- **Map Library**: Leaflet (react-leaflet)
+- **Map Library**: react-simple-maps (SVG-based, lightweight)
+- **UI Components**: shadcn/ui (Radix UI + Tailwind)
 - **Styling**: TailwindCSS
 - **Data**: Static JSON files (imported at build time)
 - **Deployment**: Vercel (recommended)
+
+### shadcn/ui Components Used
+- `Sheet` - Country panel slide-in
+- `Card` - Statistics and info cards
+- `Badge` - Role badges
+- `Tooltip` - Hover tooltips
+- `Skeleton` - Loading states
+- `Button`, `ScrollArea`, `Separator`
 
 ## Countries in Simulation
 ### Production Countries

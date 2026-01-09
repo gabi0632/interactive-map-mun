@@ -17,6 +17,7 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
   - [ ] Next.js 14+ initialized with App Router
   - [ ] TypeScript configured
   - [ ] TailwindCSS installed
+  - [ ] shadcn/ui initialized with components
   - [ ] `bun dev` runs without errors
 - **Agent Output**: _pending_
 
@@ -162,8 +163,8 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
 - **Parallel With**: T008, T009, T011
 - **Post-Task**: `ui-tester` MUST verify
 - **Acceptance Criteria**:
-  - [ ] Loading spinner while map loads
-  - [ ] Error boundary for errors
+  - [ ] shadcn Skeleton shown while map loads
+  - [ ] Error boundary with shadcn Card/Button
   - [ ] ui-tester verified ✓
 - **Agent Output**: _pending_
 - **UI Tester Output**: _pending_
@@ -248,10 +249,11 @@ _Tasks: T012_
 
 ## Decisions Made
 
-1. **Tech Stack**: Bun + Next.js + react-simple-maps + TailwindCSS
+1. **Tech Stack**: Bun + Next.js + react-simple-maps + shadcn/ui + TailwindCSS
 2. **Map Library**: react-simple-maps (lighter than Leaflet, better for this use case)
-3. **Data Storage**: Static JSON files imported at build time
-4. **Deployment**: Vercel (free tier, auto-deploy)
+3. **UI Components**: shadcn/ui (Sheet, Card, Badge, Tooltip, Skeleton, Button)
+4. **Data Storage**: Static JSON files imported at build time
+5. **Deployment**: Vercel (free tier, auto-deploy)
 
 ---
 
