@@ -9,6 +9,15 @@
             "command": "bash .claude/hooks/log-file-change.sh"
           }
         ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/open-plan-viewer.sh"
+          }
+        ]
       }
     ],
     "Stop": [
