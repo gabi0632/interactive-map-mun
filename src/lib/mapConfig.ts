@@ -75,8 +75,8 @@ export const COUNTRY_LABELS: CountryLabelConfig[] = [
   { id: 'ECU', name: 'ECUADOR', coordinates: [-78.5, -1.5], fontSize: 'sm' },
   { id: 'VEN', name: 'VENEZUELA', coordinates: [-66, 8], fontSize: 'md' },
   { id: 'BRA', name: 'BRAZIL', coordinates: [-52, -10], fontSize: 'lg' },
-  { id: 'ARG', name: 'ARGENTINA', coordinates: [-64, -34], fontSize: 'md' },
-  { id: 'CHL', name: 'CHILE', coordinates: [-71, -33], fontSize: 'sm', offsetX: -15 },
+  { id: 'ARG', name: 'ARGENTINA', coordinates: [-65, -38], fontSize: 'md' },
+  { id: 'CHL', name: 'CHILE', coordinates: [-70, -30], fontSize: 'sm' },
 
   // Consumer (North America)
   { id: 'USA', name: 'UNITED STATES', coordinates: [-98, 39], fontSize: 'lg' },

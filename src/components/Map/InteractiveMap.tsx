@@ -137,6 +137,18 @@ interface InteractiveMapProps {
 
   /** Which route types to display on the map */
   visibleRouteTypes?: RouteType[];
+
+  /** Controlled zoom level (optional) */
+  zoom?: number;
+
+  /** Controlled center position (optional) */
+  center?: [number, number];
+
+  /** Callback when zoom changes (for controlled mode) */
+  onZoomChange?: (zoom: number) => void;
+
+  /** Callback when center changes (for controlled mode) */
+  onCenterChange?: (center: [number, number]) => void;
 }
 
 /**
@@ -151,15 +163,24 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   selectedCountry,
   countryRoles,
   visibleRouteTypes = ['land', 'maritime', 'air'],
+  zoom: controlledZoom,
+  center: controlledCenter,
+  onZoomChange,
+  onCenterChange,
 }) => {
   const { isMobile, isTouchDevice } = useResponsive();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
-  const [zoom, setZoom] = useState(isMobile ? 1.2 : 1.5);
+
+  // Use controlled values if provided, otherwise use defaults
+  const defaultZoom = isMobile ? 1.2 : 1.5;
+  const defaultCenter: [number, number] = [-20, 5];
+  const zoom = controlledZoom ?? defaultZoom;
+  const center = controlledCenter ?? defaultCenter;
 
   // Projection config - world view with Americas and Asia visible
   const projectionConfig = {
-    center: [-20, 5] as [number, number],
+    center: center,
     scale: isMobile ? 100 : 140,
   };
 
@@ -274,9 +295,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
    */
   const handleMoveEnd = useCallback(
     (position: { coordinates: [number, number]; zoom: number }) => {
-      setZoom(position.zoom);
+      onZoomChange?.(position.zoom);
+      onCenterChange?.(position.coordinates);
     },
-    []
+    [onZoomChange, onCenterChange]
   );
 
   return (

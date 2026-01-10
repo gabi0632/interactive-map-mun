@@ -10,3 +10,5 @@ export { MapBackground } from './MapBackground';
 export { CountryLabels } from './CountryLabels';
 export { TrafficRoutes } from './TrafficRoutes';
 export { CompassRose } from './CompassRose';
+export { MapControls } from './MapControls';
+export type { PanDirection } from './MapControls';
