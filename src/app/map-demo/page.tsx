@@ -25,18 +25,32 @@ export default function MapDemoPage() {
     GTM: 'transit',
     HND: 'transit',
     SLV: 'transit',
-    NIC: 'transit',
     CRI: 'transit',
     PAN: 'transit',
+    DOM: 'transit',
 
     // Mixed
     ECU: 'mixed',
     VEN: 'mixed',
     BRA: 'mixed',
+    ARG: 'mixed',
+    CHL: 'mixed',
 
-    // Consumer
+    // Consumer - North America
     USA: 'consumer',
     CAN: 'consumer',
+
+    // Consumer - Europe
+    GBR: 'consumer',
+    DEU: 'consumer',
+    FRA: 'consumer',
+    ESP: 'consumer',
+    ITA: 'consumer',
+    AUT: 'consumer',
+
+    // Other
+    CHN: 'other',
+    RUS: 'other',
   };
 
   const handleCountryClick = (countryId: string) => {

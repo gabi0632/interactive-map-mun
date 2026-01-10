@@ -10,12 +10,11 @@ import { colombia } from "./colombia";
 import { peru } from "./peru";
 import { bolivia } from "./bolivia";
 
-// Transit countries (8)
+// Transit countries (7)
 import { mexico } from "./mexico";
 import { guatemala } from "./guatemala";
 import { honduras } from "./honduras";
 import { elSalvador } from "./el-salvador";
-import { nicaragua } from "./nicaragua";
 import { costaRica } from "./costa-rica";
 import { panama } from "./panama";
 import { dominicanRepublic } from "./dominican-republic";
@@ -54,7 +53,6 @@ export const transitCountries: Country[] = [
   guatemala,
   honduras,
   elSalvador,
-  nicaragua,
   costaRica,
   panama,
   dominicanRepublic,
@@ -91,7 +89,7 @@ export const consumerCountries: Country[] = [
 export const otherCountries: Country[] = [china, russia];
 
 /**
- * All countries in the dataset (26 total)
+ * All countries in the dataset (25 total)
  */
 export const allCountries: Country[] = [
   ...producerCountries,
@@ -150,7 +148,6 @@ export {
   guatemala,
   honduras,
   elSalvador,
-  nicaragua,
   costaRica,
   panama,
   dominicanRepublic,
