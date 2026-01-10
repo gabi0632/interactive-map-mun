@@ -3,12 +3,16 @@ export const MAP_CENTER: [number, number] = [-60, -15];
 export const MAP_SCALE = 400;
 
 // ISO 3166-1 alpha-3 codes for countries in scope
-export const LATIN_AMERICA_COUNTRIES = [
+export const COUNTRIES_IN_SCOPE = [
   'COL', 'PER', 'BOL',           // Producers
   'MEX', 'GTM', 'HND', 'SLV',    // Transit
   'NIC', 'CRI', 'PAN',           // Transit
   'ECU', 'VEN', 'BRA',           // Mixed
-  'USA', 'CAN'                   // Consumer
+  'DOM', 'ARG', 'CHL',           // Mixed/Transit
+  'USA', 'CAN',                  // Consumer
+  'GBR', 'DEU', 'FRA',           // Consumer (Europe)
+  'ESP', 'ITA', 'AUT',           // Consumer/Diplomatic (Europe)
+  'CHN', 'RUS'                   // Other
 ] as const;
 
 // Role-based color mapping (CSS custom properties defined in globals.css)
@@ -17,6 +21,7 @@ export const ROLE_COLORS = {
   transit: 'var(--transit)',
   mixed: 'var(--mixed)',
   consumer: 'var(--consumer)',
+  other: 'var(--other)',
   inactive: 'var(--inactive)'
 } as const;
 

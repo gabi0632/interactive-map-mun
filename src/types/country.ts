@@ -6,7 +6,7 @@
 /**
  * Classification of a country's role in drug trafficking
  */
-export type CountryRole = "producer" | "transit" | "consumer" | "mixed";
+export type CountryRole = "producer" | "transit" | "consumer" | "mixed" | "other";
 
 /**
  * Statistical data related to drug trafficking activities
