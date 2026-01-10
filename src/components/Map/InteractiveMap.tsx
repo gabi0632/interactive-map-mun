@@ -137,17 +137,11 @@ interface InteractiveMapProps {
   /** Which route types to display on the map */
   visibleRouteTypes?: RouteType[];
 
-  /** Controlled zoom level (optional) */
+  /** Initial zoom level */
   zoom?: number;
 
-  /** Controlled center position (optional) */
+  /** Initial center position */
   center?: [number, number];
-
-  /** Callback when zoom changes (for controlled mode) */
-  onZoomChange?: (zoom: number) => void;
-
-  /** Callback when center changes (for controlled mode) */
-  onCenterChange?: (center: [number, number]) => void;
 }
 
 /**
@@ -162,24 +156,23 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   selectedCountry,
   countryRoles,
   visibleRouteTypes = ['land', 'maritime', 'air'],
-  zoom: controlledZoom,
-  center: controlledCenter,
-  onZoomChange,
-  onCenterChange,
+  zoom: initialZoom,
+  center: initialCenter,
 }) => {
   const { isMobile, isTouchDevice } = useResponsive();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
 
-  // Use controlled values if provided, otherwise use defaults
+  // Use provided values or defaults - these are initial values, map manages its own state after
   const defaultZoom = isMobile ? 1.2 : 1.5;
   const defaultCenter: [number, number] = [-20, 5];
-  const zoom = controlledZoom ?? defaultZoom;
-  const center = controlledCenter ?? defaultCenter;
+  const zoom = initialZoom ?? defaultZoom;
+  const center = initialCenter ?? defaultCenter;
 
   // Projection config - world view with Americas and Asia visible
+  // Note: center is handled by ZoomableGroup, not projection
   const projectionConfig = {
-    center: center,
+    center: [0, 20] as [number, number],  // Fixed projection center
     scale: isMobile ? 100 : 140,
   };
 
@@ -289,16 +282,6 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     setTooltip(null);
   }, []);
 
-  /**
-   * Handle zoom/pan changes
-   */
-  const handleMoveEnd = useCallback(
-    (position: { coordinates: [number, number]; zoom: number }) => {
-      onZoomChange?.(position.zoom);
-      onCenterChange?.(position.coordinates);
-    },
-    [onZoomChange, onCenterChange]
-  );
 
   return (
     <div className="w-full h-full relative overflow-hidden">
@@ -314,11 +297,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <MapBackground />
 
         <ZoomableGroup
-          center={projectionConfig.center}
+          center={center}
           zoom={zoom}
-          onMoveEnd={handleMoveEnd}
-          minZoom={0.5}
-          maxZoom={4}
+          minZoom={0.8}
+          maxZoom={8}
+          translateExtent={[[-1000, -500], [1000, 500]]}
         >
           {/* Country geometries */}
           <Geographies geography={GEO_URL}>

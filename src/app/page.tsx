@@ -42,6 +42,8 @@ export default function Home() {
   // Map zoom and center state - use responsive defaults
   const [zoom, setZoom] = useState<number>(isMobile ? ZOOM_LEVELS.DEFAULT_MOBILE : ZOOM_LEVELS.DEFAULT);
   const [center, setCenter] = useState<[number, number]>(isMobile ? DEFAULT_CENTER_MOBILE : DEFAULT_CENTER);
+  // Key to force map remount when we explicitly change view (search, buttons)
+  const [mapKey, setMapKey] = useState(0);
 
   const handleCountryClick = (countryId: string) => {
     setSelectedCountryId(countryId);
@@ -59,16 +61,18 @@ export default function Home() {
     );
   };
 
-  // Zoom handlers
+  // Zoom handlers - increment key to force map update
   const handleZoomIn = useCallback(() => {
     setZoom((prev) => Math.min(prev * 1.3, ZOOM_LEVELS.MAX));
+    setMapKey((k) => k + 1);
   }, []);
 
   const handleZoomOut = useCallback(() => {
     setZoom((prev) => Math.max(prev / 1.3, ZOOM_LEVELS.MIN));
+    setMapKey((k) => k + 1);
   }, []);
 
-  // Pan handler
+  // Pan handler - increment key to force map update
   const PAN_STEP_BASE = 15; // Base pan distance in map units
   const handlePan = useCallback((direction: PanDirection) => {
     const panAmount = PAN_STEP_BASE / zoom; // Pan less when zoomed in
@@ -87,12 +91,14 @@ export default function Home() {
           return prev;
       }
     });
+    setMapKey((k) => k + 1);
   }, [zoom]);
 
   // Reset view handler
   const handleReset = useCallback(() => {
     setZoom(isMobile ? ZOOM_LEVELS.DEFAULT_MOBILE : ZOOM_LEVELS.DEFAULT);
     setCenter(isMobile ? DEFAULT_CENTER_MOBILE : DEFAULT_CENTER);
+    setMapKey((k) => k + 1);
   }, [isMobile]);
 
   // Search select handler - zoom to country and open panel
@@ -103,6 +109,7 @@ export default function Home() {
       setZoom(ZOOM_LEVELS.COUNTRY_FOCUS);
     }
     setSelectedCountryId(countryId);
+    setMapKey((k) => k + 1);
   }, []);
 
   const selectedCountry = selectedCountryId ? getCountryById(selectedCountryId) : null;
@@ -162,14 +169,13 @@ export default function Home() {
         <ErrorBoundary>
           <Suspense fallback={<MapSkeleton />}>
             <InteractiveMap
+              key={mapKey}
               onCountryClick={handleCountryClick}
               selectedCountry={selectedCountryId}
               countryRoles={countryRoles}
               visibleRouteTypes={visibleRouteTypes}
               zoom={zoom}
               center={center}
-              onZoomChange={setZoom}
-              onCenterChange={setCenter}
             />
           </Suspense>
         </ErrorBoundary>
