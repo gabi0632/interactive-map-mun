@@ -11,13 +11,13 @@ export const LATIN_AMERICA_COUNTRIES = [
   'USA', 'CAN'                   // Consumer
 ] as const;
 
-// Role-based color mapping
+// Role-based color mapping (CSS custom properties defined in globals.css)
 export const ROLE_COLORS = {
-  producer: 'hsl(var(--producer))',
-  transit: 'hsl(var(--transit))',
-  mixed: 'hsl(var(--mixed))',
-  consumer: 'hsl(var(--consumer))',
-  inactive: 'hsl(var(--inactive))'
+  producer: 'var(--producer)',
+  transit: 'var(--transit)',
+  mixed: 'var(--mixed)',
+  consumer: 'var(--consumer)',
+  inactive: 'var(--inactive)'
 } as const;
 
 export const GEO_URL = '/geo/world-110m.json';

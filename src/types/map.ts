@@ -3,8 +3,6 @@
  * Types for react-simple-maps based interactive map
  */
 
-import type { Country } from './country';
-
 /**
  * Props for the main Map component
  */
