@@ -3,13 +3,42 @@
 **Created**: 2026-01-10
 **Task**: UI Overhaul - Immersive Atlas Experience
 **Branch**: feature/MUN-011-ui-overhaul
-**Commit**: e875e0e
+**Latest Commit**: 719e8c1
 
 ## Summary
 
 Transformed the interactive MUN map from a flat design into an immersive, tactile digital atlas. The redesign focuses on student engagement while treating the serious subject matter with respect.
 
-## Completed Work
+## Session 2 - Completed Work
+
+### Document Viewer Component (NEW)
+- [x] Created `src/components/DocumentViewer/DocumentViewer.tsx`
+- [x] Full PDF content from UNODC Drug Trafficking document
+- [x] Includes all sections: UNODC intro, mandate, funding, trafficking background, Latin America focus, UNODC actions, guiding questions
+- [x] Modal design with scroll support
+- [x] Click header title "Drug Trafficking Routes" to open
+
+### Map Improvements
+- [x] Moved legend outside map container to fix zoom visibility
+- [x] Adjusted projection center to [-20, 5] for world view showing Americas, Europe, and Asia
+- [x] Set initial zoom to 1.5 (desktop) / 1.2 (mobile)
+- [x] Scale adjusted to 140 (desktop) / 100 (mobile)
+- [x] Russia and China now visible on map
+
+### Known Issues (TO FIX IN NEXT SESSION)
+- [ ] Legend may still disappear during aggressive zoom (needs investigation)
+- [ ] Zoom doesn't work when country panel is open (scroll captured by panel)
+- [ ] Chile label positioning might need adjustment
+
+## Remaining Work (Next Session)
+
+### Search & Navigation Features (REQUESTED)
+- [ ] Add country search text field with autocomplete
+- [ ] Search result click should zoom to country and open panel
+- [ ] Add zoom in/out buttons (+/-)
+- [ ] Add pan buttons (left, right, up, down)
+
+### Previous Session Work (Completed)
 
 ### Map Enhancements
 - [x] Enhanced ocean with bathymetric depth lines, radial depth gradient, and vignette effect
@@ -31,59 +60,39 @@ Transformed the interactive MUN map from a flat design into an immersive, tactil
 - [x] Animated radial gauge visualization for statistics
 - [x] Expandable UNODC program cards
 
-### CSS Animations Added
-- `route-flow` - Animated stroke-dashoffset for flowing routes
-- `glow-pulse` - Subtle glow pulse for active routes
-- `gauge-fill` - Animated fill for stat gauges
-- `selection-pulse` - Border pulse for selected countries
-
-## Key Files Modified
+## Key Files Modified (Session 2)
 
 | File | Changes |
 |------|---------|
-| `src/app/globals.css` | Added animation keyframes |
-| `src/app/page.tsx` | Fixed header positioning, UNODC link |
-| `src/components/Map/MapBackground.tsx` | Ocean depth, bathymetric patterns |
-| `src/components/Map/TrafficRoutes.tsx` | Animated routes, glow filters |
-| `src/components/Map/InteractiveMap.tsx` | Selection filters, hover effects |
-| `src/components/Map/MapLegend.tsx` | Glassmorphism redesign |
-| `src/components/Map/CountryLabels.tsx` | Zoom-responsive sizing |
-| `src/components/CountryPanel/CountryHeader.tsx` | Enhanced header with icons |
-| `src/components/CountryPanel/CountryStats.tsx` | Radial gauge visualization |
-| `src/components/CountryPanel/CountryPrograms.tsx` | Expandable cards |
-| `src/data/routes.ts` | Hub-based origins, directional offsets |
+| `src/app/page.tsx` | Added DocumentViewer, moved legend outside map container |
+| `src/components/Map/InteractiveMap.tsx` | Adjusted projection and zoom settings |
+| `src/components/DocumentViewer/DocumentViewer.tsx` | NEW - Full PDF content viewer |
+| `src/components/DocumentViewer/index.ts` | NEW - Barrel export |
 
-## Route Hub System
+## Technical Notes
 
-Routes now originate from country hub points with directional offsets:
-
+### Map Projection Settings
 ```typescript
-const COUNTRY_HUBS = {
-  COL: [-74, 4],    // Colombia
-  PER: [-76, -10],  // Peru
-  BRA: [-47, -15],  // Brazil
-  MEX: [-99, 19],   // Mexico
-  // ...
+// Current settings in InteractiveMap.tsx
+const [zoom, setZoom] = useState(isMobile ? 1.2 : 1.5);
+const projectionConfig = {
+  center: [-20, 5] as [number, number],  // World view
+  scale: isMobile ? 100 : 140,
 };
-
-// Routes use directional offsets (north, south, east, west, etc.)
-// to visually separate routes going to different destinations
 ```
 
-## Potential Future Improvements
+### Legend Positioning
+Legend is now rendered OUTSIDE the map container div to prevent CSS transform issues during zoom:
+```tsx
+<div className="h-full w-full relative">
+  <InteractiveMap ... />
+</div>
+<MapLegend ... />  {/* Outside map container */}
+```
 
-- [ ] Add curved bezier paths for routes (more natural flow)
-- [ ] Implement route highlighting when country is selected
-- [ ] Add animation speed controls
-- [ ] Consider dark mode for country panel
-- [ ] Add route description tooltips on hover
+## Status: IN PROGRESS
 
-## Testing Notes
-
-- Verified header/legend stay visible at all zoom levels
-- Routes animate smoothly
-- Stat gauges animate on panel open
-- UNODC link opens in new tab
-- No console errors
-
-## Status: COMPLETED
+Next session should focus on:
+1. Search functionality with autocomplete
+2. Zoom and pan control buttons
+3. Fix zoom behavior when panel is open
