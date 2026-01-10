@@ -113,3 +113,118 @@ After git operations, update the active context with:
 - Commits made
 - Branches created/merged
 - PRs opened/closed
+
+---
+
+## PR Creation for Review Loop
+
+When creating a PR for the multi-agent workflow:
+
+### Step 1: Prepare Branch
+```bash
+# Ensure all changes are committed
+git status
+
+# Sync with main to avoid conflicts
+git fetch origin
+git rebase origin/main
+
+# Push branch
+git push -u origin HEAD
+```
+
+### Step 2: Create PR
+```bash
+# Create PR with structured body
+gh pr create --title "type: description" --body "$(cat <<'EOF'
+## Summary
+Brief description of changes
+
+## Changes Made
+- Change 1
+- Change 2
+
+## Testing
+- [ ] Build passes: `bun run build`
+- [ ] Lint passes: `bun run lint`
+- [ ] Visual verification (if UI)
+
+## Context
+- Context file: `.claude/context/context_X.md`
+- Task ID: MUN-XXX
+
+---
+Ready for code review.
+EOF
+)"
+```
+
+### Step 3: Return PR Info
+After creating PR, return:
+```markdown
+## PR Created
+- **Number**: #XX
+- **URL**: https://github.com/...
+- **Branch**: feature/MUN-XXX-description
+- **Status**: Ready for code-reviewer
+```
+
+---
+
+## PR Merge After Approval
+
+When merging an approved PR:
+
+```bash
+# Verify PR is approved
+gh pr view <number> --json reviews
+
+# Merge with squash (clean history)
+gh pr merge <number> --squash --delete-branch
+
+# Confirm merge
+gh pr view <number> --json state
+```
+
+### Post-Merge Cleanup
+```bash
+# Update local main
+git checkout main
+git pull origin main
+
+# Remove worktree if applicable
+git worktree remove ../mun-feature-xxx
+
+# Prune old worktrees
+git worktree prune
+```
+
+---
+
+## Handling Merge Conflicts
+
+If conflicts occur during rebase:
+
+```bash
+# Check conflicted files
+git status
+
+# For each conflict, either:
+# 1. Accept ours (current branch)
+git checkout --ours <file>
+
+# 2. Accept theirs (main branch)
+git checkout --theirs <file>
+
+# 3. Manual merge - edit file and resolve
+
+# After resolving
+git add <resolved-files>
+git rebase --continue
+
+# If rebase is too complex, abort and merge instead
+git rebase --abort
+git merge origin/main
+```
+
+Always update context file when conflicts are resolved.

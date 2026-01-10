@@ -173,3 +173,302 @@ interactive-map-mun/
 
 ## Important Links
 - @UNODC Drug Trafficking.pdf - Main reference document
+
+---
+
+## Multi-Agent Parallel Development Workflow (MANDATORY)
+
+### Overview
+This project supports **multiple Claude Code sessions working in parallel** on different branches. Each task runs on its own branch to avoid conflicts, with automatic PR creation and code review loops.
+
+### Core Principles
+1. **One task = One branch** - Every task MUST have its own feature branch
+2. **Git worktrees for parallelism** - Use worktrees for multiple simultaneous sessions
+3. **PR-based merging** - All code merges through reviewed PRs
+4. **Automated review loop** - Code reviewer blocks merge until approval
+
+---
+
+### Branch Naming Convention
+
+```
+<type>/MUN-<id>-<short-description>
+```
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `feature/` | New functionality | `feature/MUN-001-map-component` |
+| `fix/` | Bug fixes | `fix/MUN-042-click-handler` |
+| `refactor/` | Code restructuring | `refactor/MUN-015-data-layer` |
+| `ui/` | UI/styling changes | `ui/MUN-023-country-panel` |
+| `data/` | Data file updates | `data/MUN-007-colombia-stats` |
+
+**Rules:**
+- Always lowercase
+- Use hyphens (not underscores)
+- Include task ID for traceability
+- Keep descriptions short (2-4 words)
+
+---
+
+### Git Worktree Setup (For Parallel Sessions)
+
+When running multiple Claude Code sessions simultaneously, use git worktrees to avoid conflicts:
+
+```bash
+# From the main repository, create worktrees for parallel tasks
+git worktree add ../mun-feature-1 -b feature/MUN-001-map-component
+git worktree add ../mun-feature-2 -b feature/MUN-002-country-panel
+git worktree add ../mun-fix-1 -b fix/MUN-003-hover-bug
+
+# Each worktree needs its own dependencies
+cd ../mun-feature-1 && bun install
+cd ../mun-feature-2 && bun install
+
+# List all active worktrees
+git worktree list
+
+# Remove worktree after PR is merged
+git worktree remove ../mun-feature-1
+```
+
+**Directory Structure with Worktrees:**
+```
+~/Projects/
+├── interactive-map-mun/          # Main worktree (main branch)
+├── mun-feature-map/              # Worktree for map feature
+├── mun-feature-panel/            # Worktree for panel feature
+└── mun-fix-hotfix/               # Worktree for urgent fix
+```
+
+---
+
+### Task Lifecycle (MANDATORY FOR ALL TASKS)
+
+Every task MUST follow this lifecycle:
+
+#### Phase 1: Setup
+```bash
+# 1. Ensure on latest main
+git checkout main
+git pull origin main
+
+# 2. Create feature branch
+git checkout -b feature/MUN-XXX-description
+
+# 3. Create context file (per existing rules)
+current=$(cat .claude/context/index 2>/dev/null || echo "0")
+new=$((current + 1))
+echo $new > .claude/context/index
+```
+
+#### Phase 2: Development
+- Write code following project standards
+- Commit frequently with meaningful messages
+- Update context file with progress
+
+#### Phase 3: PR Creation & Review Loop
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    PR + CODE REVIEW LOOP                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│   ┌──────────┐    ┌───────────────┐    ┌─────────────────┐  │
+│   │ Complete │───►│ Create PR via │───►│ Run code-reviewer│  │
+│   │   Task   │    │  git-manager  │    │     agent       │  │
+│   └──────────┘    └───────────────┘    └────────┬────────┘  │
+│                                                  │           │
+│                                                  ▼           │
+│                                        ┌─────────────────┐  │
+│                                        │ Issues Found?   │  │
+│                                        └────────┬────────┘  │
+│                                                 │            │
+│                         ┌───────────────────────┼───────────┐│
+│                         │                       │           ││
+│                         ▼ YES                   ▼ NO        ││
+│                   ┌──────────┐           ┌──────────────┐   ││
+│                   │  Fix     │           │   Merge PR   │   ││
+│                   │  Issues  │           │   to main    │   ││
+│                   └────┬─────┘           └──────────────┘   ││
+│                        │                                    ││
+│                        ▼                                    ││
+│                   ┌──────────┐                              ││
+│                   │  Commit  │                              ││
+│                   │  Fixes   │──────────────────────────────┘│
+│                   └──────────┘                               │
+│                        │                                     │
+│                        └─────► Back to code-reviewer         │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Phase 4: Merge & Cleanup
+```bash
+# After PR approval
+gh pr merge <pr-number> --squash --delete-branch
+
+# If using worktree
+git worktree remove ../mun-feature-xxx
+```
+
+---
+
+### Agent Workflow for PR Review Loop
+
+When a task is complete, execute this exact sequence:
+
+```markdown
+## Step 1: Create PR
+Trigger `git-manager` agent:
+- Push branch to remote
+- Create PR with proper title and description
+- Return PR number
+
+## Step 2: Code Review
+Trigger `code-reviewer` agent:
+- Review all files changed in the PR
+- Check against review checklist
+- Output findings with severity levels
+
+## Step 3: Evaluate Review
+IF code-reviewer finds Critical or High issues:
+  → Fix the issues
+  → Commit fixes
+  → Push to same branch (PR updates automatically)
+  → GOTO Step 2 (re-run code-reviewer)
+
+IF code-reviewer finds only Medium/Low issues OR no issues:
+  → Proceed to merge
+
+## Step 4: Merge
+Trigger `git-manager` agent:
+- Merge PR to main (squash merge)
+- Delete remote branch
+- Update context file to COMPLETED
+```
+
+---
+
+### Review Loop Implementation
+
+When running the review loop, use this pattern:
+
+```javascript
+// Pseudo-code for agent orchestration
+let reviewPassed = false;
+let reviewCount = 0;
+const MAX_REVIEWS = 5; // Prevent infinite loops
+
+while (!reviewPassed && reviewCount < MAX_REVIEWS) {
+  reviewCount++;
+
+  // Run code-reviewer agent
+  const review = await runAgent('code-reviewer', { pr: prNumber });
+
+  if (review.criticalIssues > 0 || review.highIssues > 0) {
+    // Fix issues
+    await fixIssues(review.issues);
+    await commitAndPush('fix: address code review feedback');
+    // Loop continues - code-reviewer runs again
+  } else {
+    reviewPassed = true;
+  }
+}
+
+if (reviewPassed) {
+  await runAgent('git-manager', { action: 'merge', pr: prNumber });
+} else {
+  // Alert: Max reviews reached, needs manual intervention
+  await updateContext('BLOCKED: Max review iterations reached');
+}
+```
+
+---
+
+### Parallel Session Coordination
+
+When multiple sessions work simultaneously:
+
+1. **Never work on the same files** - Split tasks by file/component ownership
+2. **Use different task IDs** - Each session gets unique MUN-XXX IDs
+3. **Sync before merge** - Rebase on main before creating PR
+4. **Sequential merges** - Merge PRs one at a time to avoid conflicts
+
+**Recommended Task Splits for Parallelism:**
+| Session | Focus Area | Files |
+|---------|------------|-------|
+| Session A | Map components | `src/components/Map/*` |
+| Session B | Country panel | `src/components/CountryPanel/*` |
+| Session C | Data files | `src/data/countries/*` |
+| Session D | Types & utilities | `src/types/*`, `src/lib/*` |
+
+---
+
+### Context File Updates for Parallel Work
+
+When working in parallel, context files track branch info:
+
+```markdown
+# Context #{id}
+**Created**: {timestamp}
+**Task**: {task description}
+**Branch**: feature/MUN-{id}-{description}
+**Worktree**: ../mun-feature-{id} (if applicable)
+
+## Git Progress
+- [ ] Branch created
+- [ ] Development complete
+- [ ] PR created: #{pr-number}
+- [ ] Code review #1: {status}
+- [ ] Code review #2: {status} (if needed)
+- [ ] Merged to main
+
+## Review History
+### Review #1 - {timestamp}
+- Critical: 0, High: 2, Medium: 3
+- Fixed: High issues resolved
+
+### Review #2 - {timestamp}
+- Critical: 0, High: 0, Medium: 1
+- Status: APPROVED
+
+## Status: {ACTIVE|IN_REVIEW|COMPLETED}
+```
+
+---
+
+### Quick Reference Commands
+
+```bash
+# Start new task
+git checkout main && git pull && git checkout -b feature/MUN-XXX-name
+
+# Push and create PR
+git push -u origin HEAD && gh pr create --fill
+
+# Run code review (via agent)
+# → Trigger code-reviewer agent with PR number
+
+# Merge after approval
+gh pr merge --squash --delete-branch
+
+# Sync with main (before merge if needed)
+git fetch origin && git rebase origin/main
+
+# Check PR status
+gh pr status
+gh pr checks <pr-number>
+```
+
+---
+
+### IMPORTANT: Never Skip the Review Loop
+
+**All code MUST go through the PR review loop before merging to main.**
+
+- No direct pushes to main
+- No merging without code-reviewer approval
+- No skipping review for "small changes"
+
+This ensures consistent code quality across all parallel sessions.
