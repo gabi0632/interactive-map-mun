@@ -7,8 +7,27 @@ import {
   Geography,
   ZoomableGroup,
 } from 'react-simple-maps';
-import type { CountryRole, GeoFeatureProperties } from '@/types';
+import type { CountryRole } from '@/types';
 import { GEO_URL, LATIN_AMERICA_COUNTRIES, ROLE_COLORS } from '@/lib/mapConfig';
+
+// Mapping from ISO 3166-1 numeric codes to alpha-3 codes (for our countries of interest)
+const ISO_NUMERIC_TO_ALPHA3: Record<string, string> = {
+  '170': 'COL', // Colombia
+  '604': 'PER', // Peru
+  '068': 'BOL', // Bolivia
+  '484': 'MEX', // Mexico
+  '320': 'GTM', // Guatemala
+  '340': 'HND', // Honduras
+  '222': 'SLV', // El Salvador
+  '558': 'NIC', // Nicaragua
+  '188': 'CRI', // Costa Rica
+  '591': 'PAN', // Panama
+  '218': 'ECU', // Ecuador
+  '862': 'VEN', // Venezuela
+  '076': 'BRA', // Brazil
+  '840': 'USA', // United States
+  '124': 'CAN', // Canada
+};
 
 interface InteractiveMapProps {
   /** Callback when a country is clicked, receives country ID (ISO alpha-3) */
@@ -64,8 +83,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   /**
    * Handle country click - only trigger for clickable countries
    */
-  const handleCountryClick = (geo: { properties: GeoFeatureProperties }) => {
-    const iso3 = geo.properties.ISO_A3;
+  const handleCountryClick = (geoId: string) => {
+    const iso3 = ISO_NUMERIC_TO_ALPHA3[geoId] || '';
     if (isClickable(iso3)) {
       onCountryClick(iso3);
     }
@@ -74,8 +93,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   /**
    * Handle mouse enter - set hover state for clickable countries
    */
-  const handleMouseEnter = (geo: { properties: GeoFeatureProperties }) => {
-    const iso3 = geo.properties.ISO_A3;
+  const handleMouseEnter = (geoId: string) => {
+    const iso3 = ISO_NUMERIC_TO_ALPHA3[geoId] || '';
     if (isClickable(iso3)) {
       setHoveredCountry(iso3);
     }
@@ -102,7 +121,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const iso3 = geo.properties.ISO_A3;
+                // Convert numeric ISO code to alpha-3
+                const iso3 = ISO_NUMERIC_TO_ALPHA3[geo.id] || '';
                 const clickable = isClickable(iso3);
                 const isHovered = hoveredCountry === iso3;
                 const isSelected = selectedCountry === iso3;
@@ -111,8 +131,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onClick={() => handleCountryClick(geo)}
-                    onMouseEnter={() => handleMouseEnter(geo)}
+                    onClick={() => handleCountryClick(geo.id)}
+                    onMouseEnter={() => handleMouseEnter(geo.id)}
                     onMouseLeave={handleMouseLeave}
                     style={{
                       default: {
