@@ -15,7 +15,7 @@ fi
 
 echo "Plan file detected: $FILE_PATH"
 
-PORT=3000
+PORT=3333
 
 # Check if plan-viewer is already running on the port
 if lsof -i :$PORT > /dev/null 2>&1; then

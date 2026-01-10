@@ -28,23 +28,31 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
 
 ### T002 - TypeScript Types
 - **Agent**: `type-architect`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Parallel With**: T003, T004, T004b, T004c
 - **Acceptance Criteria**:
-  - [ ] Country interface created
-  - [ ] CountryRole type defined
-  - [ ] All types exported from index.ts
-- **Agent Output**: _pending_
+  - [x] Country interface created
+  - [x] CountryRole type defined
+  - [x] All types exported from index.ts
+- **Agent Output**:
+  - Created `src/types/country.ts`: CountryRole, CountryStats, UNODCProgram, CriminalOrganization, Country
+  - Created `src/types/map.ts`: MapProps, GeoFeatureProperties
+  - Created `src/types/ui.ts`: CountryPanelProps
+  - Created `src/types/index.ts`: Barrel export for all types
+  - Build verified: No TypeScript errors
 
 ### T003 - GeoJSON Setup
 - **Agent**: `map-developer`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Parallel With**: T002, T004, T004b, T004c
 - **Acceptance Criteria**:
-  - [ ] World map TopoJSON downloaded
-  - [ ] File optimized (< 500KB)
-  - [ ] All required countries present
-- **Agent Output**: _pending_
+  - [x] World map TopoJSON downloaded
+  - [x] File optimized (< 500KB) - 105KB
+  - [x] All required countries present (15 countries verified)
+- **Agent Output**:
+  - Downloaded `public/geo/world-110m.json` from world-atlas CDN (105KB)
+  - Created `src/lib/mapConfig.ts`: MAP_CENTER, MAP_SCALE, LATIN_AMERICA_COUNTRIES, ROLE_COLORS, GEO_URL
+  - Verified all 15 countries: BOL, BRA, CAN, COL, CRI, ECU, GTM, HND, MEX, NIC, PAN, PER, SLV, USA, VEN
 
 ---
 
@@ -213,10 +221,10 @@ _Tasks: T001_
 
 ### Execution Round 2 (Parallel)
 _Tasks: T002, T003, T004, T004b, T004c_
-- [ ] Started:
-- [ ] Completed:
-- Agents used:
-- Notes:
+- [x] Started: 2026-01-10
+- [x] Completed: 2026-01-10 (T002, T003 only)
+- Agents used: type-architect, map-developer
+- Notes: T002 and T003 completed in parallel. T004, T004b, T004c still pending.
 
 ### Execution Round 3 (Parallel)
 _Tasks: T005, T006_
