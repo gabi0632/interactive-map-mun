@@ -60,35 +60,53 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
 
 ### T004 - Country Data: Producer Countries
 - **Agent**: `data-compiler`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Parallel With**: T002, T003, T004b, T004c
 - **Countries**: Colombia, Peru, Bolivia
 - **Acceptance Criteria**:
-  - [ ] Colombia data complete
-  - [ ] Peru data complete
-  - [ ] Bolivia data complete
-  - [ ] All validated against types
-- **Agent Output**: _pending_
+  - [x] Colombia data complete
+  - [x] Peru data complete
+  - [x] Bolivia data complete
+  - [x] All validated against types
+- **Agent Output**:
+  - Created `src/data/countries/colombia.ts` - World's largest coca/cocaine producer
+  - Created `src/data/countries/peru.ts` - Second-largest coca cultivator
+  - Created `src/data/countries/bolivia.ts` - Legal coca with excess feeding illicit markets
+  - Includes UNODC programs, criminal organizations, policy stances, and sources
 
 ### T004b - Country Data: Transit Countries
 - **Agent**: `data-compiler`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Parallel With**: T002, T003, T004, T004c
-- **Countries**: Mexico, Guatemala, Honduras, El Salvador, Nicaragua, Costa Rica, Panama
+- **Countries**: Mexico, Guatemala, Honduras, El Salvador, Nicaragua, Costa Rica, Panama, Dominican Republic
 - **Acceptance Criteria**:
-  - [ ] All 7 countries complete
-  - [ ] Cartel/organization info included
-- **Agent Output**: _pending_
+  - [x] All 8 countries complete (expanded from 7)
+  - [x] Cartel/organization info included
+- **Agent Output**:
+  - Created 8 transit country files with detailed trafficking data
+  - Includes major cartels: Sinaloa, CJNG, Gulf Cartel, MS-13, Barrio 18
+  - Panama Canal chokepoint and Caribbean routes documented
 
-### T004c - Country Data: Mixed & Consumer Countries
+### T004c - Country Data: Mixed, Consumer & Other Countries
 - **Agent**: `data-compiler`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Parallel With**: T002, T003, T004, T004b
-- **Countries**: Ecuador, Venezuela, Brazil, USA, Canada
+- **Countries (EXPANDED)**:
+  - Mixed: Ecuador, Venezuela, Brazil, Argentina, Chile
+  - Consumer: USA, Canada, UK, Germany, France, Spain, Italy, Austria
+  - Other: China (precursor source), Russia
 - **Acceptance Criteria**:
-  - [ ] All 5 countries complete
-  - [ ] Role classifications correct
-- **Agent Output**: _pending_
+  - [x] All 15 countries complete (expanded from 5)
+  - [x] Role classifications correct
+  - [x] Added 'other' role to CountryRole type
+- **Agent Output**:
+  - Created 15 country files for mixed/consumer/other roles
+  - Updated `src/types/country.ts` with 'other' role
+  - Updated `src/lib/mapConfig.ts` with all 26 country ISO codes
+  - Created `src/data/countries/index.ts` with grouped exports and helper functions
+  - **PR #3**: https://github.com/gabi0632/interactive-map-mun/pull/3
+  - **Branch**: data/MUN-T004-country-data
+  - **Worktree**: /Users/gabrielabramovich/Projects/mun-data-T004
 
 ---
 
@@ -222,9 +240,14 @@ _Tasks: T001_
 ### Execution Round 2 (Parallel)
 _Tasks: T002, T003, T004, T004b, T004c_
 - [x] Started: 2026-01-10
-- [x] Completed: 2026-01-10 (T002, T003 only)
-- Agents used: type-architect, map-developer
-- Notes: T002 and T003 completed in parallel. T004, T004b, T004c still pending.
+- [x] Completed: 2026-01-10
+- Agents used: type-architect, map-developer, data-compiler (5 parallel agents)
+- Notes:
+  - T002, T003 completed first
+  - T004, T004b, T004c completed with expanded scope (26 countries total)
+  - Used git worktree at /Users/gabrielabramovich/Projects/mun-data-T004
+  - PR #3 created and code reviewed
+  - Fixed EUR→ESP,NLD ISO code issue from code review
 
 ### Execution Round 3 (Parallel)
 _Tasks: T005, T006_
