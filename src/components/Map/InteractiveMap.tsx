@@ -8,26 +8,14 @@ import {
   ZoomableGroup,
 } from 'react-simple-maps';
 import type { CountryRole } from '@/types';
-import { GEO_URL, LATIN_AMERICA_COUNTRIES, ROLE_COLORS } from '@/lib/mapConfig';
-
-// Mapping from ISO 3166-1 numeric codes to alpha-3 codes (for our countries of interest)
-const ISO_NUMERIC_TO_ALPHA3: Record<string, string> = {
-  '170': 'COL', // Colombia
-  '604': 'PER', // Peru
-  '068': 'BOL', // Bolivia
-  '484': 'MEX', // Mexico
-  '320': 'GTM', // Guatemala
-  '340': 'HND', // Honduras
-  '222': 'SLV', // El Salvador
-  '558': 'NIC', // Nicaragua
-  '188': 'CRI', // Costa Rica
-  '591': 'PAN', // Panama
-  '218': 'ECU', // Ecuador
-  '862': 'VEN', // Venezuela
-  '076': 'BRA', // Brazil
-  '840': 'USA', // United States
-  '124': 'CAN', // Canada
-};
+import {
+  GEO_URL,
+  ISO_NUMERIC_TO_ALPHA3,
+  LATIN_AMERICA_COUNTRIES,
+  MAP_CENTER,
+  MAP_SCALE,
+  ROLE_COLORS,
+} from '@/lib/mapConfig';
 
 interface InteractiveMapProps {
   /** Callback when a country is clicked, receives country ID (ISO alpha-3) */
@@ -77,7 +65,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
    * Check if a country is clickable (in Latin America countries list)
    */
   const isClickable = (iso3: string): boolean => {
-    return LATIN_AMERICA_COUNTRIES.includes(iso3 as any);
+    return (LATIN_AMERICA_COUNTRIES as readonly string[]).includes(iso3);
   };
 
   /**
@@ -112,12 +100,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
-          center: [-60, -15], // Latin America center
-          scale: 400,
+          center: MAP_CENTER,
+          scale: MAP_SCALE,
         }}
         className="w-full h-full"
       >
-        <ZoomableGroup center={[-60, -15]} zoom={1}>
+        <ZoomableGroup center={MAP_CENTER} zoom={1}>
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
