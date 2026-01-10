@@ -69,8 +69,9 @@ export default function Home() {
   }, []);
 
   // Pan handler
+  const PAN_STEP_BASE = 15; // Base pan distance in map units
   const handlePan = useCallback((direction: PanDirection) => {
-    const panAmount = 15 / zoom; // Pan less when zoomed in
+    const panAmount = PAN_STEP_BASE / zoom; // Pan less when zoomed in
     setCenter((prev) => {
       const [lng, lat] = prev;
       switch (direction) {

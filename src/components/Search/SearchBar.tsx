@@ -1,6 +1,14 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+/**
+ * SearchBar Component
+ *
+ * SECURITY NOTE: This component assumes all country data is statically typed
+ * and comes from trusted sources. If data source changes to user-generated
+ * or external API, implement proper sanitization.
+ */
+
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { allCountries } from '@/data/countries';
 import { cn } from '@/lib/utils';
@@ -23,22 +31,23 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Filter countries based on query
-  const searchCountries = useCallback((searchQuery: string): SearchResult[] => {
-    if (!searchQuery.trim()) return [];
+  // Derive results from query using useMemo (avoids setState in useEffect)
+  const results = useMemo((): SearchResult[] => {
+    if (!query.trim()) return [];
 
-    const normalizedQuery = searchQuery.toLowerCase().trim();
+    const normalizedQuery = query.toLowerCase().trim();
 
     return allCountries
       .filter((country) => {
         const nameMatch = country.name.toLowerCase().includes(normalizedQuery);
         const idMatch = country.id.toLowerCase().includes(normalizedQuery);
-        const capitalMatch = country.capital?.toLowerCase().includes(normalizedQuery);
+        const capitalMatch = country.capital
+          ? country.capital.toLowerCase().includes(normalizedQuery)
+          : false;
         return nameMatch || idMatch || capitalMatch;
       })
       .map((country) => ({
@@ -48,15 +57,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         role: country.role,
       }))
       .slice(0, 8); // Limit to 8 results
-  }, []);
+  }, [query]);
 
-  // Update results when query changes
+  // Update isOpen and selectedIndex when results change
   useEffect(() => {
-    const searchResults = searchCountries(query);
-    setResults(searchResults);
-    setSelectedIndex(0);
-    setIsOpen(searchResults.length > 0);
-  }, [query, searchCountries]);
+    if (results.length > 0 && query) {
+      setIsOpen(true);
+      setSelectedIndex(0);
+    } else {
+      setIsOpen(false);
+    }
+  }, [results.length, query]);
 
   // Handle click outside to close dropdown
   useEffect(() => {
@@ -72,24 +83,27 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   // Handle keyboard navigation
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (!isOpen || results.length === 0) return;
-
     switch (event.key) {
       case 'ArrowDown':
+        if (!isOpen || results.length === 0) return;
         event.preventDefault();
         setSelectedIndex((prev) => (prev + 1) % results.length);
         break;
       case 'ArrowUp':
+        if (!isOpen || results.length === 0) return;
         event.preventDefault();
         setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
         break;
       case 'Enter':
+        if (!isOpen || results.length === 0) return;
         event.preventDefault();
         if (results[selectedIndex]) {
           handleSelect(results[selectedIndex].id);
         }
         break;
       case 'Escape':
+        event.preventDefault();
+        setQuery('');
         setIsOpen(false);
         inputRef.current?.blur();
         break;
@@ -105,7 +119,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleClear = () => {
     setQuery('');
-    setResults([]);
     setIsOpen(false);
     inputRef.current?.focus();
   };
@@ -130,7 +143,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       {/* Search Input */}
       <div className="relative">
         <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <Search className="w-4 h-4 text-white/40" />
+          <Search className="w-4 h-4 text-white/40" aria-hidden="true" />
         </div>
         <input
           ref={inputRef}
@@ -138,8 +151,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          onFocus={() => query && setIsOpen(true)}
+          onFocus={() => query && results.length > 0 && setIsOpen(true)}
           placeholder="Search countries..."
+          aria-label="Search countries"
+          aria-expanded={isOpen}
+          aria-controls="search-results"
+          aria-autocomplete="list"
+          role="combobox"
           className={cn(
             'w-full pl-9 pr-9 py-2.5 rounded-xl',
             'bg-slate-900/95 backdrop-blur-md',
@@ -152,22 +170,30 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         {query && (
           <button
             onClick={handleClear}
+            aria-label="Clear search"
             className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4" aria-hidden="true" />
           </button>
         )}
       </div>
 
       {/* Results Dropdown */}
       {isOpen && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900/98 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-50">
+        <div
+          id="search-results"
+          role="listbox"
+          aria-label="Search results"
+          className="absolute top-full left-0 right-0 mt-2 bg-slate-900/98 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-50"
+        >
           <div className="py-1">
             {results.map((result, index) => (
               <button
                 key={result.id}
                 onClick={() => handleSelect(result.id)}
                 onMouseEnter={() => setSelectedIndex(index)}
+                role="option"
+                aria-selected={index === selectedIndex}
                 className={cn(
                   'w-full px-3 py-2.5 flex items-center gap-3 text-left transition-colors',
                   index === selectedIndex
@@ -175,7 +201,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     : 'hover:bg-white/5'
                 )}
               >
-                <span className="text-xl">{result.flag}</span>
+                <span className="text-xl" aria-hidden="true">{result.flag}</span>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm text-white font-medium truncate">
                     {result.name}
@@ -184,7 +210,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     {result.role}
                   </div>
                 </div>
-                <span className="text-xs text-white/30 font-mono">{result.id}</span>
+                <span className="text-xs text-white/30 font-mono" aria-hidden="true">{result.id}</span>
               </button>
             ))}
           </div>
@@ -193,7 +219,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
       {/* No results message */}
       {isOpen && query && results.length === 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900/98 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-50">
+        <div
+          id="search-results"
+          role="status"
+          aria-live="polite"
+          className="absolute top-full left-0 right-0 mt-2 bg-slate-900/98 backdrop-blur-md rounded-xl border border-white/10 shadow-2xl overflow-hidden z-50"
+        >
           <div className="px-4 py-3 text-sm text-white/50 text-center">
             No countries found
           </div>

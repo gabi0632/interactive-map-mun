@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { InteractiveMap, MapLegend } from '@/components/Map';
 import type { CountryRole } from '@/types';
+import type { RouteType } from '@/data/routes';
 
 /**
  * Map Demo Page
@@ -12,6 +13,19 @@ import type { CountryRole } from '@/types';
  */
 export default function MapDemoPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [visibleRouteTypes, setVisibleRouteTypes] = useState<RouteType[]>([
+    'land',
+    'maritime',
+    'air',
+  ]);
+
+  const toggleRouteType = (type: RouteType) => {
+    setVisibleRouteTypes((prev) =>
+      prev.includes(type)
+        ? prev.filter((t) => t !== type)
+        : [...prev, type]
+    );
+  };
 
   // Mock country roles data
   const mockCountryRoles: Record<string, CountryRole> = {
@@ -76,7 +90,10 @@ export default function MapDemoPage() {
           selectedCountry={selectedCountry}
           countryRoles={mockCountryRoles}
         />
-        <MapLegend />
+        <MapLegend
+          visibleRouteTypes={visibleRouteTypes}
+          onToggleRouteType={toggleRouteType}
+        />
 
         {/* Selected Country Info */}
         {selectedCountry && (

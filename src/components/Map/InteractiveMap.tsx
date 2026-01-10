@@ -22,7 +22,6 @@ import {
 import { MapBackground } from './MapBackground';
 import { CountryLabels } from './CountryLabels';
 import { TrafficRoutes } from './TrafficRoutes';
-import { CompassRose } from './CompassRose';
 
 /**
  * SVG filter definitions for country effects

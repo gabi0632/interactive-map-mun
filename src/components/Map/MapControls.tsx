@@ -32,6 +32,7 @@ const ControlButton: React.FC<ControlButtonProps> = ({
     onClick={onClick}
     disabled={disabled}
     title={title}
+    aria-label={title}
     className={cn(
       'w-8 h-8 flex items-center justify-center rounded-lg transition-all',
       'bg-white/10 hover:bg-white/20 active:bg-white/30',
