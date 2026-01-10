@@ -206,17 +206,30 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
 
 ### T009 - Responsive Design
 - **Agent**: `ui-developer`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Dependencies**: T007
 - **Parallel With**: T008, T010, T011
 - **Post-Task**: `ui-tester` MUST verify
 - **Acceptance Criteria**:
-  - [ ] Desktop: Side panel layout
-  - [ ] Tablet: Bottom sheet panel
-  - [ ] Mobile: Warning message
-  - [ ] ui-tester verified ✓
-- **Agent Output**: _pending_
-- **UI Tester Output**: _pending_
+  - [x] Desktop: Side panel layout (existing - unchanged)
+  - [x] Tablet: Bottom sheet panel
+  - [x] Mobile: Warning message
+  - [ ] ui-tester verified ✓ (pending)
+- **Agent Output**:
+  - Created `src/hooks/useResponsive.ts` - SSR-safe viewport detection hook
+  - Created `src/components/ui/MobileWarning.tsx` - Full-screen mobile warning overlay
+  - Created `src/components/ui/index.ts` - Barrel export for UI components
+  - Created `src/hooks/index.ts` - Barrel export for custom hooks
+  - Updated `src/components/CountryPanel/CountryPanel.tsx` - Added tablet bottom sheet variant
+  - Updated `src/app/page.tsx` - Integrated MobileWarning component
+  - Tablet bottom sheet features: drag handle, backdrop overlay, close button, 70vh max height
+  - Smooth 300ms transitions with transform for performance
+  - Accessible ARIA labels and keyboard navigation
+  - Build verified: No TypeScript errors
+  - Commit: a78b9eb - "feat(T009): Add responsive design with tablet bottom sheet and mobile warning"
+  - **Branch**: feature/MUN-T009-responsive-design
+  - **Worktree**: /Users/gabrielabramovich/Projects/mun-T009-responsive
+- **UI Tester Output**: _pending verification_
 
 ### T010 - Loading States
 - **Agent**: `ui-developer`
