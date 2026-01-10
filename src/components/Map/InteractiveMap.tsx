@@ -155,12 +155,12 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const { isMobile, isTouchDevice } = useResponsive();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(isMobile ? 1.2 : 1.5);
 
-  // Projection config - show entire world with focus on Americas
+  // Projection config - world view with Americas and Asia visible
   const projectionConfig = {
-    center: [-20, 10] as [number, number],
-    scale: isMobile ? 90 : 130,
+    center: [-20, 5] as [number, number],
+    scale: isMobile ? 100 : 140,
   };
 
   /**

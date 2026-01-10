@@ -2,8 +2,10 @@
 
 import { useState, Suspense } from 'react';
 import dynamic from 'next/dynamic';
+import { FileText } from 'lucide-react';
 import { MapLegend, MapSkeleton } from '@/components/Map';
 import { CountryPanel } from '@/components/CountryPanel';
+import { DocumentViewer } from '@/components/DocumentViewer';
 import { ErrorBoundary } from '@/components/ui';
 import { allCountries, getCountryById } from '@/data/countries';
 import type { CountryRole } from '@/types';
@@ -31,6 +33,7 @@ export default function Home() {
     'maritime',
     'air',
   ]);
+  const [isDocumentOpen, setIsDocumentOpen] = useState(false);
 
   const handleCountryClick = (countryId: string) => {
     setSelectedCountryId(countryId);
@@ -55,15 +58,22 @@ export default function Home() {
       {/* Header - fixed floating design that stays visible during zoom */}
       <header className="fixed top-0 left-0 right-0 z-50 px-3 py-2 pointer-events-none">
         <div className="flex justify-between items-start">
-          {/* Left: Title */}
-          <div className="pointer-events-auto bg-slate-900/95 backdrop-blur-md rounded-lg px-3 py-2 shadow-xl border border-slate-700/50">
-            <h1 className="text-xs sm:text-sm font-bold text-white tracking-wide">
-              Drug Trafficking Routes
-            </h1>
-            <p className="text-[9px] sm:text-[10px] text-blue-300/80 tracking-wider">
+          {/* Left: Title - clickable to open document viewer */}
+          <button
+            onClick={() => setIsDocumentOpen(true)}
+            className="pointer-events-auto bg-slate-900/95 backdrop-blur-md rounded-lg px-3 py-2 shadow-xl border border-slate-700/50 text-left hover:bg-slate-800/95 hover:border-blue-500/50 transition-all group cursor-pointer"
+            title="Click to view reference document"
+          >
+            <div className="flex items-center gap-2">
+              <FileText className="w-3.5 h-3.5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+              <h1 className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                Drug Trafficking Routes
+              </h1>
+            </div>
+            <p className="text-[9px] sm:text-[10px] text-blue-300/80 tracking-wider group-hover:text-blue-200/80 transition-colors">
               UNODC • Interactive Map for MUN
             </p>
-          </div>
+          </button>
 
           {/* Right: UNODC Badge - clickable link */}
           <a
@@ -94,18 +104,26 @@ export default function Home() {
               visibleRouteTypes={visibleRouteTypes}
             />
           </Suspense>
-          <MapLegend
-            visibleRouteTypes={visibleRouteTypes}
-            onToggleRouteType={toggleRouteType}
-          />
         </ErrorBoundary>
       </div>
+
+      {/* Legend - outside map container to avoid transform issues during zoom */}
+      <MapLegend
+        visibleRouteTypes={visibleRouteTypes}
+        onToggleRouteType={toggleRouteType}
+      />
 
       {/* Country Panel */}
       <CountryPanel
         country={selectedCountry ?? null}
         isOpen={!!selectedCountryId}
         onClose={handleClosePanel}
+      />
+
+      {/* Document Viewer */}
+      <DocumentViewer
+        isOpen={isDocumentOpen}
+        onClose={() => setIsDocumentOpen(false)}
       />
     </main>
   );
