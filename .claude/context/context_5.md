@@ -114,33 +114,50 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
 
 ### T005 - Interactive Map Component
 - **Agent**: `map-developer`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Dependencies**: T002, T003
 - **Post-Task**: `ui-tester` MUST verify
 - **Acceptance Criteria**:
-  - [ ] Map renders centered on Latin America
-  - [ ] Countries colored by role
-  - [ ] Click triggers callback
-  - [ ] Selected country highlighted
-  - [ ] ui-tester verified ✓
-- **Agent Output**: _pending_
-- **UI Tester Output**: _pending_
+  - [x] Map renders centered on Latin America
+  - [x] Countries colored by role
+  - [x] Click triggers callback
+  - [x] Selected country highlighted
+  - [x] ui-tester verified ✓
+- **Agent Output**:
+  - Created `src/components/Map/InteractiveMap.tsx` - Main map component using react-simple-maps
+  - Created `src/components/Map/MapLegend.tsx` - Color legend for roles
+  - Created `src/components/Map/index.ts` - Barrel exports
+  - Created `src/app/map-demo/page.tsx` - Demo page for testing
+  - Added ISO_NUMERIC_TO_ALPHA3 mapping to mapConfig for world-110m.json compatibility
+  - Fixed ROLE_COLORS to use hex values for SVG compatibility
+  - **PR #4**: https://github.com/gabi0632/interactive-map-mun/pull/4 (MERGED)
+- **UI Tester Output**: Visual verification passed - map colors, click, selection all working
 
 ### T006 - Country Panel Component
 - **Agent**: `ui-developer`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Dependencies**: T002, at least one T004 task
 - **Parallel With**: T005
 - **Post-Task**: `ui-tester` MUST verify
 - **Acceptance Criteria**:
-  - [ ] Panel slides in from right
-  - [ ] Flag, name, role badge display
-  - [ ] Statistics section works
-  - [ ] UNODC programs display
-  - [ ] Close button works
-  - [ ] ui-tester verified ✓
-- **Agent Output**: _pending_
-- **UI Tester Output**: _pending_
+  - [x] Panel slides in from right
+  - [x] Flag, name, role badge display
+  - [x] Statistics section works
+  - [x] UNODC programs display
+  - [x] Close button works
+  - [x] ui-tester verified ✓
+- **Agent Output**:
+  - Created `src/components/CountryPanel/CountryPanel.tsx` - Main Sheet container
+  - Created `src/components/CountryPanel/CountryHeader.tsx` - Flag, name, role badge
+  - Created `src/components/CountryPanel/CountryStats.tsx` - Statistics in Cards
+  - Created `src/components/CountryPanel/CountryPrograms.tsx` - UNODC programs
+  - Created `src/components/CountryPanel/CountryOrganizations.tsx` - Criminal orgs with red styling
+  - Created `src/components/CountryPanel/PolicyStance.tsx` - Policy stance section
+  - Created `src/components/CountryPanel/Sources.tsx` - External links with icons
+  - Created `src/components/CountryPanel/index.ts` - Barrel exports
+  - Created `src/app/panel-demo/page.tsx` - Demo page for testing
+  - **PR #5**: https://github.com/gabi0632/interactive-map-mun/pull/5 (MERGED)
+- **UI Tester Output**: Visual verification passed - all sections display correctly, animation smooth
 
 ### T007 - Main Page Integration
 - **Agent**: `ui-developer`
@@ -251,11 +268,20 @@ _Tasks: T002, T003, T004, T004b, T004c_
 
 ### Execution Round 3 (Parallel)
 _Tasks: T005, T006_
-- [ ] Started:
-- [ ] Completed:
-- Agents used:
-- UI Tester verified:
+- [x] Started: 2026-01-10
+- [x] Completed: 2026-01-10
+- Agents used: map-developer, ui-developer (parallel)
+- UI Tester verified: Both components visually verified via Claude in Chrome
+- Worktrees used:
+  - `/Users/gabrielabramovich/Projects/mun-T005-map` (feature/MUN-T005-interactive-map)
+  - `/Users/gabrielabramovich/Projects/mun-T006-panel` (feature/MUN-T006-country-panel)
+- PRs:
+  - PR #4 (T005): Merged after code review - fixed TypeScript any, moved ISO mapping to config
+  - PR #5 (T006): Merged after code review - fixed unused imports
 - Notes:
+  - Fixed critical issue: world-110m.json uses numeric ISO codes, added mapping
+  - Fixed SVG compatibility: ROLE_COLORS must use hex, not CSS variables
+  - Both demo pages created for testing: /map-demo, /panel-demo
 
 ### Execution Round 4
 _Tasks: T007_

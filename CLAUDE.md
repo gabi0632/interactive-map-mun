@@ -1,9 +1,11 @@
 # Interactive Map MUN Project
 
 ## Project Overview
+
 An interactive web-based map for Model United Nations (MUN) competition focused on **UNODC Drug Trafficking in Latin America**.
 
 ### Topic Summary
+
 - **Committee**: United Nations Office on Drugs and Crime (UNODC)
 - **Topic**: Drug Trafficking in Latin America
 - **Focus Areas**:
@@ -16,7 +18,9 @@ An interactive web-based map for Model United Nations (MUN) competition focused 
 ## Context Management System
 
 ### Rules for Context Files
+
 Each session MUST maintain its own context file:
+
 1. Context files are stored in `.claude/context/context_{id}.md`
 2. The index is stored in `.claude/context/index` (simple number)
 3. Every new task creates a new context file by incrementing the index
@@ -25,6 +29,7 @@ Each session MUST maintain its own context file:
 6. Context files track: task description, progress, sub-agent outputs, decisions
 
 ### Creating a New Context
+
 ```bash
 # Read current index, increment, write new context
 current=$(cat .claude/context/index 2>/dev/null || echo "0")
@@ -34,26 +39,33 @@ touch .claude/context/context_$new.md
 ```
 
 ### Context File Format
+
 ```markdown
 # Context #{id}
+
 **Created**: {timestamp}
 **Task**: {task description}
 
 ## Progress
+
 - [ ] Step 1
 - [x] Step 2 (completed)
 
 ## Sub-agent Updates
+
 ### {agent-name} - {timestamp}
+
 {update content}
 
 ## Decisions Made
+
 - Decision 1: {rationale}
 
 ## Status: {ACTIVE|COMPLETED}
 ```
 
 ## Common Commands
+
 - **Dev server**: `bun dev`
 - **Build**: `bun run build`
 - **Lint**: `bun run lint`
@@ -63,45 +75,85 @@ touch .claude/context/context_$new.md
 
 ### Rule: Always Test UI Changes Visually
 
-After ANY UI-related work, the `ui-tester` agent MUST be triggered to verify changes using the Claude IDE extension.
+After ANY UI-related work, you MUST test the changes in Chrome using the browser automation tools.
 
-### When to Trigger ui-tester
+### When to Test UI
 
-Trigger `ui-tester` agent after:
+Test UI after:
+
 - Creating new components (via `/component` or manually)
 - Modifying existing components in `src/components/`
 - Any styling changes (Tailwind, CSS)
 - Layout modifications
 - After `ui-developer` agent completes
 
-### UI Testing Process
+### UI Testing Process - USE CHROME TOOLS DIRECTLY
 
-1. **Ensure dev server is running**: `bun dev`
-2. **Trigger ui-tester agent** to verify changes
-3. **Use Claude IDE extension** to:
-   - Capture screenshot of the component/page
-   - Visually verify the output
-   - Check responsive behavior
-4. **Report issues** found in the context file
-5. **Fix issues** before marking UI task complete
+**You have access to Chrome browser automation tools. USE THEM.**
+
+#### Step 1: Ensure Dev Server Running
+```bash
+lsof -i :3000 || bun dev &
+```
+
+#### Step 2: Get Browser Tab
+```
+mcp__claude-in-chrome__tabs_context_mcp({ createIfEmpty: true })
+→ Returns tabId
+```
+
+#### Step 3: Navigate to Test Page
+```
+mcp__claude-in-chrome__navigate({ tabId: <id>, url: "http://localhost:3000" })
+```
+
+#### Step 4: Wait and Screenshot
+```
+mcp__claude-in-chrome__computer({ tabId: <id>, action: "wait", duration: 2 })
+mcp__claude-in-chrome__computer({ tabId: <id>, action: "screenshot" })
+```
+
+#### Step 5: Check Console Errors
+```
+mcp__claude-in-chrome__read_console_messages({ tabId: <id>, onlyErrors: true })
+```
+
+#### Step 6: Test Interactions
+```
+mcp__claude-in-chrome__computer({ tabId: <id>, action: "left_click", coordinate: [x, y] })
+mcp__claude-in-chrome__computer({ tabId: <id>, action: "screenshot" })
+```
+
+### Chrome Tools Available
+
+| Tool | Purpose |
+|------|---------|
+| `mcp__claude-in-chrome__tabs_context_mcp` | Get/create browser tabs |
+| `mcp__claude-in-chrome__navigate` | Navigate to URL |
+| `mcp__claude-in-chrome__computer` | Screenshot, click, scroll, wait |
+| `mcp__claude-in-chrome__read_console_messages` | Check for JS errors |
+| `mcp__claude-in-chrome__find` | Find elements by description |
+| `mcp__claude-in-chrome__resize_window` | Test responsive design |
+
+### Visual Verification Checklist
+
+- [ ] Component renders without errors
+- [ ] Layout matches design intent
+- [ ] Colors and styling correct
+- [ ] Interactive states work (hover, click)
+- [ ] No console errors
+- [ ] Responsive behavior OK (test with resize_window)
 
 ### Agent Chain for UI Work
 
 ```
-ui-developer → ui-tester → (fix if needed) → code-reviewer
+ui-developer → (test in Chrome) → (fix if needed) → code-reviewer
 ```
 
-### IDE Extension Usage
-
-After UI changes, use the Claude IDE extension to:
-1. Open browser at `http://localhost:3000`
-2. Navigate to the changed component/page
-3. Capture screenshot or share view
-4. Verify visual output matches expectations
-
-**NEVER mark a UI task as complete without visual verification.**
+**NEVER mark a UI task as complete without visual verification using Chrome tools.**
 
 ## Tech Stack
+
 - **Runtime**: Bun (package manager + runtime)
 - **Framework**: Next.js 14+ with TypeScript
 - **Map Library**: react-simple-maps (SVG-based, lightweight)
@@ -111,6 +163,7 @@ After UI changes, use the Claude IDE extension to:
 - **Deployment**: Vercel (recommended)
 
 ### shadcn/ui Components Used
+
 - `Sheet` - Country panel slide-in
 - `Card` - Statistics and info cards
 - `Badge` - Role badges
@@ -119,19 +172,25 @@ After UI changes, use the Claude IDE extension to:
 - `Button`, `ScrollArea`, `Separator`
 
 ## Countries in Simulation
+
 ### Production Countries
+
 - Colombia, Peru, Bolivia
 
 ### Transit Countries
+
 - Mexico, Guatemala, Honduras, El Salvador, Nicaragua, Costa Rica, Panama
 - Ecuador, Venezuela, Brazil
 
 ### Key Partners/Stakeholders
+
 - United States (major consumer market)
 - European countries (growing market)
 
 ## Data to Display per Country
+
 When a user clicks on a country, show:
+
 1. **Basic Info**: Population, capital, flag
 2. **Drug Trafficking Role**: Producer/Transit/Consumer
 3. **Key Statistics**: Seizures, cultivation area, etc.
@@ -140,6 +199,7 @@ When a user clicks on a country, show:
 6. **Major Criminal Organizations**: If applicable
 
 ## File Structure
+
 ```
 interactive-map-mun/
 ├── .claude/                    # Claude Code configuration
@@ -172,6 +232,7 @@ interactive-map-mun/
 ```
 
 ## Important Links
+
 - @UNODC Drug Trafficking.pdf - Main reference document
 
 ---
@@ -179,9 +240,11 @@ interactive-map-mun/
 ## Multi-Agent Parallel Development Workflow (MANDATORY)
 
 ### Overview
+
 This project supports **multiple Claude Code sessions working in parallel** on different branches. Each task runs on its own branch to avoid conflicts, with automatic PR creation and code review loops.
 
 ### Core Principles
+
 1. **One task = One branch** - Every task MUST have its own feature branch
 2. **Git worktrees for parallelism** - Use worktrees for multiple simultaneous sessions
 3. **PR-based merging** - All code merges through reviewed PRs
@@ -195,15 +258,16 @@ This project supports **multiple Claude Code sessions working in parallel** on d
 <type>/MUN-<id>-<short-description>
 ```
 
-| Type | Description | Example |
-|------|-------------|---------|
-| `feature/` | New functionality | `feature/MUN-001-map-component` |
-| `fix/` | Bug fixes | `fix/MUN-042-click-handler` |
-| `refactor/` | Code restructuring | `refactor/MUN-015-data-layer` |
-| `ui/` | UI/styling changes | `ui/MUN-023-country-panel` |
-| `data/` | Data file updates | `data/MUN-007-colombia-stats` |
+| Type        | Description        | Example                         |
+| ----------- | ------------------ | ------------------------------- |
+| `feature/`  | New functionality  | `feature/MUN-001-map-component` |
+| `fix/`      | Bug fixes          | `fix/MUN-042-click-handler`     |
+| `refactor/` | Code restructuring | `refactor/MUN-015-data-layer`   |
+| `ui/`       | UI/styling changes | `ui/MUN-023-country-panel`      |
+| `data/`     | Data file updates  | `data/MUN-007-colombia-stats`   |
 
 **Rules:**
+
 - Always lowercase
 - Use hyphens (not underscores)
 - Include task ID for traceability
@@ -233,6 +297,7 @@ git worktree remove ../mun-feature-1
 ```
 
 **Directory Structure with Worktrees:**
+
 ```
 ~/Projects/
 ├── interactive-map-mun/          # Main worktree (main branch)
@@ -248,6 +313,7 @@ git worktree remove ../mun-feature-1
 Every task MUST follow this lifecycle:
 
 #### Phase 1: Setup
+
 ```bash
 # 1. Ensure on latest main
 git checkout main
@@ -263,11 +329,14 @@ echo $new > .claude/context/index
 ```
 
 #### Phase 2: Development
+
 - Write code following project standards
 - Commit frequently with meaningful messages
 - Update context file with progress
 
 #### Phase 3: PR Creation & Review Loop
+
+-Before create a pr rebase dev on current changes
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -304,6 +373,7 @@ echo $new > .claude/context/index
 ```
 
 #### Phase 4: Merge & Cleanup
+
 ```bash
 # After PR approval
 gh pr merge <pr-number> --squash --delete-branch
@@ -320,29 +390,36 @@ When a task is complete, execute this exact sequence:
 
 ```markdown
 ## Step 1: Create PR
+
 Trigger `git-manager` agent:
+
 - Push branch to remote
 - Create PR with proper title and description
 - Return PR number
 
 ## Step 2: Code Review
+
 Trigger `code-reviewer` agent:
+
 - Review all files changed in the PR
 - Check against review checklist
 - Output findings with severity levels
 
 ## Step 3: Evaluate Review
+
 IF code-reviewer finds Critical or High issues:
-  → Fix the issues
-  → Commit fixes
-  → Push to same branch (PR updates automatically)
-  → GOTO Step 2 (re-run code-reviewer)
+→ Fix the issues
+→ Commit fixes
+→ Push to same branch (PR updates automatically)
+→ GOTO Step 2 (re-run code-reviewer)
 
 IF code-reviewer finds only Medium/Low issues OR no issues:
-  → Proceed to merge
+→ Proceed to merge
 
 ## Step 4: Merge
+
 Trigger `git-manager` agent:
+
 - Merge PR to main (squash merge)
 - Delete remote branch
 - Update context file to COMPLETED
@@ -364,12 +441,12 @@ while (!reviewPassed && reviewCount < MAX_REVIEWS) {
   reviewCount++;
 
   // Run code-reviewer agent
-  const review = await runAgent('code-reviewer', { pr: prNumber });
+  const review = await runAgent("code-reviewer", { pr: prNumber });
 
   if (review.criticalIssues > 0 || review.highIssues > 0) {
     // Fix issues
     await fixIssues(review.issues);
-    await commitAndPush('fix: address code review feedback');
+    await commitAndPush("fix: address code review feedback");
     // Loop continues - code-reviewer runs again
   } else {
     reviewPassed = true;
@@ -377,10 +454,10 @@ while (!reviewPassed && reviewCount < MAX_REVIEWS) {
 }
 
 if (reviewPassed) {
-  await runAgent('git-manager', { action: 'merge', pr: prNumber });
+  await runAgent("git-manager", { action: "merge", pr: prNumber });
 } else {
   // Alert: Max reviews reached, needs manual intervention
-  await updateContext('BLOCKED: Max review iterations reached');
+  await updateContext("BLOCKED: Max review iterations reached");
 }
 ```
 
@@ -411,12 +488,14 @@ When working in parallel, context files track branch info:
 
 ```markdown
 # Context #{id}
+
 **Created**: {timestamp}
 **Task**: {task description}
 **Branch**: feature/MUN-{id}-{description}
 **Worktree**: ../mun-feature-{id} (if applicable)
 
 ## Git Progress
+
 - [ ] Branch created
 - [ ] Development complete
 - [ ] PR created: #{pr-number}
@@ -425,11 +504,14 @@ When working in parallel, context files track branch info:
 - [ ] Merged to main
 
 ## Review History
+
 ### Review #1 - {timestamp}
+
 - Critical: 0, High: 2, Medium: 3
 - Fixed: High issues resolved
 
 ### Review #2 - {timestamp}
+
 - Critical: 0, High: 0, Medium: 1
 - Status: APPROVED
 
