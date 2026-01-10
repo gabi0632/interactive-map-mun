@@ -17,7 +17,7 @@ export const venezuela: Country = {
   roleDescription: "Political instability, porous borders, and presence of armed groups create conditions that facilitate trafficking. Venezuela shares an extensive 1,378-mile porous land border with Colombia, the world's largest coca-cultivating nation. Approximately 24% of worldwide cocaine production circulates through Venezuela toward international markets. Between 200-250 metric tons of cocaine are trafficked through Venezuela annually. Over 80% of drug seizures occur at the border with Colombia. Venezuela detected and dismantled about 260 illegal cocaine processing facilities from 2019-2023, ranking fifth globally.",
   stats: {
     seizures: 225000,
-    traffickingRoutes: ["USA", "EUR", "BRA", "CAN"]
+    traffickingRoutes: ["USA", "ESP", "NLD", "BRA", "CAN"]
   },
   unodcPrograms: [
     {
