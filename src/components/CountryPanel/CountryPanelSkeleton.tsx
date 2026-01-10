@@ -24,6 +24,10 @@ interface CountryPanelSkeletonProps {
  * Loading state skeleton for the CountryPanel component.
  * Matches the structure and layout of the real CountryPanel to provide
  * a smooth loading experience with minimal layout shift.
+ *
+ * Note: Currently exported for future use when CountryPanel data
+ * is fetched asynchronously. Can be used with Suspense when country
+ * data is loaded on-demand rather than statically imported.
  */
 export function CountryPanelSkeleton({ isOpen, onClose }: CountryPanelSkeletonProps) {
   return (

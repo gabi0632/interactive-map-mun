@@ -49,8 +49,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
    * Log error details to console (and optionally to error reporting service)
    */
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log to console in development
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    // Log to console in development only
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
+    }
 
     // In production, you could log to an error reporting service here
     // Example: Sentry.captureException(error, { extra: errorInfo });
@@ -63,7 +65,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     this.setState({ hasError: false, error: null });
   };
 
-  render() {
+  render(): ReactNode {
     if (this.state.hasError && this.state.error) {
       // Use custom fallback if provided, otherwise use default ErrorFallback
       if (this.props.fallback) {
