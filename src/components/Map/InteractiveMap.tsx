@@ -7,6 +7,8 @@ import {
   Geography,
   ZoomableGroup,
 } from 'react-simple-maps';
+import { Badge } from '@/components/ui/badge';
+import { countryById } from '@/data/countries';
 import type { CountryRole } from '@/types';
 import {
   GEO_URL,
@@ -16,6 +18,38 @@ import {
   MAP_SCALE,
   ROLE_COLORS,
 } from '@/lib/mapConfig';
+
+/**
+ * Tooltip data for displaying country info on hover
+ */
+interface TooltipData {
+  x: number;
+  y: number;
+  countryName: string;
+  role: CountryRole;
+}
+
+/**
+ * Badge styles for each country role
+ */
+const ROLE_BADGE_STYLES: Record<CountryRole, string> = {
+  producer: 'bg-red-500 text-white hover:bg-red-500',
+  transit: 'bg-orange-500 text-white hover:bg-orange-500',
+  mixed: 'bg-yellow-500 text-black hover:bg-yellow-500',
+  consumer: 'bg-blue-500 text-white hover:bg-blue-500',
+  other: 'bg-gray-500 text-white hover:bg-gray-500',
+};
+
+/**
+ * Human-readable labels for each country role
+ */
+const ROLE_LABELS: Record<CountryRole, string> = {
+  producer: 'Producer',
+  transit: 'Transit',
+  mixed: 'Mixed',
+  consumer: 'Consumer',
+  other: 'Other',
+};
 
 interface InteractiveMapProps {
   /** Callback when a country is clicked, receives country ID (ISO alpha-3) */
@@ -33,7 +67,7 @@ interface InteractiveMapProps {
  *
  * Main map component using react-simple-maps with Mercator projection.
  * Renders countries with color-coding based on their role in drug trafficking.
- * Supports click interactions and visual feedback for selected countries.
+ * Supports click interactions, hover tooltips, and visual feedback for selected countries.
  */
 export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   onCountryClick,
@@ -41,6 +75,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   countryRoles,
 }) => {
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
+  const [tooltip, setTooltip] = useState<TooltipData | null>(null);
 
   /**
    * Get the fill color for a country based on its role and selection state
@@ -79,24 +114,57 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   };
 
   /**
-   * Handle mouse enter - set hover state for clickable countries
+   * Handle mouse enter - set hover state and tooltip for clickable countries
    */
-  const handleMouseEnter = (geoId: string) => {
+  const handleMouseEnter = (
+    geoId: string,
+    event: React.MouseEvent<SVGPathElement>
+  ) => {
     const iso3 = ISO_NUMERIC_TO_ALPHA3[geoId] || '';
     if (isClickable(iso3)) {
       setHoveredCountry(iso3);
+
+      // Get country data for tooltip
+      const country = countryById[iso3];
+      const role = countryRoles[iso3];
+      if (country && role) {
+        setTooltip({
+          x: event.clientX,
+          y: event.clientY,
+          countryName: country.name,
+          role: role,
+        });
+      }
     }
   };
 
   /**
-   * Handle mouse leave - clear hover state
+   * Handle mouse move - update tooltip position
+   */
+  const handleMouseMove = (event: React.MouseEvent<SVGPathElement>) => {
+    if (tooltip) {
+      setTooltip((prev) =>
+        prev
+          ? {
+              ...prev,
+              x: event.clientX,
+              y: event.clientY,
+            }
+          : null
+      );
+    }
+  };
+
+  /**
+   * Handle mouse leave - clear hover state and tooltip
    */
   const handleMouseLeave = () => {
     setHoveredCountry(null);
+    setTooltip(null);
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full relative">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
@@ -120,7 +188,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     key={geo.rsmKey}
                     geography={geo}
                     onClick={() => handleCountryClick(geo.id)}
-                    onMouseEnter={() => handleMouseEnter(geo.id)}
+                    onMouseEnter={(event) => handleMouseEnter(geo.id, event)}
+                    onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
                     style={{
                       default: {
@@ -155,6 +224,24 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
+
+      {/* Tooltip - renders outside the SVG for proper positioning */}
+      {tooltip && (
+        <div
+          className="fixed z-50 pointer-events-none"
+          style={{
+            left: tooltip.x + 12,
+            top: tooltip.y + 12,
+          }}
+        >
+          <div className="bg-popover text-popover-foreground rounded-md border px-3 py-2 shadow-md flex items-center gap-2 animate-in fade-in-0 zoom-in-95 duration-150">
+            <span className="font-medium text-sm">{tooltip.countryName}</span>
+            <Badge className={`${ROLE_BADGE_STYLES[tooltip.role]} text-xs`}>
+              {ROLE_LABELS[tooltip.role]}
+            </Badge>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
