@@ -104,19 +104,20 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
   if (isMobile) {
     return (
       <>
-        {/* Full-screen overlay */}
+        {/* Full-screen overlay - highest z-index to cover everything */}
         <div
           className={`
-            fixed inset-0 z-50 bg-white
+            fixed inset-0 z-[100] bg-white w-full h-full
             transform transition-transform duration-300 ease-out
             ${isOpen ? 'translate-y-0' : 'translate-y-full'}
           `}
+          style={{ isolation: 'isolate' }}
           role="dialog"
           aria-modal="true"
           aria-labelledby="mobile-panel-title"
         >
           {/* Sticky header with close button */}
-          <div className="sticky top-0 bg-white border-b z-10 px-4 py-3 flex items-center justify-between">
+          <div className="sticky top-0 bg-white border-b z-10 px-4 py-3 flex items-center justify-between safe-area-inset-top">
             <h2 id="mobile-panel-title" className="font-semibold text-lg truncate pr-4">
               {country?.name || 'Country Information'}
             </h2>
@@ -132,7 +133,7 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
           </div>
 
           {/* Scrollable content */}
-          <ScrollArea className="h-[calc(100vh-57px)]">
+          <ScrollArea className="h-[calc(100dvh-57px)]">
             {panelContent}
           </ScrollArea>
         </div>
@@ -147,7 +148,7 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
         {/* Backdrop overlay */}
         {isOpen && (
           <div
-            className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
+            className="fixed inset-0 bg-black/50 z-[90] transition-opacity duration-300"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -156,7 +157,7 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
         {/* Bottom sheet */}
         <div
           className={`
-            fixed bottom-0 left-0 right-0 z-50
+            fixed bottom-0 left-0 right-0 z-[100]
             bg-white rounded-t-2xl shadow-2xl
             max-h-[70vh] overflow-hidden
             transform transition-transform duration-300 ease-out
