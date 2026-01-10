@@ -25,15 +25,72 @@ export const LATIN_AMERICA_COUNTRIES = [
   'USA', 'CAN'                   // Consumer
 ] as const;
 
-// Role-based color mapping (hex values for SVG compatibility)
+// Role-based color mapping (vintage palette for SVG compatibility)
 export const ROLE_COLORS = {
-  producer: '#EF4444',   // red
-  transit: '#F97316',    // orange
-  mixed: '#EAB308',      // yellow
-  consumer: '#3B82F6',   // blue
-  other: '#6B7280',      // gray-500
-  inactive: '#9CA3AF'    // gray-400
+  producer: '#4A7C59',   // Forest green
+  transit: '#D4A84B',    // Golden yellow
+  mixed: '#C4A35A',      // Amber
+  consumer: '#CD5C5C',   // Indian red
+  other: '#8B7355',      // Brown
+  inactive: '#E8DCC8'    // Parchment beige
 } as const;
+
+// Route colors for drug trafficking lines
+export const ROUTE_COLORS = {
+  land: '#2D5016',       // Dark green
+  maritime: '#1E5F8A',   // Navy blue
+  air: '#8B2323',        // Dark red
+} as const;
+
+// Country label configuration for map display
+export interface CountryLabelConfig {
+  id: string;
+  name: string;
+  coordinates: [number, number]; // [longitude, latitude]
+  offsetX?: number;
+  offsetY?: number;
+  fontSize?: 'sm' | 'md' | 'lg';
+}
+
+// Country labels with coordinates (centroids)
+export const COUNTRY_LABELS: CountryLabelConfig[] = [
+  // Producers (South America)
+  { id: 'COL', name: 'COLOMBIA', coordinates: [-74, 4], fontSize: 'md' },
+  { id: 'PER', name: 'PERU', coordinates: [-76, -10], fontSize: 'md' },
+  { id: 'BOL', name: 'BOLIVIA', coordinates: [-65, -17], fontSize: 'sm' },
+
+  // Transit (Central America & Caribbean)
+  { id: 'MEX', name: 'MEXICO', coordinates: [-102, 24], fontSize: 'lg' },
+  { id: 'GTM', name: 'GUATEMALA', coordinates: [-90.5, 15.5], fontSize: 'sm', offsetY: -5 },
+  { id: 'HND', name: 'HONDURAS', coordinates: [-87, 14.5], fontSize: 'sm' },
+  { id: 'SLV', name: 'EL SALVADOR', coordinates: [-89, 13.5], fontSize: 'sm', offsetY: 8 },
+  { id: 'CRI', name: 'COSTA RICA', coordinates: [-84, 10], fontSize: 'sm' },
+  { id: 'PAN', name: 'PANAMA', coordinates: [-80, 9], fontSize: 'sm' },
+  { id: 'DOM', name: 'DOM. REP.', coordinates: [-70, 19], fontSize: 'sm' },
+
+  // Mixed (South America)
+  { id: 'ECU', name: 'ECUADOR', coordinates: [-78.5, -1.5], fontSize: 'sm' },
+  { id: 'VEN', name: 'VENEZUELA', coordinates: [-66, 8], fontSize: 'md' },
+  { id: 'BRA', name: 'BRAZIL', coordinates: [-52, -10], fontSize: 'lg' },
+  { id: 'ARG', name: 'ARGENTINA', coordinates: [-64, -34], fontSize: 'md' },
+  { id: 'CHL', name: 'CHILE', coordinates: [-71, -33], fontSize: 'sm', offsetX: -15 },
+
+  // Consumer (North America)
+  { id: 'USA', name: 'UNITED STATES', coordinates: [-98, 39], fontSize: 'lg' },
+  { id: 'CAN', name: 'CANADA', coordinates: [-106, 56], fontSize: 'lg' },
+
+  // Consumer (Europe)
+  { id: 'GBR', name: 'UK', coordinates: [-2, 54], fontSize: 'sm' },
+  { id: 'DEU', name: 'GERMANY', coordinates: [10, 51], fontSize: 'sm' },
+  { id: 'FRA', name: 'FRANCE', coordinates: [2, 47], fontSize: 'sm' },
+  { id: 'ESP', name: 'SPAIN', coordinates: [-4, 40], fontSize: 'sm' },
+  { id: 'ITA', name: 'ITALY', coordinates: [12, 43], fontSize: 'sm' },
+  { id: 'AUT', name: 'AUSTRIA', coordinates: [14, 47.5], fontSize: 'sm' },
+
+  // Other
+  { id: 'CHN', name: 'CHINA', coordinates: [104, 35], fontSize: 'lg' },
+  { id: 'RUS', name: 'RUSSIA', coordinates: [100, 60], fontSize: 'lg' },
+];
 
 // Mapping from ISO 3166-1 numeric codes to alpha-3 codes
 // (world-110m.json uses numeric codes)

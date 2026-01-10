@@ -54,12 +54,25 @@
 
 :root {
   --radius: 0.625rem;
-  /* Country role colors */
-  --producer: #EF4444;
-  --transit: #F97316;
-  --mixed: #EAB308;
-  --consumer: #3B82F6;
-  --inactive: #9CA3AF;
+
+  /* Vintage Map Theme */
+  --map-ocean-start: #B8DCE8;
+  --map-ocean-end: #8EC4D6;
+  --map-land-inactive: #E8DCC8;
+  --map-border: #8B7355;
+
+  /* Country role colors (vintage palette) */
+  --producer: #4A7C59;
+  --transit: #D4A84B;
+  --mixed: #C4A35A;
+  --consumer: #CD5C5C;
+  --inactive: #E8DCC8;
+  --other: #8B7355;
+
+  /* Route Colors */
+  --route-land: #2D5016;
+  --route-maritime: #1E5F8A;
+  --route-air: #8B2323;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

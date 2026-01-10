@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   ComposableMap,
   Geographies,
@@ -9,15 +9,20 @@ import {
 } from 'react-simple-maps';
 import { Badge } from '@/components/ui/badge';
 import { countryById } from '@/data/countries';
+import { useResponsive } from '@/hooks';
 import type { CountryRole } from '@/types';
+import type { RouteType } from '@/data/routes';
 import {
   GEO_URL,
   ISO_NUMERIC_TO_ALPHA3,
   LATIN_AMERICA_COUNTRIES,
-  MAP_CENTER,
-  MAP_SCALE,
+  COUNTRIES_IN_SCOPE,
   ROLE_COLORS,
 } from '@/lib/mapConfig';
+import { MapBackground } from './MapBackground';
+import { CountryLabels } from './CountryLabels';
+import { TrafficRoutes } from './TrafficRoutes';
+import { CompassRose } from './CompassRose';
 
 /**
  * Tooltip data for displaying country info on hover
@@ -30,14 +35,14 @@ interface TooltipData {
 }
 
 /**
- * Badge styles for each country role
+ * Badge styles for each country role (vintage palette)
  */
 const ROLE_BADGE_STYLES: Record<CountryRole, string> = {
-  producer: 'bg-red-500 text-white hover:bg-red-500',
-  transit: 'bg-orange-500 text-white hover:bg-orange-500',
-  mixed: 'bg-yellow-500 text-black hover:bg-yellow-500',
-  consumer: 'bg-blue-500 text-white hover:bg-blue-500',
-  other: 'bg-gray-500 text-white hover:bg-gray-500',
+  producer: 'bg-[#4A7C59] text-white hover:bg-[#4A7C59]',
+  transit: 'bg-[#D4A84B] text-white hover:bg-[#D4A84B]',
+  mixed: 'bg-[#C4A35A] text-white hover:bg-[#C4A35A]',
+  consumer: 'bg-[#CD5C5C] text-white hover:bg-[#CD5C5C]',
+  other: 'bg-[#8B7355] text-white hover:bg-[#8B7355]',
 };
 
 /**
@@ -60,6 +65,9 @@ interface InteractiveMapProps {
 
   /** Mapping of country IDs to their roles in drug trafficking */
   countryRoles: Record<string, CountryRole>;
+
+  /** Which route types to display on the map */
+  visibleRouteTypes?: RouteType[];
 }
 
 /**
@@ -67,113 +75,159 @@ interface InteractiveMapProps {
  *
  * Main map component using react-simple-maps with Mercator projection.
  * Renders countries with color-coding based on their role in drug trafficking.
- * Supports click interactions, hover tooltips, and visual feedback for selected countries.
+ * Includes ocean background, country labels, and trafficking routes.
  */
 export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   onCountryClick,
   selectedCountry,
   countryRoles,
+  visibleRouteTypes = ['land', 'maritime', 'air'],
 }) => {
+  const { isMobile, isTouchDevice } = useResponsive();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
+  const [zoom, setZoom] = useState(1);
+
+  // Projection config - wider view to show more of the world
+  const projectionConfig = {
+    center: [-40, 5] as [number, number],
+    scale: isMobile ? 120 : 180,
+  };
 
   /**
    * Get the fill color for a country based on its role and selection state
    */
-  const getCountryColor = (iso3: string): string => {
-    // If a country is selected and this isn't it, fade it
-    if (selectedCountry && selectedCountry !== iso3) {
-      return '#E5E7EB'; // gray-200 for faded countries
-    }
+  const getCountryColor = useCallback(
+    (iso3: string): string => {
+      // Check if country is in scope at all
+      const inScope = (COUNTRIES_IN_SCOPE as readonly string[]).includes(iso3);
 
-    // Get the country's role and return corresponding color
-    const role = countryRoles[iso3];
-    if (role && ROLE_COLORS[role]) {
-      return ROLE_COLORS[role];
-    }
+      // If a country is selected and this isn't it, fade it (but keep some color)
+      if (selectedCountry && selectedCountry !== iso3) {
+        if (inScope) {
+          return '#D4C9B8'; // Muted parchment for faded in-scope countries
+        }
+        return '#E8DCC8'; // Lighter parchment for out-of-scope
+      }
 
-    // Default color for countries not in our dataset
-    return '#D1D5DB'; // gray-300
-  };
+      // Get the country's role and return corresponding color
+      const role = countryRoles[iso3];
+      if (role && ROLE_COLORS[role]) {
+        return ROLE_COLORS[role];
+      }
+
+      // Default color for countries not in our dataset
+      return '#E8DCC8'; // Parchment beige
+    },
+    [selectedCountry, countryRoles]
+  );
 
   /**
    * Check if a country is clickable (in Latin America countries list)
    */
-  const isClickable = (iso3: string): boolean => {
+  const isClickable = useCallback((iso3: string): boolean => {
     return (LATIN_AMERICA_COUNTRIES as readonly string[]).includes(iso3);
-  };
+  }, []);
 
   /**
    * Handle country click - only trigger for clickable countries
    */
-  const handleCountryClick = (geoId: string) => {
-    const iso3 = ISO_NUMERIC_TO_ALPHA3[geoId] || '';
-    if (isClickable(iso3)) {
-      onCountryClick(iso3);
-    }
-  };
+  const handleCountryClick = useCallback(
+    (geoId: string) => {
+      const iso3 = ISO_NUMERIC_TO_ALPHA3[geoId] || '';
+      if (isClickable(iso3)) {
+        onCountryClick(iso3);
+      }
+    },
+    [isClickable, onCountryClick]
+  );
 
   /**
    * Handle mouse enter - set hover state and tooltip for clickable countries
+   * (Disabled on touch devices)
    */
-  const handleMouseEnter = (
-    geoId: string,
-    event: React.MouseEvent<SVGPathElement>
-  ) => {
-    const iso3 = ISO_NUMERIC_TO_ALPHA3[geoId] || '';
-    if (isClickable(iso3)) {
-      setHoveredCountry(iso3);
+  const handleMouseEnter = useCallback(
+    (geoId: string, event: React.MouseEvent<SVGPathElement>) => {
+      if (isTouchDevice) return;
 
-      // Get country data for tooltip
-      const country = countryById[iso3];
-      const role = countryRoles[iso3];
-      if (country && role) {
-        setTooltip({
-          x: event.clientX,
-          y: event.clientY,
-          countryName: country.name,
-          role: role,
-        });
+      const iso3 = ISO_NUMERIC_TO_ALPHA3[geoId] || '';
+      if (isClickable(iso3)) {
+        setHoveredCountry(iso3);
+
+        // Get country data for tooltip
+        const country = countryById[iso3];
+        const role = countryRoles[iso3];
+        if (country && role) {
+          setTooltip({
+            x: event.clientX,
+            y: event.clientY,
+            countryName: country.name,
+            role: role,
+          });
+        }
       }
-    }
-  };
+    },
+    [isTouchDevice, isClickable, countryRoles]
+  );
 
   /**
    * Handle mouse move - update tooltip position
    */
-  const handleMouseMove = (event: React.MouseEvent<SVGPathElement>) => {
-    if (tooltip) {
-      setTooltip((prev) =>
-        prev
-          ? {
-              ...prev,
-              x: event.clientX,
-              y: event.clientY,
-            }
-          : null
-      );
-    }
-  };
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<SVGPathElement>) => {
+      if (isTouchDevice) return;
+
+      if (tooltip) {
+        setTooltip((prev) =>
+          prev
+            ? {
+                ...prev,
+                x: event.clientX,
+                y: event.clientY,
+              }
+            : null
+        );
+      }
+    },
+    [isTouchDevice, tooltip]
+  );
 
   /**
    * Handle mouse leave - clear hover state and tooltip
    */
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setHoveredCountry(null);
     setTooltip(null);
-  };
+  }, []);
+
+  /**
+   * Handle zoom/pan changes
+   */
+  const handleMoveEnd = useCallback(
+    (position: { coordinates: [number, number]; zoom: number }) => {
+      setZoom(position.zoom);
+    },
+    []
+  );
 
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full relative overflow-hidden">
       <ComposableMap
         projection="geoMercator"
-        projectionConfig={{
-          center: MAP_CENTER,
-          scale: MAP_SCALE,
-        }}
+        projectionConfig={projectionConfig}
         className="w-full h-full"
       >
-        <ZoomableGroup center={MAP_CENTER} zoom={1}>
+        {/* Ocean background with gradient */}
+        <MapBackground />
+
+        <ZoomableGroup
+          center={projectionConfig.center}
+          zoom={zoom}
+          onMoveEnd={handleMoveEnd}
+          minZoom={0.5}
+          maxZoom={4}
+        >
+          {/* Country geometries */}
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
@@ -194,20 +248,20 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     style={{
                       default: {
                         fill: getCountryColor(iso3),
-                        stroke: '#FFFFFF',
-                        strokeWidth: 0.5,
+                        stroke: '#8B7355',
+                        strokeWidth: 0.3,
                         outline: 'none',
                       },
                       hover: {
                         fill: getCountryColor(iso3),
-                        stroke: '#FFFFFF',
-                        strokeWidth: clickable ? 1.5 : 0.5,
+                        stroke: clickable ? '#5D4E37' : '#8B7355',
+                        strokeWidth: clickable ? 1 : 0.3,
                         outline: 'none',
                         cursor: clickable ? 'pointer' : 'default',
                       },
                       pressed: {
                         fill: getCountryColor(iso3),
-                        stroke: '#FFFFFF',
+                        stroke: '#5D4E37',
                         strokeWidth: 1.5,
                         outline: 'none',
                       },
@@ -215,18 +269,35 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     className={`
                       transition-all duration-200
                       ${isSelected ? 'drop-shadow-lg' : ''}
-                      ${isHovered && clickable ? 'brightness-110' : ''}
+                      ${isHovered && clickable ? 'brightness-105' : ''}
                     `}
                   />
                 );
               })
             }
           </Geographies>
+
+          {/* Trafficking routes layer */}
+          <TrafficRoutes visibleTypes={visibleRouteTypes} zoom={zoom} />
+
+          {/* Country labels layer */}
+          <CountryLabels
+            zoom={zoom}
+            selectedCountry={selectedCountry}
+            visibleCountries={COUNTRIES_IN_SCOPE as unknown as string[]}
+          />
         </ZoomableGroup>
       </ComposableMap>
 
+      {/* Decorative compass rose (positioned outside SVG) */}
+      <CompassRose
+        size={isMobile ? 60 : 80}
+        className="absolute bottom-24 right-4 lg:bottom-8 lg:right-8 opacity-50"
+      />
+
       {/* Tooltip - renders outside the SVG for proper positioning */}
-      {tooltip && (
+      {/* Only show on non-touch devices */}
+      {tooltip && !isTouchDevice && (
         <div
           className="fixed z-50 pointer-events-none"
           style={{
@@ -234,7 +305,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
             top: tooltip.y + 12,
           }}
         >
-          <div className="bg-popover text-popover-foreground rounded-md border px-3 py-2 shadow-md flex items-center gap-2 animate-in fade-in-0 zoom-in-95 duration-150">
+          <div className="bg-white/95 backdrop-blur text-gray-900 rounded-md border border-gray-200 px-3 py-2 shadow-lg flex items-center gap-2 animate-in fade-in-0 zoom-in-95 duration-150">
             <span className="font-medium text-sm">{tooltip.countryName}</span>
             <Badge className={`${ROLE_BADGE_STYLES[tooltip.role]} text-xs`}>
               {ROLE_LABELS[tooltip.role]}

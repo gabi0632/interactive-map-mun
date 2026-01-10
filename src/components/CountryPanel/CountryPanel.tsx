@@ -29,14 +29,15 @@ import { Sources } from './Sources';
  * Responsive Behavior:
  * - Desktop (≥1024px): Right-side sheet panel
  * - Tablet (768-1023px): Bottom sheet panel
+ * - Mobile (<768px): Full-screen modal
  */
 export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
-  const { isTablet } = useResponsive();
+  const { isTablet, isMobile } = useResponsive();
 
-  // Keyboard accessibility and body scroll lock for tablet bottom sheet
+  // Keyboard accessibility and body scroll lock for mobile/tablet panels
   useEffect(() => {
-    // Only apply for tablet bottom sheet when open
-    if (!isOpen || !isTablet) return;
+    // Only apply for mobile/tablet when open
+    if (!isOpen || (!isTablet && !isMobile)) return;
 
     // Handle Escape key to close
     const handleEscape = (e: KeyboardEvent) => {
@@ -57,7 +58,7 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = originalOverflow;
     };
-  }, [isOpen, isTablet, onClose]);
+  }, [isOpen, isTablet, isMobile, onClose]);
 
   // Shared panel content
   const panelContent = country ? (
@@ -98,6 +99,46 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
       <Sources sources={country.sources} />
     </div>
   ) : null;
+
+  // Mobile: Full-screen modal
+  if (isMobile) {
+    return (
+      <>
+        {/* Full-screen overlay */}
+        <div
+          className={`
+            fixed inset-0 z-50 bg-white
+            transform transition-transform duration-300 ease-out
+            ${isOpen ? 'translate-y-0' : 'translate-y-full'}
+          `}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-panel-title"
+        >
+          {/* Sticky header with close button */}
+          <div className="sticky top-0 bg-white border-b z-10 px-4 py-3 flex items-center justify-between">
+            <h2 id="mobile-panel-title" className="font-semibold text-lg truncate pr-4">
+              {country?.name || 'Country Information'}
+            </h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="flex-shrink-0 min-h-[44px] min-w-[44px]"
+              onClick={onClose}
+              aria-label="Close panel"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+
+          {/* Scrollable content */}
+          <ScrollArea className="h-[calc(100vh-57px)]">
+            {panelContent}
+          </ScrollArea>
+        </div>
+      </>
+    );
+  }
 
   // Tablet: Custom bottom sheet
   if (isTablet) {

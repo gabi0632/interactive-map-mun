@@ -19,6 +19,12 @@ export interface ResponsiveState {
   isTablet: boolean;
   isDesktop: boolean;
   isLoading: boolean;
+  /** Whether device supports touch input */
+  isTouchDevice: boolean;
+  /** Current viewport width in pixels */
+  viewportWidth: number;
+  /** Current viewport height in pixels */
+  viewportHeight: number;
 }
 
 /**
@@ -48,20 +54,32 @@ export function useResponsive(): ResponsiveState {
     isTablet: false,
     isDesktop: true,
     isLoading: true,
+    isTouchDevice: false,
+    viewportWidth: 1024,
+    viewportHeight: 768,
   });
 
   useEffect(() => {
     // Only run on client
     if (typeof window === 'undefined') return;
 
+    // Detect touch capability
+    const detectTouch = () => {
+      return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    };
+
     const updateResponsiveState = () => {
       const width = window.innerWidth;
+      const height = window.innerHeight;
 
       setState({
         isMobile: width < BREAKPOINTS.mobile,
         isTablet: width >= BREAKPOINTS.mobile && width < BREAKPOINTS.tablet,
         isDesktop: width >= BREAKPOINTS.tablet,
         isLoading: false,
+        isTouchDevice: detectTouch(),
+        viewportWidth: width,
+        viewportHeight: height,
       });
     };
 
