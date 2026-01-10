@@ -249,6 +249,88 @@ This project supports **multiple Claude Code sessions working in parallel** on d
 2. **Git worktrees for parallelism** - Use worktrees for multiple simultaneous sessions
 3. **PR-based merging** - All code merges through reviewed PRs
 4. **Automated review loop** - Code reviewer blocks merge until approval
+5. **Sub-agents work on feature branches** - Sub-agents MUST execute on the task's branch, NEVER on main
+
+---
+
+### Sub-Agent Branch Requirements (CRITICAL)
+
+**All sub-agents MUST run under their assigned worktree/branch, NOT on main.**
+
+#### Rules for Main Agent (Orchestrator)
+
+When spawning sub-agents, the main agent MUST:
+
+1. **Pass the working directory** - Always include the worktree path in the prompt
+2. **Pass the branch name** - Explicitly state which branch the sub-agent is working on
+3. **Verify branch before spawning** - Confirm the current branch is correct before delegating
+
+#### Required Information to Pass to Sub-Agents
+
+```markdown
+When spawning a sub-agent, ALWAYS include:
+
+1. **Working Directory**: The full path to the worktree
+   Example: `/Users/dev/Projects/mun-feature-map/`
+
+2. **Branch Name**: The feature branch being worked on
+   Example: `feature/MUN-001-map-component`
+
+3. **Context File**: The active context file for the task
+   Example: `.claude/context/context_5.md`
+```
+
+#### Example Sub-Agent Prompt
+
+```markdown
+You are working on branch `feature/MUN-042-country-panel`.
+Working directory: `/Users/dev/Projects/mun-feature-panel/`
+Context file: `.claude/context/context_42.md`
+
+Task: [specific task description]
+
+IMPORTANT:
+- Do NOT switch branches
+- All commits go to `feature/MUN-042-country-panel`
+- Update the context file with your progress
+```
+
+#### Sub-Agent Responsibilities
+
+When a sub-agent receives a task, it MUST:
+
+1. **Verify the branch** - Run `git branch --show-current` to confirm correct branch
+2. **Stay on branch** - NEVER checkout main or any other branch
+3. **Commit to feature branch** - All work committed to the assigned branch only
+4. **Report branch in updates** - Include branch name in context file updates
+
+#### Prohibited Actions for Sub-Agents
+
+Sub-agents MUST NOT:
+
+- `git checkout main`
+- `git checkout` to any branch other than assigned
+- Push directly to main
+- Create PRs (only main agent does this via git-manager)
+- Merge branches
+
+#### Verification Script for Sub-Agents
+
+Sub-agents should verify their environment at startup:
+
+```bash
+# Verify correct branch
+current_branch=$(git branch --show-current)
+expected_branch="feature/MUN-XXX-description"
+
+if [ "$current_branch" != "$expected_branch" ]; then
+  echo "ERROR: On wrong branch. Expected: $expected_branch, Got: $current_branch"
+  exit 1
+fi
+
+# Verify working directory
+pwd  # Should match the worktree path provided
+```
 
 ---
 
