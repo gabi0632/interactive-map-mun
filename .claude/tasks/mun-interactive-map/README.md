@@ -19,6 +19,7 @@ Interactive web-based map for Model United Nations competition focused on UNODC 
 | T008 | Hover Tooltips | `ui-developer` | 3 | P1 |
 | T009 | Responsive Design | `ui-developer` | 3 | P1 |
 | T010 | Loading States | `ui-developer` | 3 | P1 |
+| T010b | Map Visual Enhancements | `map-developer` | 3 | P0 |
 | T011 | Testing | `test-runner` | 3 | P1 |
 | T012 | Deployment | `git-manager` | 4 | P0 |
 
@@ -31,10 +32,11 @@ Interactive web-based map for Model United Nations competition focused on UNODC 
 | `data-compiler` | Compile country data JSON | sonnet |
 | `map-developer` | Build map components | sonnet |
 | `ui-developer` | Build UI components | sonnet |
-| `ui-tester` | Visual verification (MUST run after UI tasks) | sonnet |
 | `test-runner` | Run unit/integration tests | sonnet |
 | `code-reviewer` | Review code quality | sonnet |
 | `git-manager` | Handle git operations | haiku |
+
+**Note:** Visual verification is done using Chrome MCP tools directly (see CLAUDE.md for instructions).
 
 ## Dependency Graph
 
@@ -61,15 +63,21 @@ T002          T003          T004/T004b/T004c
          │
   ┌──────┼──────┬──────┐
   ▼      ▼      ▼      ▼
-T008   T009   T010   T011
-(Tips) (Resp) (Load) (Test)
+T008   T009   T010   T010b
+(Tips) (Resp) (Load) (Visual)
   │      │      │      │
   └──────┴──────┴──────┘
+         │
+         ▼
+       T011
+     (Testing)
          │
          ▼
        T012
    (Deployment)
 ```
+
+**Note:** T010b (Map Visual Enhancements) must complete before T011 (Testing) and T012 (Deployment).
 
 ## Parallel Execution Groups
 
@@ -100,10 +108,18 @@ T008   T009   T010   T011
 - T008 (Hover Tooltips) - `ui-developer`
 - T009 (Responsive Design) - `ui-developer`
 - T010 (Loading States) - `ui-developer`
-- T011 (Testing) - `test-runner`
+- T010b (Map Visual Enhancements) - `map-developer` + `ui-developer`
 
 ```bash
 # All polish tasks can run in parallel
+```
+
+### Group 4 (After T010b)
+**Must wait for T010b:**
+- T011 (Testing) - `test-runner` (needs all visual components)
+
+```bash
+# Testing runs after visual enhancements are complete
 ```
 
 ## Execution Order
@@ -140,11 +156,14 @@ Country data tasks can run in parallel with types/geojson
    ├── T008 → ui-developer agent
    ├── T009 → ui-developer agent
    ├── T010 → ui-developer agent
-   └── T011 → test-runner agent
+   └── T010b → map-developer + ui-developer agents
    └── WAIT for all
-   └── ui-tester agent (verify all)
+   └── Verify in Chrome (visual verification)
 
-6. code-reviewer agent (review all code)
+6. T011 → test-runner agent (after T010b complete)
+   └── All tests including visual enhancement components
+
+7. code-reviewer agent (review all code)
 ```
 
 ### Phase 4: Deployment
@@ -155,11 +174,12 @@ Country data tasks can run in parallel with types/geojson
 
 ## Critical Rules
 
-### 1. Always Trigger ui-tester After UI Work
-After ANY task that modifies UI (T005, T006, T007, T008, T009, T010):
+### 1. Always Verify UI Changes in Chrome
+After ANY task that modifies UI (T005, T006, T007, T008, T009, T010, T010b):
 ```
-[ui-developer completes] → [ui-tester verifies] → [mark complete]
+[ui-developer completes] → [Chrome visual verification] → [mark complete]
 ```
+Use Chrome MCP tools (`mcp__claude-in-chrome__*`) to verify visual output.
 
 ### 2. Never Skip Dependencies
 - T005 requires T002 + T003
@@ -188,6 +208,7 @@ All task files are in:
 ├── T008-hover-tooltips.md
 ├── T009-responsive-design.md
 ├── T010-loading-states.md
+├── T010b-map-visual-enhancements.md  ← NEW (Pre-deployment visual polish)
 ├── T011-testing.md
 └── T012-deployment.md
 ```

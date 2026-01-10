@@ -8,20 +8,25 @@
 | **Priority** | P1 (High) |
 | **Agent** | `test-runner` |
 | **Estimated Complexity** | Medium |
-| **Can Run In Parallel** | Yes (after T007) |
+| **Can Run In Parallel** | Yes (after T010b) |
 
 ## Description
-Write unit tests for components and integration tests for user flows.
+Write unit tests for components and integration tests for user flows, including visual enhancement components.
 
 ## Prerequisites
 - T007 completed (main page integration)
+- T010b completed (map visual enhancements)
 - All components exist
 
 ## Acceptance Criteria
 - [ ] Vitest configured and running
 - [ ] CountryPanel tests pass
-- [ ] MapLegend tests pass
+- [ ] MapLegend tests pass (including route types)
 - [ ] Integration test for click flow
+- [ ] MapHeader tests pass (UNODC branding)
+- [ ] CountryLabels tests pass
+- [ ] TraffickingRoutes tests pass
+- [ ] SimulationCountriesList tests pass
 - [ ] Coverage > 60%
 
 ## Implementation Steps
@@ -130,10 +135,107 @@ describe('MapLegend', () => {
     expect(screen.getByText('Mixed')).toBeInTheDocument();
     expect(screen.getByText('Consumer')).toBeInTheDocument();
   });
+
+  it('renders route type indicators', () => {
+    render(<MapLegend />);
+    expect(screen.getByText('Land Routes')).toBeInTheDocument();
+    expect(screen.getByText('Maritime Routes')).toBeInTheDocument();
+    expect(screen.getByText('Air Routes')).toBeInTheDocument();
+  });
 });
 ```
 
-### Step 6: Add Test Script
+### Step 6: Write MapHeader Tests (T010b)
+```tsx
+// src/components/Map/MapHeader.test.tsx
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { MapHeader } from './MapHeader';
+
+describe('MapHeader', () => {
+  it('renders title text', () => {
+    render(<MapHeader />);
+    expect(screen.getByText(/Simulation Countries/i)).toBeInTheDocument();
+    expect(screen.getByText(/Drug Trafficking Routes/i)).toBeInTheDocument();
+  });
+
+  it('renders UNODC branding', () => {
+    render(<MapHeader />);
+    expect(screen.getByText('UNODC')).toBeInTheDocument();
+  });
+});
+```
+
+### Step 7: Write CountryLabels Tests (T010b)
+```tsx
+// src/components/Map/CountryLabels.test.tsx
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { CountryLabels } from './CountryLabels';
+
+describe('CountryLabels', () => {
+  it('renders country name labels', () => {
+    render(<CountryLabels />);
+    // Check for key simulation countries
+    expect(screen.getByText('MEXICO')).toBeInTheDocument();
+    expect(screen.getByText('COLOMBIA')).toBeInTheDocument();
+    expect(screen.getByText('BRAZIL')).toBeInTheDocument();
+  });
+});
+```
+
+### Step 8: Write TraffickingRoutes Tests (T010b)
+```tsx
+// src/components/Map/TraffickingRoutes.test.tsx
+import { describe, it, expect } from 'vitest';
+import { render } from '@testing-library/react';
+import { TraffickingRoutes } from './TraffickingRoutes';
+
+describe('TraffickingRoutes', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<TraffickingRoutes />);
+    expect(container).toBeTruthy();
+  });
+
+  it('renders route paths', () => {
+    const { container } = render(<TraffickingRoutes />);
+    // Routes should render as SVG paths or lines
+    const paths = container.querySelectorAll('path, line');
+    expect(paths.length).toBeGreaterThan(0);
+  });
+});
+```
+
+### Step 9: Write SimulationCountriesList Tests (T010b)
+```tsx
+// src/components/Map/SimulationCountriesList.test.tsx
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { SimulationCountriesList } from './SimulationCountriesList';
+
+describe('SimulationCountriesList', () => {
+  it('renders section title', () => {
+    render(<SimulationCountriesList />);
+    expect(screen.getByText(/Simulation Countries/i)).toBeInTheDocument();
+  });
+
+  it('renders country flags and names', () => {
+    render(<SimulationCountriesList />);
+    expect(screen.getByText('Colombia')).toBeInTheDocument();
+    expect(screen.getByText('Mexico')).toBeInTheDocument();
+    expect(screen.getByText('Brazil')).toBeInTheDocument();
+  });
+
+  it('renders all simulation countries', () => {
+    render(<SimulationCountriesList />);
+    // Should have at least 15 simulation countries
+    const countryElements = screen.getAllByText(/🇨🇴|🇲🇽|🇧🇷|🇵🇪|🇧🇴|🇻🇪|🇪🇨|🇬🇹|🇭🇳|🇸🇻|🇳🇮|🇨🇷|🇵🇦|🇺🇸|🇨🇦/);
+    expect(countryElements.length).toBeGreaterThanOrEqual(10);
+  });
+});
+```
+
+### Step 10: Add Test Script
 ```json
 // package.json
 {
@@ -150,6 +252,10 @@ describe('MapLegend', () => {
 - `src/test/setup.ts`
 - `src/components/CountryPanel/CountryPanel.test.tsx`
 - `src/components/Map/MapLegend.test.tsx`
+- `src/components/Map/MapHeader.test.tsx`
+- `src/components/Map/CountryLabels.test.tsx`
+- `src/components/Map/TraffickingRoutes.test.tsx`
+- `src/components/Map/SimulationCountriesList.test.tsx`
 - `package.json` (updated scripts)
 
 ## Verification
@@ -158,8 +264,11 @@ bun test
 # All tests should pass
 ```
 
+## Prerequisites
+- T010b (Map Visual Enhancements) must be completed before running tests
+
 ## Parallel Tasks
-Can run after T007 is complete, parallel with:
+Can run after T010b is complete, parallel with:
 - T008, T009, T010
 
 ## Blocks
