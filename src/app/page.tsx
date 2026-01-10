@@ -52,31 +52,39 @@ export default function Home() {
 
   return (
     <main className="h-screen flex flex-col">
-      {/* Header with UNODC branding */}
-      <header className="bg-slate-800 text-white px-4 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-        <div>
-          <h1 className="text-base sm:text-lg font-bold leading-tight">
-            Simulation Countries and Drug Trafficking Routes
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-300">
-            in Latin America - Interactive Map for MUN
-          </p>
-        </div>
-        <div className="flex items-center gap-2 text-right">
-          <div className="hidden sm:block text-right">
-            <div className="font-semibold text-sm">UNODC</div>
-            <div className="text-[10px] leading-tight text-slate-300">
-              UNITED NATIONS OFFICE
-              <br />
-              ON DRUGS AND CRIME
-            </div>
+      {/* Header - fixed floating design that stays visible during zoom */}
+      <header className="fixed top-0 left-0 right-0 z-50 px-3 py-2 pointer-events-none">
+        <div className="flex justify-between items-start">
+          {/* Left: Title */}
+          <div className="pointer-events-auto bg-slate-900/95 backdrop-blur-md rounded-lg px-3 py-2 shadow-xl border border-slate-700/50">
+            <h1 className="text-xs sm:text-sm font-bold text-white tracking-wide">
+              Drug Trafficking Routes
+            </h1>
+            <p className="text-[9px] sm:text-[10px] text-blue-300/80 tracking-wider">
+              UNODC • Interactive Map for MUN
+            </p>
           </div>
-          <div className="sm:hidden font-semibold text-sm">UNODC</div>
+
+          {/* Right: UNODC Badge - clickable link */}
+          <a
+            href="https://www.unodc.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pointer-events-auto bg-blue-600/95 backdrop-blur-md rounded-lg px-3 py-1.5 shadow-xl flex items-center gap-2 hover:bg-blue-500/95 transition-colors cursor-pointer"
+            title="Visit UNODC Website"
+          >
+            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+              <span className="text-[10px] font-bold text-white">UN</span>
+            </div>
+            <div className="hidden sm:block text-right">
+              <div className="text-[10px] font-bold text-white tracking-wider">UNODC</div>
+            </div>
+          </a>
         </div>
       </header>
 
-      {/* Map Container */}
-      <div className="flex-1 relative">
+      {/* Map Container - full screen */}
+      <div className="h-full w-full relative">
         <ErrorBoundary>
           <Suspense fallback={<MapSkeleton />}>
             <InteractiveMap

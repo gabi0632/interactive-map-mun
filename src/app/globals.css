@@ -166,3 +166,91 @@
   background: #c1c1c1;
   border-radius: 3px;
 }
+
+/* Route flow animations */
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: -30;
+  }
+}
+
+@keyframes route-flow-reverse {
+  to {
+    stroke-dashoffset: 30;
+  }
+}
+
+/* Glow pulse for active routes */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 2px var(--glow-color, currentColor));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px var(--glow-color, currentColor));
+  }
+}
+
+/* Stat gauge fill animation */
+@keyframes gauge-fill {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: var(--gauge-value, 0);
+  }
+}
+
+/* Subtle float for selected elements */
+@keyframes float-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Selection pulse border */
+@keyframes selection-pulse {
+  0%, 100% {
+    stroke-width: 1.5;
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-width: 2.5;
+    stroke-opacity: 0.7;
+  }
+}
+
+/* Shimmer effect for glassmorphism */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Route flow utility classes */
+.animate-route-flow {
+  animation: route-flow 2s linear infinite;
+}
+
+.animate-route-flow-slow {
+  animation: route-flow 4s linear infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-float-subtle {
+  animation: float-subtle 4s ease-in-out infinite;
+}
+
+.animate-gauge-fill {
+  animation: gauge-fill 1.5s ease-out forwards;
+}

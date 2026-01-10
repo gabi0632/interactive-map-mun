@@ -15,14 +15,17 @@ export const COUNTRIES_IN_SCOPE = [
   'CHN', 'RUS'                   // Other
 ] as const;
 
-// Latin America countries (clickable on map)
+// Countries clickable on map (Latin America + Europe + Key Players)
 export const LATIN_AMERICA_COUNTRIES = [
   'COL', 'PER', 'BOL',           // Producers
   'MEX', 'GTM', 'HND', 'SLV',    // Transit
   'CRI', 'PAN',                  // Transit
   'ECU', 'VEN', 'BRA',           // Mixed
   'DOM', 'ARG', 'CHL',           // Mixed/Transit
-  'USA', 'CAN'                   // Consumer
+  'USA', 'CAN',                  // Consumer (North America)
+  'GBR', 'DEU', 'FRA',           // Consumer (Europe)
+  'ESP', 'ITA', 'AUT',           // Consumer (Europe)
+  'CHN', 'RUS'                   // Other key players
 ] as const;
 
 // Role-based color mapping (vintage palette for SVG compatibility)
@@ -59,14 +62,14 @@ export const COUNTRY_LABELS: CountryLabelConfig[] = [
   { id: 'PER', name: 'PERU', coordinates: [-76, -10], fontSize: 'md' },
   { id: 'BOL', name: 'BOLIVIA', coordinates: [-65, -17], fontSize: 'sm' },
 
-  // Transit (Central America & Caribbean)
-  { id: 'MEX', name: 'MEXICO', coordinates: [-102, 24], fontSize: 'lg' },
-  { id: 'GTM', name: 'GUATEMALA', coordinates: [-90.5, 15.5], fontSize: 'sm', offsetY: -5 },
-  { id: 'HND', name: 'HONDURAS', coordinates: [-87, 14.5], fontSize: 'sm' },
-  { id: 'SLV', name: 'EL SALVADOR', coordinates: [-89, 13.5], fontSize: 'sm', offsetY: 8 },
-  { id: 'CRI', name: 'COSTA RICA', coordinates: [-84, 10], fontSize: 'sm' },
-  { id: 'PAN', name: 'PANAMA', coordinates: [-80, 9], fontSize: 'sm' },
-  { id: 'DOM', name: 'DOM. REP.', coordinates: [-70, 19], fontSize: 'sm' },
+  // Transit (Central America & Caribbean) - shortened names for world view
+  { id: 'MEX', name: 'MEXICO', coordinates: [-102, 24], fontSize: 'md' },
+  { id: 'GTM', name: 'GTM', coordinates: [-90.5, 15], fontSize: 'sm' },
+  { id: 'HND', name: 'HND', coordinates: [-86, 15], fontSize: 'sm' },
+  { id: 'SLV', name: 'SLV', coordinates: [-89, 13], fontSize: 'sm' },
+  { id: 'CRI', name: 'C.RICA', coordinates: [-84, 9.5], fontSize: 'sm' },
+  { id: 'PAN', name: 'PAN', coordinates: [-80, 8.5], fontSize: 'sm' },
+  { id: 'DOM', name: 'DOM', coordinates: [-70, 19], fontSize: 'sm' },
 
   // Mixed (South America)
   { id: 'ECU', name: 'ECUADOR', coordinates: [-78.5, -1.5], fontSize: 'sm' },

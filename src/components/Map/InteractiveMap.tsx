@@ -25,6 +25,75 @@ import { TrafficRoutes } from './TrafficRoutes';
 import { CompassRose } from './CompassRose';
 
 /**
+ * SVG filter definitions for country effects
+ * Includes selection glow, hover highlight, and topographic texture
+ */
+const CountryFilters: React.FC = () => (
+  <defs>
+    {/* Elevated shadow effect for selected countries */}
+    <filter id="country-selected" x="-20%" y="-20%" width="140%" height="140%">
+      {/* Drop shadow for elevation effect */}
+      <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#000" floodOpacity="0.25" />
+      {/* Brightness boost */}
+      <feColorMatrix
+        type="matrix"
+        values="1.15 0 0 0 0
+                0 1.15 0 0 0
+                0 0 1.15 0 0
+                0 0 0 1 0"
+      />
+    </filter>
+
+    {/* Subtle glow for hovered countries */}
+    <filter id="country-hover" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" result="blur" />
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="1.1 0 0 0 0
+                0 1.1 0 0 0
+                0 0 1.1 0 0
+                0 0 0 1 0"
+      />
+    </filter>
+
+    {/* Golden glow border for selected state */}
+    <filter id="selection-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceGraphic" operator="dilate" radius="1" result="dilated" />
+      <feGaussianBlur in="dilated" stdDeviation="2" result="blur" />
+      <feFlood floodColor="#D4A84B" floodOpacity="0.7" result="color" />
+      <feComposite in="color" in2="blur" operator="in" result="glow" />
+      <feMerge>
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    {/* Subtle topographic texture for land */}
+    <pattern id="topoTexture" patternUnits="userSpaceOnUse" width="100" height="100">
+      <path
+        d="M0 50 Q25 45, 50 50 T100 50"
+        fill="none"
+        stroke="rgba(0,0,0,0.03)"
+        strokeWidth="0.3"
+      />
+      <path
+        d="M0 25 Q25 20, 50 25 T100 25"
+        fill="none"
+        stroke="rgba(0,0,0,0.02)"
+        strokeWidth="0.2"
+      />
+      <path
+        d="M0 75 Q25 70, 50 75 T100 75"
+        fill="none"
+        stroke="rgba(0,0,0,0.02)"
+        strokeWidth="0.2"
+      />
+    </pattern>
+  </defs>
+);
+
+/**
  * Tooltip data for displaying country info on hover
  */
 interface TooltipData {
@@ -88,10 +157,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
   const [zoom, setZoom] = useState(1);
 
-  // Projection config - wider view to show more of the world
+  // Projection config - show entire world with focus on Americas
   const projectionConfig = {
-    center: [-40, 5] as [number, number],
-    scale: isMobile ? 120 : 180,
+    center: [-20, 10] as [number, number],
+    scale: isMobile ? 90 : 130,
   };
 
   /**
@@ -217,6 +286,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         projectionConfig={projectionConfig}
         className="w-full h-full"
       >
+        {/* SVG filters for country effects */}
+        <CountryFilters />
+
         {/* Ocean background with gradient */}
         <MapBackground />
 
@@ -237,6 +309,13 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 const isHovered = hoveredCountry === iso3;
                 const isSelected = selectedCountry === iso3;
 
+                // Determine filter based on state
+                const getFilter = () => {
+                  if (isSelected) return 'url(#country-selected)';
+                  if (isHovered && clickable) return 'url(#country-hover)';
+                  return undefined;
+                };
+
                 return (
                   <Geography
                     key={geo.rsmKey}
@@ -248,29 +327,30 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     style={{
                       default: {
                         fill: getCountryColor(iso3),
-                        stroke: '#8B7355',
-                        strokeWidth: 0.3,
+                        stroke: isSelected ? '#5D4E37' : '#8B7355',
+                        strokeWidth: isSelected ? 1.2 : 0.4,
                         outline: 'none',
+                        filter: getFilter(),
+                        transition: 'all 0.25s ease-out',
                       },
                       hover: {
                         fill: getCountryColor(iso3),
                         stroke: clickable ? '#5D4E37' : '#8B7355',
-                        strokeWidth: clickable ? 1 : 0.3,
+                        strokeWidth: clickable ? 0.8 : 0.4,
                         outline: 'none',
                         cursor: clickable ? 'pointer' : 'default',
+                        filter: clickable ? 'url(#country-hover)' : undefined,
+                        transition: 'all 0.25s ease-out',
                       },
                       pressed: {
                         fill: getCountryColor(iso3),
                         stroke: '#5D4E37',
-                        strokeWidth: 1.5,
+                        strokeWidth: 1.2,
                         outline: 'none',
+                        filter: 'url(#country-selected)',
                       },
                     }}
-                    className={`
-                      transition-all duration-200
-                      ${isSelected ? 'drop-shadow-lg' : ''}
-                      ${isHovered && clickable ? 'brightness-105' : ''}
-                    `}
+                    className="transition-all duration-200"
                   />
                 );
               })
@@ -289,11 +369,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
         </ZoomableGroup>
       </ComposableMap>
 
-      {/* Decorative compass rose (positioned outside SVG) */}
-      <CompassRose
-        size={isMobile ? 60 : 80}
-        className="absolute bottom-24 right-4 lg:bottom-8 lg:right-8 opacity-50"
-      />
+      {/* Decorative compass rose - hidden for cleaner look */}
+      {/* <CompassRose
+        size={isMobile ? 40 : 50}
+        className="absolute bottom-4 left-4 lg:bottom-32 lg:left-4 opacity-40"
+      /> */}
 
       {/* Tooltip - renders outside the SVG for proper positioning */}
       {/* Only show on non-touch devices */}
