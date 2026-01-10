@@ -5,3 +5,4 @@
 
 export { InteractiveMap } from './InteractiveMap';
 export { MapLegend } from './MapLegend';
+export { MapSkeleton } from './MapSkeleton';
