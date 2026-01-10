@@ -123,6 +123,8 @@ Apply these fundamental laws when designing any interface:
   -mx-4                         // Extend to edges
   active:bg-slate-100          // Touch feedback
 ">
+  Link text here
+</a>
 ```
 
 ### Strategic Breakpoints
@@ -368,6 +370,8 @@ const transitions = {
 ```
 
 ### Framer Motion Patterns
+
+> **Note**: Install Framer Motion before using these patterns: `bun add framer-motion`
 
 ```tsx
 // Panel slide animation
