@@ -193,16 +193,29 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
 
 ### T008 - Hover Tooltips
 - **Agent**: `ui-developer`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Dependencies**: T007
 - **Parallel With**: T009, T010, T011
 - **Post-Task**: `ui-tester` MUST verify
 - **Acceptance Criteria**:
-  - [ ] Tooltip appears on hover
-  - [ ] Shows country name and role
-  - [ ] ui-tester verified ✓
-- **Agent Output**: _pending_
-- **UI Tester Output**: _pending_
+  - [x] Tooltip appears on hover
+  - [x] Shows country name and role
+  - [x] ui-tester verified ✓
+- **Agent Output**:
+  - Updated `src/components/Map/InteractiveMap.tsx` with tooltip functionality
+  - Added TooltipData interface for tracking mouse position and country info
+  - Added ROLE_BADGE_STYLES and ROLE_LABELS constants for styling
+  - Tooltip follows cursor with smooth animation (animate-in fade-in-0 zoom-in-95)
+  - Only shows for countries in LATIN_AMERICA_COUNTRIES list
+  - **PR #9**: https://github.com/gabi0632/interactive-map-mun/pull/9 (MERGED)
+  - **Branch**: feature/MUN-T008-hover-tooltips
+- **UI Tester Output**: Visual verification passed via Chrome browser automation
+  - Tested Producer (Colombia - red badge) ✓
+  - Tested Transit (Mexico - orange badge) ✓
+  - Tested Mixed (Brazil, Venezuela - yellow badge) ✓
+  - Tested Consumer (USA - blue badge) ✓
+  - No console errors ✓
+- **Code Review**: Passed (0 Critical, 0 High, 3 Medium optional improvements)
 
 ### T009 - Responsive Design
 - **Agent**: `ui-developer`
@@ -211,38 +224,59 @@ Interactive web-based map for Model United Nations (MUN) competition focused on 
 - **Parallel With**: T008, T010, T011
 - **Post-Task**: `ui-tester` MUST verify
 - **Acceptance Criteria**:
-  - [x] Desktop: Side panel layout (existing - unchanged)
-  - [x] Tablet: Bottom sheet panel
-  - [x] Mobile: Warning message
-  - [ ] ui-tester verified ✓ (pending)
+  - [x] Desktop (≥1024px): Side panel layout
+  - [x] Tablet (768-1023px): Bottom sheet panel
+  - [x] Mobile (<768px): Warning message
+  - [x] ui-tester verified ✓
 - **Agent Output**:
-  - Created `src/hooks/useResponsive.ts` - SSR-safe viewport detection hook
-  - Created `src/components/ui/MobileWarning.tsx` - Full-screen mobile warning overlay
-  - Created `src/components/ui/index.ts` - Barrel export for UI components
-  - Created `src/hooks/index.ts` - Barrel export for custom hooks
+  - Created `src/hooks/useResponsive.ts` - Custom hook for viewport detection with debounced resize
+  - Created `src/hooks/index.ts` - Barrel exports for hooks
+  - Created `src/components/ui/MobileWarning.tsx` - Full-screen warning for mobile users
+  - Created `src/components/ui/index.ts` - Barrel exports for UI components
   - Updated `src/components/CountryPanel/CountryPanel.tsx` - Added tablet bottom sheet variant
-  - Updated `src/app/page.tsx` - Integrated MobileWarning component
-  - Tablet bottom sheet features: drag handle, backdrop overlay, close button, 70vh max height
-  - Smooth 300ms transitions with transform for performance
-  - Accessible ARIA labels and keyboard navigation
-  - Build verified: No TypeScript errors
-  - Commit: a78b9eb - "feat(T009): Add responsive design with tablet bottom sheet and mobile warning"
+  - Updated `src/app/page.tsx` - Added MobileWarning component
+  - Features: SSR-safe hydration (isLoading state), 200ms debounced resize, Escape key + scroll lock for accessibility
+  - **PR #10**: https://github.com/gabi0632/interactive-map-mun/pull/10 (MERGED)
   - **Branch**: feature/MUN-T009-responsive-design
   - **Worktree**: /Users/gabrielabramovich/Projects/mun-T009-responsive
-- **UI Tester Output**: _pending verification_
+- **UI Tester Output**: Visual verification passed via Chrome browser automation
+  - Desktop (1200px): Side panel opens from right ✓
+  - Tablet (900px): Bottom sheet slides up from bottom ✓
+  - Mobile (500px): Warning message displays "Mobile View Not Available" ✓
+  - No console errors ✓
+- **Code Review**:
+  - Initial review: 2 Critical, 1 High issues found
+  - Fixed: Hydration mismatch, resize debounce, keyboard accessibility
+  - Re-review: APPROVED (0 issues)
 
 ### T010 - Loading States
 - **Agent**: `ui-developer`
-- **Status**: [ ] Pending
+- **Status**: [x] COMPLETED
 - **Dependencies**: T007
 - **Parallel With**: T008, T009, T011
 - **Post-Task**: `ui-tester` MUST verify
 - **Acceptance Criteria**:
-  - [ ] shadcn Skeleton shown while map loads
-  - [ ] Error boundary with shadcn Card/Button
-  - [ ] ui-tester verified ✓
-- **Agent Output**: _pending_
-- **UI Tester Output**: _pending_
+  - [x] shadcn Skeleton shown while map loads
+  - [x] Error boundary with shadcn Card/Button
+  - [x] ui-tester verified ✓
+- **Agent Output**:
+  - Created `src/components/Map/MapSkeleton.tsx` - Loading spinner with skeleton legend
+  - Created `src/components/CountryPanel/CountryPanelSkeleton.tsx` - Full panel skeleton (for future async data)
+  - Created `src/components/ui/ErrorBoundary.tsx` - React error boundary with reset
+  - Created `src/components/ui/ErrorFallback.tsx` - Error display with retry button
+  - Updated `src/app/page.tsx` - Dynamic import with Suspense and ErrorBoundary
+  - Updated barrel exports for Map, CountryPanel, and UI components
+  - **PR #11**: https://github.com/gabi0632/interactive-map-mun/pull/11 (MERGED)
+  - **Branch**: feature/MUN-T010-loading-states
+  - **Worktree**: /Users/gabrielabramovich/Projects/mun-T010-loading
+- **UI Tester Output**: Visual verification passed via Chrome browser automation
+  - Map loads correctly with dynamic import ✓
+  - Country panel opens on click ✓
+  - No console errors ✓
+- **Code Review**:
+  - Initial: 0 Critical, 1 High (unused CountryPanelSkeleton), 3 Medium
+  - Fixed: Added documentation, NODE_ENV check, explicit return type
+  - Re-merged: APPROVED
 
 ### T011 - Testing
 - **Agent**: `test-runner`
@@ -326,11 +360,23 @@ _Tasks: T007_
 
 ### Execution Round 5 (Parallel)
 _Tasks: T008, T009, T010, T011_
-- [ ] Started:
-- [ ] Completed:
-- Agents used:
-- UI Tester verified:
+- [x] Started: 2026-01-10
+- [ ] Completed: (T008, T009 complete, T010, T011 pending)
+- Agents used: main (T008), ui-developer (T009), others pending
+- UI Tester verified: T008, T009 verified via Chrome browser automation
+- Worktrees used:
+  - `/Users/gabrielabramovich/Projects/mun-T008-tooltips` (removed after merge)
+  - `/Users/gabrielabramovich/Projects/mun-T009-responsive`
+- PRs:
+  - PR #9 (T008): Merged - hover tooltips added to InteractiveMap
+  - PR #10 (T009): Merged - responsive design with tablet bottom sheet and mobile warning
 - Notes:
+  - T008: Added tooltip state, ROLE_BADGE_STYLES/ROLE_LABELS constants
+  - T008: Code review passed (0 Critical/High issues, 3 Medium optional)
+  - T009: Created useResponsive hook, MobileWarning component, CountryPanel tablet variant
+  - T009: Initial code review found 2 Critical + 1 High issues (hydration, debounce, accessibility)
+  - T009: Fixed all issues, re-review approved
+  - T010, T011: Pending
 
 ### Execution Round 6
 _Tasks: T012_
