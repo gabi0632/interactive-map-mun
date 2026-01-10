@@ -50,15 +50,21 @@ export function getCountryCenter(countryId: string): [number, number] | undefine
 /**
  * Default map center (focused on Latin America)
  */
-export const DEFAULT_CENTER: [number, number] = [-20, 5];
+export const DEFAULT_CENTER: [number, number] = [-60, -5];
+
+/**
+ * Default center for mobile (more focused on South America)
+ */
+export const DEFAULT_CENTER_MOBILE: [number, number] = [-65, -10];
 
 /**
  * Zoom levels for different views
  */
 export const ZOOM_LEVELS = {
-  MIN: 0.5,
+  MIN: 0.8,
   MAX: 8,
   DEFAULT: 1.5,
+  DEFAULT_MOBILE: 1.8,
   COUNTRY_FOCUS: 3,
   REGION_FOCUS: 2,
 } as const;

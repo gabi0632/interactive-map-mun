@@ -9,7 +9,7 @@ import { DocumentViewer } from '@/components/DocumentViewer';
 import { SearchBar } from '@/components/Search';
 import { ErrorBoundary } from '@/components/ui';
 import { allCountries, getCountryById } from '@/data/countries';
-import { getCountryCenter, DEFAULT_CENTER, ZOOM_LEVELS } from '@/data/countryCenters';
+import { getCountryCenter, DEFAULT_CENTER, DEFAULT_CENTER_MOBILE, ZOOM_LEVELS } from '@/data/countryCenters';
 import { useResponsive } from '@/hooks';
 import type { CountryRole } from '@/types';
 import type { RouteType } from '@/data/routes';
@@ -39,9 +39,9 @@ export default function Home() {
   ]);
   const [isDocumentOpen, setIsDocumentOpen] = useState(false);
 
-  // Map zoom and center state
-  const [zoom, setZoom] = useState(isMobile ? 1.2 : 1.5);
-  const [center, setCenter] = useState<[number, number]>(DEFAULT_CENTER);
+  // Map zoom and center state - use responsive defaults
+  const [zoom, setZoom] = useState<number>(isMobile ? ZOOM_LEVELS.DEFAULT_MOBILE : ZOOM_LEVELS.DEFAULT);
+  const [center, setCenter] = useState<[number, number]>(isMobile ? DEFAULT_CENTER_MOBILE : DEFAULT_CENTER);
 
   const handleCountryClick = (countryId: string) => {
     setSelectedCountryId(countryId);
@@ -91,8 +91,8 @@ export default function Home() {
 
   // Reset view handler
   const handleReset = useCallback(() => {
-    setZoom(isMobile ? 1.2 : 1.5);
-    setCenter(DEFAULT_CENTER);
+    setZoom(isMobile ? ZOOM_LEVELS.DEFAULT_MOBILE : ZOOM_LEVELS.DEFAULT);
+    setCenter(isMobile ? DEFAULT_CENTER_MOBILE : DEFAULT_CENTER);
   }, [isMobile]);
 
   // Search select handler - zoom to country and open panel
@@ -174,16 +174,18 @@ export default function Home() {
           </Suspense>
         </ErrorBoundary>
 
-        {/* Map Controls - zoom and pan buttons */}
-        <MapControls
-          onZoomIn={handleZoomIn}
-          onZoomOut={handleZoomOut}
-          onPan={handlePan}
-          onReset={handleReset}
-          canZoomIn={zoom < ZOOM_LEVELS.MAX}
-          canZoomOut={zoom > ZOOM_LEVELS.MIN}
-          className="right-4 top-1/2 -translate-y-1/2"
-        />
+        {/* Map Controls - zoom and pan buttons (hidden on mobile - use pinch gestures) */}
+        {!isMobile && (
+          <MapControls
+            onZoomIn={handleZoomIn}
+            onZoomOut={handleZoomOut}
+            onPan={handlePan}
+            onReset={handleReset}
+            canZoomIn={zoom < ZOOM_LEVELS.MAX}
+            canZoomOut={zoom > ZOOM_LEVELS.MIN}
+            className="right-4 top-1/2 -translate-y-1/2"
+          />
+        )}
       </div>
 
       {/* Legend - outside map container to avoid transform issues during zoom */}
