@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { InteractiveMap, MapLegend } from '@/components/Map';
 import { CountryPanel } from '@/components/CountryPanel';
+import { MobileWarning } from '@/components/ui';
 import { allCountries, getCountryById } from '@/data/countries';
 import type { CountryRole } from '@/types';
 
@@ -27,6 +28,9 @@ export default function Home() {
 
   return (
     <main className="h-screen flex flex-col">
+      {/* Mobile Warning Overlay */}
+      <MobileWarning />
+
       {/* Header */}
       <header className="bg-white border-b px-6 py-4">
         <h1 className="text-xl font-bold text-gray-900">
