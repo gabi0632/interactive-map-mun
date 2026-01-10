@@ -13,9 +13,13 @@ import { useResponsive } from '@/hooks/useResponsive';
  * - Full-screen blocking overlay (z-index 100)
  * - Dark background with centered message
  * - Friendly, emoji-enhanced message
+ * - Prevents flash by waiting for client-side hydration
  */
 export function MobileWarning() {
-  const { isMobile } = useResponsive();
+  const { isMobile, isLoading } = useResponsive();
+
+  // Don't render anything while loading to prevent flash
+  if (isLoading) return null;
 
   // Only show on mobile devices
   if (!isMobile) return null;

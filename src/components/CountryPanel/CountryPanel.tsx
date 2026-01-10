@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import {
   Sheet,
   SheetContent,
@@ -31,6 +32,32 @@ import { Sources } from './Sources';
  */
 export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
   const { isTablet } = useResponsive();
+
+  // Keyboard accessibility and body scroll lock for tablet bottom sheet
+  useEffect(() => {
+    // Only apply for tablet bottom sheet when open
+    if (!isOpen || !isTablet) return;
+
+    // Handle Escape key to close
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('keydown', handleEscape);
+
+    // Lock body scroll when sheet is open
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    // Cleanup: restore scroll and remove listener
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, isTablet, onClose]);
 
   // Shared panel content
   const panelContent = country ? (
