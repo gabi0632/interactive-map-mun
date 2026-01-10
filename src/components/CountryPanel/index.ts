@@ -4,6 +4,7 @@
  */
 
 export { CountryPanel } from './CountryPanel';
+export { CountryPanelSkeleton } from './CountryPanelSkeleton';
 export { CountryHeader } from './CountryHeader';
 export { CountryStats } from './CountryStats';
 export { CountryPrograms } from './CountryPrograms';

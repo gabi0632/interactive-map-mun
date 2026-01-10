@@ -4,3 +4,5 @@
  */
 
 export { MobileWarning } from './MobileWarning';
+export { ErrorBoundary } from './ErrorBoundary';
+export { ErrorFallback } from './ErrorFallback';

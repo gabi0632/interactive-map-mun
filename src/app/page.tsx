@@ -1,11 +1,21 @@
 'use client';
 
-import { useState } from 'react';
-import { InteractiveMap, MapLegend } from '@/components/Map';
+import { useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import { MapLegend, MapSkeleton } from '@/components/Map';
 import { CountryPanel } from '@/components/CountryPanel';
-import { MobileWarning } from '@/components/ui';
+import { MobileWarning, ErrorBoundary } from '@/components/ui';
 import { allCountries, getCountryById } from '@/data/countries';
 import type { CountryRole } from '@/types';
+
+// Dynamically import InteractiveMap with no SSR (map requires browser APIs)
+const InteractiveMap = dynamic(
+  () => import('@/components/Map').then((mod) => ({ default: mod.InteractiveMap })),
+  {
+    ssr: false,
+    loading: () => <MapSkeleton />,
+  }
+);
 
 // Pre-compute role lookup for map coloring
 const countryRoles: Record<string, CountryRole> = {};
@@ -43,12 +53,16 @@ export default function Home() {
 
       {/* Map Container */}
       <div className="flex-1 relative bg-gray-100">
-        <InteractiveMap
-          onCountryClick={handleCountryClick}
-          selectedCountry={selectedCountryId}
-          countryRoles={countryRoles}
-        />
-        <MapLegend />
+        <ErrorBoundary>
+          <Suspense fallback={<MapSkeleton />}>
+            <InteractiveMap
+              onCountryClick={handleCountryClick}
+              selectedCountry={selectedCountryId}
+              countryRoles={countryRoles}
+            />
+          </Suspense>
+          <MapLegend />
+        </ErrorBoundary>
       </div>
 
       {/* Country Panel */}
