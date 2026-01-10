@@ -14,6 +14,7 @@ export const MapLegend: React.FC = () => {
     { label: 'Transit', color: ROLE_COLORS.transit, description: 'Drug trafficking routes' },
     { label: 'Mixed', color: ROLE_COLORS.mixed, description: 'Production & transit activities' },
     { label: 'Consumer', color: ROLE_COLORS.consumer, description: 'Major destination markets' },
+    { label: 'Other', color: ROLE_COLORS.other, description: 'Non-regional key actors (precursor chemicals)' },
   ];
 
   return (

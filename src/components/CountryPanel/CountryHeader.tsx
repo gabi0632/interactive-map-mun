@@ -16,6 +16,7 @@ const getRoleBadgeColor = (role: CountryRole): string => {
     transit: 'bg-orange-500 text-white border-transparent',
     mixed: 'bg-yellow-500 text-white border-transparent',
     consumer: 'bg-blue-500 text-white border-transparent',
+    other: 'bg-gray-500 text-white border-transparent',
   };
   return colors[role];
 };
