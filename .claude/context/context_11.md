@@ -31,4 +31,10 @@ Modified `isRouteVisible` function to always return `true`, keeping all routes v
 - [x] Desktop: Country filter dropdown works correctly
 - [x] No console errors
 
-## Status: ACTIVE
+## Code Review
+
+- Fixed High issue: Removed dead `isRouteVisible` function
+- Updated comments to reflect current behavior
+- PR ready for merge
+
+## Status: COMPLETED
