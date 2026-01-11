@@ -19,19 +19,18 @@ interface TrafficRoutesProps {
 
 /**
  * Get stroke width based on route volume and zoom level
- * Routes get MUCH THINNER when zoomed in to reduce clutter on mobile
+ * Routes get thinner when zoomed in to reduce clutter on mobile
  */
 function getStrokeWidth(volume: TraffickingRoute['volume'], zoom: number = 1): number {
   const baseWidth = {
-    high: 0.4,
-    medium: 0.25,
-    low: 0.15,
+    high: 0.8,
+    medium: 0.5,
+    low: 0.3,
   }[volume];
 
-  // Very aggressive inverse scale with zoom - routes get much thinner when zoomed in
-  // This significantly reduces visual clutter when pinch-zooming on mobile
-  const scaled = baseWidth / Math.pow(zoom, 0.8);
-  return Math.max(0.03, Math.min(scaled, 1)); // Clamp between 0.03 and 1
+  // Moderate inverse scale with zoom - routes get thinner when zoomed in
+  const scaled = baseWidth / Math.pow(zoom, 0.5);
+  return Math.max(0.1, Math.min(scaled, 1.5)); // Clamp between 0.1 and 1.5
 }
 
 /**
@@ -39,9 +38,9 @@ function getStrokeWidth(volume: TraffickingRoute['volume'], zoom: number = 1): n
  */
 function getRouteOpacity(zoom: number = 1): number {
   // Routes become more transparent when zoomed in
-  const baseOpacity = 0.6;
-  const opacity = baseOpacity / Math.pow(zoom, 0.3);
-  return Math.max(0.2, Math.min(opacity, 0.6));
+  const baseOpacity = 0.7;
+  const opacity = baseOpacity / Math.pow(zoom, 0.2);
+  return Math.max(0.3, Math.min(opacity, 0.7));
 }
 
 /**

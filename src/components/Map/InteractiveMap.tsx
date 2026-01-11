@@ -430,7 +430,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
           {/* Country labels layer */}
           <CountryLabels
-            zoom={zoom}
+            zoom={currentZoom}
             selectedCountry={selectedCountry}
             visibleCountries={COUNTRIES_IN_SCOPE as unknown as string[]}
           />
