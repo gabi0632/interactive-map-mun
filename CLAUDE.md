@@ -15,6 +15,117 @@ An interactive web-based map for Model United Nations (MUN) competition focused 
   - Synthetic opioids (fentanyl)
   - UNODC programs (PCCP, CRIMJUST)
 
+---
+
+## CRITICAL: Worktree-Based Development (READ FIRST)
+
+### NEVER WORK ON MAIN - ALWAYS USE WORKTREES
+
+**This rule has NO exceptions. All tasks MUST use git worktrees, NOT simple branches.**
+
+#### Why Worktrees (Not Simple Branches)?
+
+- **Isolation**: Each task has its own directory - no accidental changes to main
+- **Parallel work**: Multiple tasks can run simultaneously without conflicts
+- **Safety**: Main repository stays clean and untouched
+- **Clarity**: Physical separation makes it obvious which task you're working on
+
+#### Mandatory Pre-Task Checklist
+
+```bash
+# ALWAYS run this before starting any work
+current_dir=$(pwd)
+main_repo="/Users/gabrielabramovich/Projects/interactive-map-mun"
+
+if [ "$current_dir" = "$main_repo" ]; then
+  echo "⛔ ERROR: You are in the main repository!"
+  echo "⛔ You MUST create a worktree before doing ANY work!"
+  echo "⛔ Run: git worktree add ../mun-feature-name -b feature/MUN-XXX-description"
+  exit 1
+fi
+
+current_branch=$(git branch --show-current)
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: You are on main branch!"
+  echo "⛔ Something is wrong - worktrees should never be on main"
+  exit 1
+fi
+
+echo "✅ Safe to proceed in worktree: $current_dir"
+echo "✅ On branch: $current_branch"
+```
+
+#### Correct Workflow (MANDATORY)
+
+```bash
+# 1. From main repository, create a worktree for your task
+cd /Users/gabrielabramovich/Projects/interactive-map-mun
+git worktree add ../mun-feature-name -b feature/MUN-XXX-description
+
+# 2. Change to the worktree directory
+cd ../mun-feature-name
+
+# 3. Install dependencies in the worktree
+bun install
+
+# 4. NOW you can start working in this isolated directory
+# ... write code, make commits ...
+
+# 5. After PR is merged, clean up
+cd /Users/gabrielabramovich/Projects/interactive-map-mun
+git worktree remove ../mun-feature-name
+```
+
+#### Prohibited Actions
+
+These are FORBIDDEN:
+
+- Working directly in `/Users/gabrielabramovich/Projects/interactive-map-mun` (main repo)
+- Using `git checkout -b` instead of `git worktree add`
+- Any `git add`, `git commit`, or file changes in the main repository
+- Switching branches within a worktree
+
+#### What Happens If You Work in Main Repo
+
+- Changes pollute the main working directory
+- Risk of accidentally committing to main
+- Conflicts with other parallel tasks
+- Makes it harder to context-switch between tasks
+
+#### Recovery If You Accidentally Started in Main Repo
+
+```bash
+# If you have uncommitted changes in main repo:
+cd /Users/gabrielabramovich/Projects/interactive-map-mun
+git stash
+git worktree add ../mun-feature-name -b feature/MUN-XXX-description
+cd ../mun-feature-name
+git stash pop
+
+# If you already committed in main repo on a feature branch:
+# First, note your branch name
+branch_name=$(git branch --show-current)
+# Create worktree from existing branch
+git worktree add ../mun-feature-name $branch_name
+# Switch main repo back to main
+git checkout main
+# Continue work in worktree
+cd ../mun-feature-name
+```
+
+#### Worktree Naming Convention
+
+```
+../mun-<short-task-name>
+```
+
+Examples:
+- `../mun-branch-protection` for this task
+- `../mun-country-panel` for country panel feature
+- `../mun-fix-hover` for hover bug fix
+
+---
+
 ## Context Management System
 
 ### Rules for Context Files
