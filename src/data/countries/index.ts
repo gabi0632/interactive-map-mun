@@ -40,6 +40,9 @@ import { austria } from "./austria";
 import { china } from "./china";
 import { russia } from "./russia";
 
+// Overseas territories (1)
+import { frenchGuiana } from "./french-guiana";
+
 /**
  * Producer countries (cocaine production)
  */
@@ -84,12 +87,12 @@ export const consumerCountries: Country[] = [
 ];
 
 /**
- * Other role countries (diplomatic actors, precursor sources, etc.)
+ * Other role countries (diplomatic actors, precursor sources, territories)
  */
-export const otherCountries: Country[] = [china, russia];
+export const otherCountries: Country[] = [china, russia, frenchGuiana];
 
 /**
- * All countries in the dataset (25 total)
+ * All countries in the dataset (26 total)
  */
 export const allCountries: Country[] = [
   ...producerCountries,
@@ -169,4 +172,6 @@ export {
   // Other
   china,
   russia,
+  // Overseas territories
+  frenchGuiana,
 };

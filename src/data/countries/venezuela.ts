@@ -9,7 +9,7 @@ import { Country } from "@/types/country";
  */
 export const venezuela: Country = {
   id: "VEN",
-  name: "Venezuela",
+  name: "Bolivarian Republic of Venezuela",
   capital: "Caracas",
   population: 28838499,
   flag: "🇻🇪",

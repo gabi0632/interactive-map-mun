@@ -7,7 +7,7 @@ import { Country } from "@/types/country";
  */
 export const bolivia: Country = {
   id: "BOL",
-  name: "Bolivia",
+  name: "Plurinational State of Bolivia",
   capital: "La Paz",
   population: 12388571,
   flag: "🇧🇴",

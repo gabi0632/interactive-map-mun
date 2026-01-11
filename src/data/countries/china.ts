@@ -2,7 +2,7 @@ import { Country } from "@/types/country";
 
 export const china: Country = {
   id: "CHN",
-  name: "China",
+  name: "People's Republic of China",
   capital: "Beijing",
   population: 1412000000,
   flag: "🇨🇳",
