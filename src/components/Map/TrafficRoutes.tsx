@@ -47,12 +47,12 @@ function getRouteOpacity(zoom: number = 1): number {
 
 /**
  * Determine if a route should be visible based on zoom and volume
- * At higher zoom levels, hide lower volume routes to reduce clutter
+ * Routes are always visible - user can filter by country selection
  */
-function isRouteVisible(volume: TraffickingRoute['volume'], zoom: number = 1): boolean {
-  if (zoom < 1.5) return true; // Show all routes at low zoom
-  if (zoom < 2.5) return volume !== 'low'; // Hide low volume at medium zoom
-  return volume === 'high'; // Only show high volume at high zoom
+function isRouteVisible(_volume: TraffickingRoute['volume'], _zoom: number = 1): boolean {
+  // Always show all routes - let users filter via country selection
+  // Previously hid low/medium volume routes at high zoom, but this was confusing on mobile
+  return true;
 }
 
 /**
