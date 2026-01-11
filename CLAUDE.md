@@ -17,78 +17,112 @@ An interactive web-based map for Model United Nations (MUN) competition focused 
 
 ---
 
-## CRITICAL: Branch Protection Rules (READ FIRST)
+## CRITICAL: Worktree-Based Development (READ FIRST)
 
-### NEVER START WORK ON MAIN BRANCH
+### NEVER WORK ON MAIN - ALWAYS USE WORKTREES
 
-**This rule has NO exceptions. Violating it will cause merge conflicts and data loss.**
+**This rule has NO exceptions. All tasks MUST use git worktrees, NOT simple branches.**
 
-Before starting ANY task, you MUST:
+#### Why Worktrees (Not Simple Branches)?
 
-1. **Check current branch**: `git branch --show-current`
-2. **If on main**: STOP immediately and create a feature branch
-3. **If on feature branch**: Verify it's the correct branch for your task
+- **Isolation**: Each task has its own directory - no accidental changes to main
+- **Parallel work**: Multiple tasks can run simultaneously without conflicts
+- **Safety**: Main repository stays clean and untouched
+- **Clarity**: Physical separation makes it obvious which task you're working on
 
 #### Mandatory Pre-Task Checklist
 
 ```bash
 # ALWAYS run this before starting any work
-current_branch=$(git branch --show-current)
+current_dir=$(pwd)
+main_repo="/Users/gabrielabramovich/Projects/interactive-map-mun"
 
-if [ "$current_branch" = "main" ]; then
-  echo "⛔ ERROR: You are on main branch!"
-  echo "⛔ Create a feature branch before doing ANY work!"
-  echo "⛔ Run: git checkout -b feature/MUN-XXX-description"
+if [ "$current_dir" = "$main_repo" ]; then
+  echo "⛔ ERROR: You are in the main repository!"
+  echo "⛔ You MUST create a worktree before doing ANY work!"
+  echo "⛔ Run: git worktree add ../mun-feature-name -b feature/MUN-XXX-description"
   exit 1
 fi
 
-echo "✅ Safe to proceed on branch: $current_branch"
+current_branch=$(git branch --show-current)
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: You are on main branch!"
+  echo "⛔ Something is wrong - worktrees should never be on main"
+  exit 1
+fi
+
+echo "✅ Safe to proceed in worktree: $current_dir"
+echo "✅ On branch: $current_branch"
 ```
 
-#### What Happens If You Work on Main
-
-- Commits cannot be pushed (protected branch)
-- Work must be manually moved to a new branch
-- Risk of losing uncommitted changes
-- Blocks other developers from merging
-
-#### Correct Workflow
+#### Correct Workflow (MANDATORY)
 
 ```bash
-# 1. ALWAYS start from main
-git checkout main
-git pull origin main
+# 1. From main repository, create a worktree for your task
+cd /Users/gabrielabramovich/Projects/interactive-map-mun
+git worktree add ../mun-feature-name -b feature/MUN-XXX-description
 
-# 2. IMMEDIATELY create feature branch (before any code changes)
-git checkout -b feature/MUN-XXX-description
+# 2. Change to the worktree directory
+cd ../mun-feature-name
 
-# 3. NOW you can start working
+# 3. Install dependencies in the worktree
+bun install
+
+# 4. NOW you can start working in this isolated directory
 # ... write code, make commits ...
+
+# 5. After PR is merged, clean up
+cd /Users/gabrielabramovich/Projects/interactive-map-mun
+git worktree remove ../mun-feature-name
 ```
 
-#### Prohibited Commands on Main
+#### Prohibited Actions
 
-These commands are FORBIDDEN when on main branch:
+These are FORBIDDEN:
 
-- `git add` (any files)
-- `git commit`
-- `git push origin main`
-- Any file creation or modification
+- Working directly in `/Users/gabrielabramovich/Projects/interactive-map-mun` (main repo)
+- Using `git checkout -b` instead of `git worktree add`
+- Any `git add`, `git commit`, or file changes in the main repository
+- Switching branches within a worktree
 
-#### Recovery If You Accidentally Started on Main
+#### What Happens If You Work in Main Repo
+
+- Changes pollute the main working directory
+- Risk of accidentally committing to main
+- Conflicts with other parallel tasks
+- Makes it harder to context-switch between tasks
+
+#### Recovery If You Accidentally Started in Main Repo
 
 ```bash
-# If you have uncommitted changes on main:
+# If you have uncommitted changes in main repo:
+cd /Users/gabrielabramovich/Projects/interactive-map-mun
 git stash
-git checkout -b feature/MUN-XXX-description
+git worktree add ../mun-feature-name -b feature/MUN-XXX-description
+cd ../mun-feature-name
 git stash pop
 
-# If you already committed on main:
-git branch feature/MUN-XXX-description  # Create branch at current commit
-git checkout feature/MUN-XXX-description
+# If you already committed in main repo on a feature branch:
+# First, note your branch name
+branch_name=$(git branch --show-current)
+# Create worktree from existing branch
+git worktree add ../mun-feature-name $branch_name
+# Switch main repo back to main
 git checkout main
-git reset --hard origin/main  # Reset main to remote state
+# Continue work in worktree
+cd ../mun-feature-name
 ```
+
+#### Worktree Naming Convention
+
+```
+../mun-<short-task-name>
+```
+
+Examples:
+- `../mun-branch-protection` for this task
+- `../mun-country-panel` for country panel feature
+- `../mun-fix-hover` for hover bug fix
 
 ---
 
