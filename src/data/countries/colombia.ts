@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Colombia Country Data
@@ -21,6 +21,78 @@ export const colombia: Country = {
     eradicationEfforts: 5687,
     traffickingRoutes: ["USA", "MEX", "ECU", "VEN", "BRA", "PAN"],
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "PAN",
+      toCountryName: "Panama",
+      type: "land",
+      volume: "high",
+      description: "Colombia to Panama via Darien Gap"
+    },
+    {
+      toCountryId: "VEN",
+      toCountryName: "Venezuela",
+      type: "land",
+      volume: "high",
+      description: "Eastern border corridor to Venezuela"
+    },
+    {
+      toCountryId: "ECU",
+      toCountryName: "Ecuador",
+      type: "land",
+      volume: "medium",
+      description: "Southern border route to Ecuador"
+    },
+    {
+      toCountryId: "BRA",
+      toCountryName: "Brazil",
+      type: "land",
+      volume: "medium",
+      description: "Colombia to Brazil via Amazon"
+    },
+    {
+      toCountryId: "DOM",
+      toCountryName: "Dominican Republic",
+      type: "maritime",
+      volume: "high",
+      description: "Colombia to Caribbean"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "maritime",
+      volume: "high",
+      description: "Direct route to Florida"
+    },
+    {
+      toCountryId: "MEX",
+      toCountryName: "Mexico",
+      type: "maritime",
+      volume: "high",
+      description: "Pacific route to Mexican cartels"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "air",
+      volume: "high",
+      description: "Colombia to Spain - major European entry point"
+    },
+    {
+      toCountryId: "FRA",
+      toCountryName: "France",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Paris"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "air",
+      volume: "high",
+      description: "Direct flights to US East Coast"
+    }
+  ],
   unodcPrograms: [
     {
       name: "CRIMJUST",

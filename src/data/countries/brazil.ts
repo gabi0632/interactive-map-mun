@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Brazil Country Data
@@ -19,6 +19,78 @@ export const brazil: Country = {
     seizures: 45000, // kg per year - Brazil routinely seizes tens of metric tons annually
     traffickingRoutes: ["NLD", "BEL", "ESP", "PRT", "ITA", "GBR", "AGO", "NGA"]
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "maritime",
+      volume: "high",
+      description: "Brazil to Europe via Atlantic"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "maritime",
+      volume: "high",
+      description: "Brazil to Rotterdam - major cocaine entry point"
+    },
+    {
+      toCountryId: "BEL",
+      toCountryName: "Belgium",
+      type: "maritime",
+      volume: "high",
+      description: "Brazil to Antwerp - major European port"
+    },
+    {
+      toCountryId: "PRT",
+      toCountryName: "Portugal",
+      type: "maritime",
+      volume: "medium",
+      description: "Brazil to Portugal - historic trade route"
+    },
+    {
+      toCountryId: "ITA",
+      toCountryName: "Italy",
+      type: "maritime",
+      volume: "medium",
+      description: "Brazil to Italy - Ndrangheta connection"
+    },
+    {
+      toCountryId: "AGO",
+      toCountryName: "Angola",
+      type: "maritime",
+      volume: "medium",
+      description: "Brazil to Angola - Africa transit route"
+    },
+    {
+      toCountryId: "NGA",
+      toCountryName: "Nigeria",
+      type: "maritime",
+      volume: "medium",
+      description: "Brazil to Nigeria - West Africa hub"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "air",
+      volume: "high",
+      description: "Air route to Madrid"
+    },
+    {
+      toCountryId: "GBR",
+      toCountryName: "United Kingdom",
+      type: "air",
+      volume: "medium",
+      description: "Brazil to UK"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "air",
+      volume: "medium",
+      description: "Air route via Schiphol Airport"
+    }
+  ],
   unodcPrograms: [
     {
       name: "CRIMJUST",

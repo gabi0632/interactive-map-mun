@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * Austria
@@ -17,6 +17,29 @@ export const austria: Country = {
     seizures: 800, // kg per year (estimated, limited transit route)
     traffickingRoutes: ["DEU", "ITA", "SVN"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "DEU",
+      fromCountryName: "Germany",
+      type: "land",
+      volume: "medium",
+      description: "Redistribution from German market"
+    },
+    {
+      fromCountryId: "ITA",
+      fromCountryName: "Italy",
+      type: "land",
+      volume: "medium",
+      description: "Distribution via Italian 'Ndrangheta networks"
+    },
+    {
+      fromCountryId: "SVN",
+      fromCountryName: "Slovenia",
+      type: "land",
+      volume: "low",
+      description: "Balkan route transit"
+    }
+  ],
   unodcPrograms: [
     {
       name: "UNODC Headquarters Operations",

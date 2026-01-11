@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Honduras Country Data
@@ -17,6 +17,29 @@ export const honduras: Country = {
     seizures: 7000, // kg per year (2024 data - first 4 months)
     traffickingRoutes: ["GTM", "MEX", "USA"], // Transit destinations
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "GTM",
+      toCountryName: "Guatemala",
+      type: "land",
+      volume: "high",
+      description: "Honduras to Guatemala corridor"
+    },
+    {
+      toCountryId: "MEX",
+      toCountryName: "Mexico",
+      type: "land",
+      volume: "medium",
+      description: "Land route to Mexico via Guatemala"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "air",
+      volume: "medium",
+      description: "Air route to US"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP (Passenger and Cargo Control Programme)",

@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Bolivia Country Data
@@ -21,6 +21,36 @@ export const bolivia: Country = {
     eradicationEfforts: 8500,
     traffickingRoutes: ["BRA", "ARG", "PER", "PRY", "CHL"],
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "BRA",
+      toCountryName: "Brazil",
+      type: "land",
+      volume: "medium",
+      description: "Eastern border route to Brazil"
+    },
+    {
+      toCountryId: "ARG",
+      toCountryName: "Argentina",
+      type: "land",
+      volume: "high",
+      description: "Bolivia to Argentina via northern border"
+    },
+    {
+      toCountryId: "PRY",
+      toCountryName: "Paraguay",
+      type: "land",
+      volume: "medium",
+      description: "Bolivia to Paraguay - Chaco route"
+    },
+    {
+      toCountryId: "CHL",
+      toCountryName: "Chile",
+      type: "land",
+      volume: "medium",
+      description: "Bolivia to Chile via northern border"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Coca Monitoring Programme",

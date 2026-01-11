@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Guatemala Country Data
@@ -17,6 +17,22 @@ export const guatemala: Country = {
     seizures: 6000, // kg per year (2024 data)
     traffickingRoutes: ["MEX", "USA"], // Primary destinations
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "MEX",
+      toCountryName: "Mexico",
+      type: "land",
+      volume: "high",
+      description: "Guatemala to Mexico - primary land corridor"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "air",
+      volume: "medium",
+      description: "Air route to US"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP (Passenger and Cargo Control Programme)",

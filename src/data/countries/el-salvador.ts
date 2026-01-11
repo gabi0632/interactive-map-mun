@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * El Salvador Country Data
@@ -17,6 +17,29 @@ export const elSalvador: Country = {
     seizures: 2500, // kg per year (approximate)
     traffickingRoutes: ["GTM", "MEX", "USA"], // Transit destinations
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "GTM",
+      toCountryName: "Guatemala",
+      type: "land",
+      volume: "medium",
+      description: "Land route to Guatemala"
+    },
+    {
+      toCountryId: "MEX",
+      toCountryName: "Mexico",
+      type: "land",
+      volume: "low",
+      description: "Land route to Mexico via Guatemala"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "air",
+      volume: "low",
+      description: "Air route to US"
+    }
+  ],
   unodcPrograms: [
     {
       name: "CRIMJUST",

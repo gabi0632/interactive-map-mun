@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * Germany
@@ -17,6 +17,15 @@ export const germany: Country = {
     seizures: 43000, // kg in 2023
     traffickingRoutes: ["NLD", "BEL", "ESP", "COL"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "ECU",
+      fromCountryName: "Ecuador",
+      type: "maritime",
+      volume: "medium",
+      description: "Ecuador to Hamburg"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Port Control Programme (PCCP)",

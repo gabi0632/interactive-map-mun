@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Ecuador Country Data
@@ -19,6 +19,50 @@ export const ecuador: Country = {
     seizures: 95000,
     traffickingRoutes: ["BEL", "DEU", "NLD", "ESP", "GBR"]
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "MEX",
+      toCountryName: "Mexico",
+      type: "maritime",
+      volume: "medium",
+      description: "Pacific route to Mexican cartels"
+    },
+    {
+      toCountryId: "BEL",
+      toCountryName: "Belgium",
+      type: "maritime",
+      volume: "high",
+      description: "Ecuador to Antwerp - major route"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "maritime",
+      volume: "high",
+      description: "Ecuador to Rotterdam"
+    },
+    {
+      toCountryId: "DEU",
+      toCountryName: "Germany",
+      type: "maritime",
+      volume: "medium",
+      description: "Ecuador to Hamburg"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to Spanish ports"
+    },
+    {
+      toCountryId: "GBR",
+      toCountryName: "United Kingdom",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to UK ports"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP (Passenger and Cargo Control Programme)",

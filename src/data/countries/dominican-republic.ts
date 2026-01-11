@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Dominican Republic Country Data
@@ -17,6 +17,50 @@ export const dominicanRepublic: Country = {
     seizures: 15000, // kg per year (approximate)
     traffickingRoutes: ["USA", "PRI", "ESP", "NLD", "BEL"], // Primary destinations
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "maritime",
+      volume: "high",
+      description: "Dominican Republic to Florida"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "air",
+      volume: "high",
+      description: "Dominican Republic to US East Coast"
+    },
+    {
+      toCountryId: "PRI",
+      toCountryName: "Puerto Rico",
+      type: "maritime",
+      volume: "medium",
+      description: "Dominican Republic to Puerto Rico"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Madrid"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Amsterdam"
+    },
+    {
+      toCountryId: "BEL",
+      toCountryName: "Belgium",
+      type: "air",
+      volume: "low",
+      description: "Air route to Brussels"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP (Passenger and Cargo Control Programme)",

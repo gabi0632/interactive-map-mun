@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Panama Country Data
@@ -17,6 +17,50 @@ export const panama: Country = {
     seizures: 85000, // kg per year (2025 estimates - record highs)
     traffickingRoutes: ["USA", "ESP", "NLD", "BEL", "ITA"], // Global destinations
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "CRI",
+      toCountryName: "Costa Rica",
+      type: "land",
+      volume: "high",
+      description: "Land route to Costa Rica"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to USA via Caribbean"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to Spain"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to Rotterdam"
+    },
+    {
+      toCountryId: "BEL",
+      toCountryName: "Belgium",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to Antwerp"
+    },
+    {
+      toCountryId: "ITA",
+      toCountryName: "Italy",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to Italian ports"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP (Passenger and Cargo Control Programme)",

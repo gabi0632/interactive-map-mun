@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * Italy
@@ -17,6 +17,29 @@ export const italy: Country = {
     seizures: 28000, // kg per year (estimated based on Italian enforcement)
     traffickingRoutes: ["COL", "NLD", "BEL", "ESP"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "BRA",
+      fromCountryName: "Brazil",
+      type: "maritime",
+      volume: "medium",
+      description: "Brazil to Italy - 'Ndrangheta connection"
+    },
+    {
+      fromCountryId: "ARG",
+      fromCountryName: "Argentina",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Argentina"
+    },
+    {
+      fromCountryId: "PAN",
+      fromCountryName: "Panama",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Panama"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Anti-Mafia Judicial Cooperation",

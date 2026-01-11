@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Costa Rica Country Data
@@ -17,6 +17,36 @@ export const costaRica: Country = {
     seizures: 25000, // kg per year (approximate)
     traffickingRoutes: ["USA", "MEX", "NLD", "ESP"], // Destinations
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "maritime",
+      volume: "medium",
+      description: "Costa Rica to Florida"
+    },
+    {
+      toCountryId: "MEX",
+      toCountryName: "Mexico",
+      type: "land",
+      volume: "medium",
+      description: "Land route northward to Mexico"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "maritime",
+      volume: "medium",
+      description: "Costa Rica to Netherlands"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to Spain"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP (Passenger and Cargo Control Programme)",

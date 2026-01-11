@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * United States of America
@@ -17,6 +17,92 @@ export const usa: Country = {
     seizures: 145000, // kg per year (estimated based on interdiction efforts)
     traffickingRoutes: ["MEX", "COL", "PER", "BOL"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "MEX",
+      fromCountryName: "Mexico",
+      type: "land",
+      volume: "high",
+      description: "Mexico-US border crossing - primary trafficking corridor"
+    },
+    {
+      fromCountryId: "MEX",
+      fromCountryName: "Mexico",
+      type: "air",
+      volume: "medium",
+      description: "Air routes from Mexico"
+    },
+    {
+      fromCountryId: "COL",
+      fromCountryName: "Colombia",
+      type: "maritime",
+      volume: "high",
+      description: "Direct route from Colombia to Florida"
+    },
+    {
+      fromCountryId: "COL",
+      fromCountryName: "Colombia",
+      type: "air",
+      volume: "high",
+      description: "Direct flights from Colombia"
+    },
+    {
+      fromCountryId: "DOM",
+      fromCountryName: "Dominican Republic",
+      type: "maritime",
+      volume: "high",
+      description: "Caribbean route from Dominican Republic"
+    },
+    {
+      fromCountryId: "DOM",
+      fromCountryName: "Dominican Republic",
+      type: "air",
+      volume: "high",
+      description: "Air route from Dominican Republic to East Coast"
+    },
+    {
+      fromCountryId: "VEN",
+      fromCountryName: "Venezuela",
+      type: "maritime",
+      volume: "medium",
+      description: "Venezuela to Florida"
+    },
+    {
+      fromCountryId: "PAN",
+      fromCountryName: "Panama",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to USA via Caribbean"
+    },
+    {
+      fromCountryId: "CRI",
+      fromCountryName: "Costa Rica",
+      type: "maritime",
+      volume: "medium",
+      description: "Costa Rica to Florida"
+    },
+    {
+      fromCountryId: "GTM",
+      fromCountryName: "Guatemala",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Guatemala"
+    },
+    {
+      fromCountryId: "HND",
+      fromCountryName: "Honduras",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Honduras"
+    },
+    {
+      fromCountryId: "CHL",
+      fromCountryName: "Chile",
+      type: "maritime",
+      volume: "medium",
+      description: "Chile to US West Coast"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Border Control and Interdiction",

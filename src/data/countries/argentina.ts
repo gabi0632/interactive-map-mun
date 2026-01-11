@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Argentina Country Data
@@ -19,6 +19,57 @@ export const argentina: Country = {
     seizures: 8500,
     traffickingRoutes: ["ESP", "ITA", "NLD", "BEL", "GBR", "FRA"]
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "maritime",
+      volume: "high",
+      description: "Argentina to Spain - primary route"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Madrid"
+    },
+    {
+      toCountryId: "ITA",
+      toCountryName: "Italy",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to Italian ports"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to Rotterdam"
+    },
+    {
+      toCountryId: "BEL",
+      toCountryName: "Belgium",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to Antwerp"
+    },
+    {
+      toCountryId: "GBR",
+      toCountryName: "United Kingdom",
+      type: "air",
+      volume: "low",
+      description: "Air route to London"
+    },
+    {
+      toCountryId: "FRA",
+      toCountryName: "France",
+      type: "air",
+      volume: "low",
+      description: "Air route to Paris"
+    }
+  ],
   unodcPrograms: [
     {
       name: "CRIMJUST",
