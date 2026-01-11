@@ -15,6 +15,83 @@ An interactive web-based map for Model United Nations (MUN) competition focused 
   - Synthetic opioids (fentanyl)
   - UNODC programs (PCCP, CRIMJUST)
 
+---
+
+## CRITICAL: Branch Protection Rules (READ FIRST)
+
+### NEVER START WORK ON MAIN BRANCH
+
+**This rule has NO exceptions. Violating it will cause merge conflicts and data loss.**
+
+Before starting ANY task, you MUST:
+
+1. **Check current branch**: `git branch --show-current`
+2. **If on main**: STOP immediately and create a feature branch
+3. **If on feature branch**: Verify it's the correct branch for your task
+
+#### Mandatory Pre-Task Checklist
+
+```bash
+# ALWAYS run this before starting any work
+current_branch=$(git branch --show-current)
+
+if [ "$current_branch" = "main" ]; then
+  echo "⛔ ERROR: You are on main branch!"
+  echo "⛔ Create a feature branch before doing ANY work!"
+  echo "⛔ Run: git checkout -b feature/MUN-XXX-description"
+  exit 1
+fi
+
+echo "✅ Safe to proceed on branch: $current_branch"
+```
+
+#### What Happens If You Work on Main
+
+- Commits cannot be pushed (protected branch)
+- Work must be manually moved to a new branch
+- Risk of losing uncommitted changes
+- Blocks other developers from merging
+
+#### Correct Workflow
+
+```bash
+# 1. ALWAYS start from main
+git checkout main
+git pull origin main
+
+# 2. IMMEDIATELY create feature branch (before any code changes)
+git checkout -b feature/MUN-XXX-description
+
+# 3. NOW you can start working
+# ... write code, make commits ...
+```
+
+#### Prohibited Commands on Main
+
+These commands are FORBIDDEN when on main branch:
+
+- `git add` (any files)
+- `git commit`
+- `git push origin main`
+- Any file creation or modification
+
+#### Recovery If You Accidentally Started on Main
+
+```bash
+# If you have uncommitted changes on main:
+git stash
+git checkout -b feature/MUN-XXX-description
+git stash pop
+
+# If you already committed on main:
+git branch feature/MUN-XXX-description  # Create branch at current commit
+git checkout feature/MUN-XXX-description
+git checkout main
+git reset --hard origin/main  # Reset main to remote state
+```
+
+---
+
 ## Context Management System
 
 ### Rules for Context Files
