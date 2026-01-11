@@ -14,6 +14,7 @@ import type { CountryRole } from '@/types';
 import type { RouteType } from '@/data/routes';
 import {
   GEO_URL,
+  FRENCH_GUIANA_GEO_URL,
   ISO_NUMERIC_TO_ALPHA3,
   LATIN_AMERICA_COUNTRIES,
   COUNTRIES_IN_SCOPE,
@@ -344,6 +345,74 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                         outline: 'none',
                         cursor: clickable ? 'pointer' : 'default',
                         filter: clickable ? 'url(#country-hover)' : undefined,
+                        transition: 'all 0.25s ease-out',
+                      },
+                      pressed: {
+                        fill: getCountryColor(iso3),
+                        stroke: '#5D4E37',
+                        strokeWidth: 1.2,
+                        outline: 'none',
+                        filter: 'url(#country-selected)',
+                      },
+                    }}
+                    className="transition-all duration-200"
+                  />
+                );
+              })
+            }
+          </Geographies>
+
+          {/* French Guiana overlay - separate from France */}
+          <Geographies geography={FRENCH_GUIANA_GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const iso3 = 'GUF';
+                const isHovered = hoveredCountry === iso3;
+                const isSelected = selectedCountry === iso3;
+
+                const getFilter = () => {
+                  if (isSelected) return 'url(#country-selected)';
+                  if (isHovered) return 'url(#country-hover)';
+                  return undefined;
+                };
+
+                return (
+                  <Geography
+                    key={`guf-${geo.rsmKey}`}
+                    geography={geo}
+                    onClick={() => onCountryClick('GUF')}
+                    onMouseEnter={(event) => {
+                      if (isTouchDevice) return;
+                      setHoveredCountry('GUF');
+                      const country = countryById['GUF'];
+                      const role = countryRoles['GUF'];
+                      if (country && role) {
+                        setTooltip({
+                          x: event.clientX,
+                          y: event.clientY,
+                          countryName: country.name,
+                          role: role,
+                        });
+                      }
+                    }}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                    style={{
+                      default: {
+                        fill: getCountryColor(iso3),
+                        stroke: isSelected ? '#5D4E37' : '#8B7355',
+                        strokeWidth: isSelected ? 1.2 : 0.4,
+                        outline: 'none',
+                        filter: getFilter(),
+                        transition: 'all 0.25s ease-out',
+                      },
+                      hover: {
+                        fill: getCountryColor(iso3),
+                        stroke: '#5D4E37',
+                        strokeWidth: 0.8,
+                        outline: 'none',
+                        cursor: 'pointer',
+                        filter: 'url(#country-hover)',
                         transition: 'all 0.25s ease-out',
                       },
                       pressed: {
