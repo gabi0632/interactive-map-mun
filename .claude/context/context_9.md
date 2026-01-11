@@ -13,18 +13,19 @@
 ## Progress
 
 - [x] Branch created
-- [ ] Explore codebase structure
-- [ ] Research official country names
-- [ ] Update country data files
-- [ ] Update map component labels
-- [ ] Add French Guiana data and map handling
-- [ ] Test changes in browser
-- [ ] PR created
-- [ ] Code review passed
-- [ ] Merged to main
+- [x] Explore codebase structure
+- [x] Research official country names
+- [x] Update country data files with official names
+- [x] Update map labels to match panel names
+- [x] Add French Guiana data and map handling
+- [x] Test changes in browser
+- [x] PR created: #14
 
 ## Decisions Made
 
 - Branch name: feature/MUN-013-official-country-names
+- Used full official names for all countries (e.g., "Plurinational State of Bolivia")
+- Map labels now match panel titles for consistency
+- French Guiana added as "other" role territory
 
-## Status: ACTIVE
+## Status: IN_REVIEW
