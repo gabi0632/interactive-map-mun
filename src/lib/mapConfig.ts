@@ -139,3 +139,4 @@ export const ISO_NUMERIC_TO_ALPHA3: Record<string, string> = {
 };
 
 export const GEO_URL = '/geo/world-110m.json';
+export const FRENCH_GUIANA_GEO_URL = '/geo/french-guiana.json';

@@ -54,6 +54,17 @@ export interface CriminalOrganization {
 }
 
 /**
+ * Official status of a territory/country
+ * Used to distinguish sovereign nations from territories
+ */
+export type OfficialStatus =
+  | "sovereign"
+  | "overseas_department"
+  | "overseas_territory"
+  | "autonomous_region"
+  | "dependent_territory";
+
+/**
  * Main Country interface - represents all data for a country
  * in the drug trafficking context
  */
@@ -63,6 +74,12 @@ export interface Country {
 
   /** Full country name */
   name: string;
+
+  /** Official status (sovereign nation, territory, etc.) */
+  officialStatus?: OfficialStatus;
+
+  /** Parent country code if this is a territory (e.g., "FRA" for French Guiana) */
+  sovereigntyOf?: string;
 
   /** Capital city */
   capital: string;

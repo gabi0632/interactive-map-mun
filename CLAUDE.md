@@ -309,6 +309,97 @@ When a user clicks on a country, show:
 5. **Policy Stance**: Country's approach to drug trafficking
 6. **Major Criminal Organizations**: If applicable
 
+---
+
+## Country Data Verification (MANDATORY)
+
+### Rule: Always Verify Country Data with data-researcher Agent
+
+Before adding or updating ANY country data, you MUST use the `data-researcher` agent to verify the information is accurate.
+
+### What to Verify
+
+For **ALL countries/territories**, verify:
+
+1. **Official Name** - Use the correct official name (e.g., "Republic of Colombia", not just "Colombia")
+2. **Political Status** - Is it a sovereign nation, territory, or other? Set `officialStatus` field accordingly:
+   - `sovereign` - Independent nation
+   - `overseas_department` - Part of another country (e.g., French Guiana is part of France)
+   - `overseas_territory` - Territory of another country
+   - `autonomous_region` - Self-governing region
+   - `dependent_territory` - Dependent on another nation
+3. **Capital City** - Verify the current capital
+4. **Population** - Use recent census data
+5. **Parent Country** - If not sovereign, set `sovereigntyOf` to parent country's ISO code
+
+### Non-Sovereign Territories Checklist
+
+When adding territories (not independent countries), ALWAYS verify:
+
+- [ ] Is it actually independent? Many territories are often mistaken for countries
+- [ ] What is its exact political status?
+- [ ] Which country has sovereignty over it?
+- [ ] Does it have its own ISO code or use the parent country's?
+
+**Common Mistakes to Avoid:**
+
+| Territory | WRONG | CORRECT |
+|-----------|-------|---------|
+| French Guiana | "French Guiana Republic" | Overseas department of France |
+| Puerto Rico | "Republic of Puerto Rico" | US territory |
+| Guam | "Guam" (as sovereign) | US territory |
+| Aruba | "Republic of Aruba" | Constituent country of Netherlands |
+
+### Using data-researcher Agent
+
+When adding or updating country data:
+
+```markdown
+Spawn data-researcher agent with prompt:
+
+"Verify the following information for [COUNTRY NAME]:
+1. Official political status (sovereign nation, territory, etc.)
+2. If territory: which country has sovereignty
+3. Official name
+4. Capital city
+5. Current population estimate
+
+Return verified data with sources."
+```
+
+### Example: Adding French Guiana
+
+```typescript
+// CORRECT: French Guiana as overseas department
+export const frenchGuiana: Country = {
+  id: "GUF",
+  name: "French Guiana",
+  officialStatus: "overseas_department",  // NOT sovereign!
+  sovereigntyOf: "FRA",                   // France has sovereignty
+  capital: "Cayenne",
+  // ... rest of data
+};
+
+// WRONG: Treating French Guiana as independent republic
+export const frenchGuiana: Country = {
+  id: "GUF",
+  name: "French Guiana Republic",  // WRONG - not a republic!
+  // Missing officialStatus and sovereigntyOf
+  capital: "Cayenne",
+  // ...
+};
+```
+
+### Agent Chain for Country Data
+
+```
+data-researcher → (verify facts) → data-compiler → (create/update file) → code-reviewer
+```
+
+**NEVER add country data without verification using data-researcher agent.**
+
+---
+
 ## File Structure
 
 ```

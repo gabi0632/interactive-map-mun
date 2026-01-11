@@ -14,6 +14,7 @@ import type { CountryRole } from '@/types';
 import type { RouteType } from '@/data/routes';
 import {
   GEO_URL,
+  FRENCH_GUIANA_GEO_URL,
   ISO_NUMERIC_TO_ALPHA3,
   LATIN_AMERICA_COUNTRIES,
   COUNTRIES_IN_SCOPE,
@@ -123,6 +124,48 @@ const ROLE_LABELS: Record<CountryRole, string> = {
   consumer: 'Consumer',
   other: 'Other',
 };
+
+/**
+ * ISO code for French Guiana - used for separate overlay rendering
+ * (French Guiana is not a separate feature in world-110m.json)
+ */
+const FRENCH_GUIANA_ISO3 = 'GUF';
+
+/**
+ * Generate Geography styles based on country state
+ */
+interface GeographyStylesParams {
+  fillColor: string;
+  isSelected: boolean;
+  isClickable: boolean;
+}
+
+const getGeographyStyles = ({ fillColor, isSelected, isClickable }: GeographyStylesParams) => ({
+  default: {
+    fill: fillColor,
+    stroke: isSelected ? '#5D4E37' : '#8B7355',
+    strokeWidth: isSelected ? 1.2 : 0.4,
+    outline: 'none',
+    filter: isSelected ? 'url(#country-selected)' : undefined,
+    transition: 'all 0.25s ease-out',
+  },
+  hover: {
+    fill: fillColor,
+    stroke: isClickable ? '#5D4E37' : '#8B7355',
+    strokeWidth: isClickable ? 0.8 : 0.4,
+    outline: 'none',
+    cursor: isClickable ? 'pointer' : 'default',
+    filter: isClickable ? 'url(#country-hover)' : undefined,
+    transition: 'all 0.25s ease-out',
+  },
+  pressed: {
+    fill: fillColor,
+    stroke: '#5D4E37',
+    strokeWidth: 1.2,
+    outline: 'none',
+    filter: 'url(#country-selected)',
+  },
+});
 
 interface InteractiveMapProps {
   /** Callback when a country is clicked, receives country ID (ISO alpha-3) */
@@ -310,15 +353,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 // Convert numeric ISO code to alpha-3
                 const iso3 = ISO_NUMERIC_TO_ALPHA3[geo.id] || '';
                 const clickable = isClickable(iso3);
-                const isHovered = hoveredCountry === iso3;
                 const isSelected = selectedCountry === iso3;
-
-                // Determine filter based on state
-                const getFilter = () => {
-                  if (isSelected) return 'url(#country-selected)';
-                  if (isHovered && clickable) return 'url(#country-hover)';
-                  return undefined;
-                };
 
                 return (
                   <Geography
@@ -328,32 +363,50 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
                     onMouseEnter={(event) => handleMouseEnter(geo.id, event)}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
-                    style={{
-                      default: {
-                        fill: getCountryColor(iso3),
-                        stroke: isSelected ? '#5D4E37' : '#8B7355',
-                        strokeWidth: isSelected ? 1.2 : 0.4,
-                        outline: 'none',
-                        filter: getFilter(),
-                        transition: 'all 0.25s ease-out',
-                      },
-                      hover: {
-                        fill: getCountryColor(iso3),
-                        stroke: clickable ? '#5D4E37' : '#8B7355',
-                        strokeWidth: clickable ? 0.8 : 0.4,
-                        outline: 'none',
-                        cursor: clickable ? 'pointer' : 'default',
-                        filter: clickable ? 'url(#country-hover)' : undefined,
-                        transition: 'all 0.25s ease-out',
-                      },
-                      pressed: {
-                        fill: getCountryColor(iso3),
-                        stroke: '#5D4E37',
-                        strokeWidth: 1.2,
-                        outline: 'none',
-                        filter: 'url(#country-selected)',
-                      },
+                    style={getGeographyStyles({
+                      fillColor: getCountryColor(iso3),
+                      isSelected,
+                      isClickable: clickable,
+                    })}
+                    className="transition-all duration-200"
+                  />
+                );
+              })
+            }
+          </Geographies>
+
+          {/* French Guiana overlay - separate from France */}
+          <Geographies geography={FRENCH_GUIANA_GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const isSelected = selectedCountry === FRENCH_GUIANA_ISO3;
+
+                return (
+                  <Geography
+                    key={`${FRENCH_GUIANA_ISO3}-${geo.rsmKey}`}
+                    geography={geo}
+                    onClick={() => onCountryClick(FRENCH_GUIANA_ISO3)}
+                    onMouseEnter={(event) => {
+                      if (isTouchDevice) return;
+                      setHoveredCountry(FRENCH_GUIANA_ISO3);
+                      const country = countryById[FRENCH_GUIANA_ISO3];
+                      const role = countryRoles[FRENCH_GUIANA_ISO3];
+                      if (country && role) {
+                        setTooltip({
+                          x: event.clientX,
+                          y: event.clientY,
+                          countryName: country.name,
+                          role: role,
+                        });
+                      }
                     }}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                    style={getGeographyStyles({
+                      fillColor: getCountryColor(FRENCH_GUIANA_ISO3),
+                      isSelected,
+                      isClickable: true, // French Guiana is always clickable
+                    })}
                     className="transition-all duration-200"
                   />
                 );

@@ -8,6 +8,8 @@ import { Country } from "@/types/country";
 export const frenchGuiana: Country = {
   id: "GUF",
   name: "French Guiana",
+  officialStatus: "overseas_department",
+  sovereigntyOf: "FRA",
   capital: "Cayenne",
   population: 304557,
   flag: "🇬🇫",
