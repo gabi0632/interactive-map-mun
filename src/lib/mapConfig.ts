@@ -17,8 +17,8 @@ export const COUNTRIES_IN_SCOPE = [
   'CHN', 'RUS'                   // Other
 ] as const;
 
-// Countries clickable on map (Latin America + Europe + Key Players)
-export const LATIN_AMERICA_COUNTRIES = [
+// Countries clickable on map (all regions in scope)
+export const CLICKABLE_COUNTRIES = [
   'COL', 'PER', 'BOL',           // Producers
   'MEX', 'GTM', 'HND', 'SLV',    // Transit
   'CRI', 'PAN',                  // Transit

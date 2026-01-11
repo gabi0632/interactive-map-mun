@@ -16,7 +16,7 @@ import {
   GEO_URL,
   FRENCH_GUIANA_GEO_URL,
   ISO_NUMERIC_TO_ALPHA3,
-  LATIN_AMERICA_COUNTRIES,
+  CLICKABLE_COUNTRIES,
   COUNTRIES_IN_SCOPE,
   ROLE_COLORS,
 } from '@/lib/mapConfig';
@@ -248,10 +248,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   );
 
   /**
-   * Check if a country is clickable (in Latin America countries list)
+   * Check if a country is clickable (in scope for the simulation)
    */
   const isClickable = useCallback((iso3: string): boolean => {
-    return (LATIN_AMERICA_COUNTRIES as readonly string[]).includes(iso3);
+    return (CLICKABLE_COUNTRIES as readonly string[]).includes(iso3);
   }, []);
 
   /**

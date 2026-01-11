@@ -15,7 +15,7 @@ export const belgium: Country = {
     "Belgium serves as one of Europe's primary cocaine entry points through the Port of Antwerp-Bruges, Europe's second-largest container port. In 2023, authorities seized a record 121 tonnes of cocaine, declining to 44 tonnes in 2024 as traffickers adapted by splitting shipments into smaller loads. In October 2025, an Antwerp judge warned that Belgium risks becoming Europe's first 'narco-state,' as criminal organizations have established deep-rooted mafia-like structures that challenge law enforcement through systematic corruption, violence, and intimidation.",
   stats: {
     seizures: 44000, // kg in 2024
-    traffickingRoutes: ["COL", "ECU", "BRA", "PER"],
+    traffickingRoutes: ["COL", "ECU", "BRA", "VEN", "PER"],
   },
   unodcPrograms: [
     {
