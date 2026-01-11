@@ -14,9 +14,9 @@ export const brazil: Country = {
   population: 216422446,
   flag: "🇧🇷",
   role: "mixed",
-  roleDescription: "A major South American export hub to Europe, particularly through ports like Santos, which handles the majority of international drug trade from Colombia, Peru, and Bolivia. Estimates suggest 80% of cocaine arriving in Europe transits through Brazilian ports. The Port of Santos is one of the most important trafficking arteries to Europe. PCC (First Capital Command) controls trafficking networks and has established links with Italian 'Ndrangheta. Brazil also faces growing domestic cocaine consumption and trafficking to West Africa. The country plays a dual role as both a transit hub and an emerging consumer market.",
+  roleDescription: "Brazil is one of the world's most important cocaine export hubs to Europe, with major ports—particularly Santos—serving as primary departure points for cocaine originating in Colombia, Peru, and Bolivia. A large share of Europe-bound cocaine transits through Brazilian ports, alongside secondary routes to West Africa. The Primeiro Comando da Capital (PCC) plays a central role in coordinating exports and maintains long-standing partnerships with Italy's 'Ndrangheta. Brazil also faces rising domestic cocaine consumption, giving it a dual role as both transit hub and consumer market. Government policy emphasizes port inspections, border control, anti-money-laundering measures, and international cooperation through UNODC initiatives, while domestic debates continue over enforcement versus decriminalization.",
   stats: {
-    seizures: 5982,
+    seizures: 45000, // kg per year - Brazil routinely seizes tens of metric tons annually
     traffickingRoutes: ["NLD", "BEL", "ESP", "PRT", "ITA", "GBR", "AGO", "NGA"]
   },
   unodcPrograms: [

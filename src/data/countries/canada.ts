@@ -12,7 +12,7 @@ export const canada: Country = {
   flag: "🇨🇦",
   role: "consumer",
   roleDescription:
-    "Growing market for synthetic drugs and cocaine. Canada ranks second in the list of countries whose citizens admitted to regular cocaine use, with about 2.6% of Canadians aged 15+ reporting cocaine use in 2020. In 2023, cocaine saw the most police-reported incidents of illegal trafficking at 8,203 incidents (20.46 per 100,000 population), up 11.7% from one year earlier. Wastewater analysis shows 5 Canadian cities would rank among the 10 cities with the highest levels of cocaine in Europe.",
+    "Growing market for synthetic drugs and cocaine. About 2.6% of Canadians aged 15+ reported cocaine use in 2020, making Canada one of the higher-consumption countries. In 2023, cocaine saw the most police-reported incidents of illegal trafficking at 8,203 incidents (20.46 per 100,000 population), up 11.7% from one year earlier. Wastewater analysis shows 5 Canadian cities would rank among the 10 cities with the highest levels of cocaine in Europe.",
   stats: {
     seizures: 15000, // kg per year (estimated based on CBSA enforcement)
     traffickingRoutes: ["USA", "MEX", "COL"],
