@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import {
   ComposableMap,
   Geographies,
@@ -206,11 +206,21 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
 
-  // Use provided values or defaults - these are initial values, map manages its own state after
+  // Track current zoom level for route scaling
   const defaultZoom = isMobile ? 1.2 : 1.5;
+  const [currentZoom, setCurrentZoom] = useState(initialZoom ?? defaultZoom);
+
+  // Use provided values or defaults - these are initial values, map manages its own state after
   const defaultCenter: [number, number] = [-20, 5];
   const zoom = initialZoom ?? defaultZoom;
   const center = initialCenter ?? defaultCenter;
+
+  /**
+   * Handle zoom/pan end - update current zoom state for route scaling
+   */
+  const handleMoveEnd = useCallback((position: { coordinates: [number, number]; zoom: number }) => {
+    setCurrentZoom(position.zoom);
+  }, []);
 
   // Projection config - world view with Americas and Asia visible
   // Note: center is handled by ZoomableGroup, not projection
@@ -345,6 +355,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           minZoom={0.8}
           maxZoom={8}
           translateExtent={[[-1000, -500], [1000, 500]]}
+          onMoveEnd={handleMoveEnd}
         >
           {/* Country geometries */}
           <Geographies geography={GEO_URL}>
@@ -415,7 +426,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           </Geographies>
 
           {/* Trafficking routes layer */}
-          <TrafficRoutes visibleTypes={visibleRouteTypes} zoom={zoom} />
+          <TrafficRoutes visibleTypes={visibleRouteTypes} zoom={currentZoom} />
 
           {/* Country labels layer */}
           <CountryLabels

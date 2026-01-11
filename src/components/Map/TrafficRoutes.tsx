@@ -19,34 +19,55 @@ interface TrafficRoutesProps {
 
 /**
  * Get stroke width based on route volume and zoom level
- * Routes get thinner when zoomed out, thicker when zoomed in
+ * Routes get MUCH THINNER when zoomed in to reduce clutter on mobile
  */
 function getStrokeWidth(volume: TraffickingRoute['volume'], zoom: number = 1): number {
   const baseWidth = {
-    high: 0.6,
-    medium: 0.4,
-    low: 0.25,
+    high: 0.4,
+    medium: 0.25,
+    low: 0.15,
   }[volume];
 
-  // Scale with zoom - routes get slightly thicker when zoomed in
-  const scaled = baseWidth * Math.pow(zoom, 0.4);
-  return Math.max(0.15, Math.min(scaled, 3)); // Clamp between 0.15 and 3
+  // Very aggressive inverse scale with zoom - routes get much thinner when zoomed in
+  // This significantly reduces visual clutter when pinch-zooming on mobile
+  const scaled = baseWidth / Math.pow(zoom, 0.8);
+  return Math.max(0.03, Math.min(scaled, 1)); // Clamp between 0.03 and 1
+}
+
+/**
+ * Get opacity based on zoom level - fade routes when zoomed in
+ */
+function getRouteOpacity(zoom: number = 1): number {
+  // Routes become more transparent when zoomed in
+  const baseOpacity = 0.6;
+  const opacity = baseOpacity / Math.pow(zoom, 0.3);
+  return Math.max(0.2, Math.min(opacity, 0.6));
+}
+
+/**
+ * Determine if a route should be visible based on zoom and volume
+ * At higher zoom levels, hide lower volume routes to reduce clutter
+ */
+function isRouteVisible(volume: TraffickingRoute['volume'], zoom: number = 1): boolean {
+  if (zoom < 1.5) return true; // Show all routes at low zoom
+  if (zoom < 2.5) return volume !== 'low'; // Hide low volume at medium zoom
+  return volume === 'high'; // Only show high volume at high zoom
 }
 
 /**
  * Get dash array configuration for each route type
- * Scales with zoom for consistent visual appearance
+ * Scales inversely with zoom for consistent visual appearance
  */
 function getDashConfig(type: RouteType, zoom: number = 1): string {
-  // Base dash patterns - scaled with zoom
-  const scale = Math.pow(zoom, 0.3);
+  // Base dash patterns - scale inversely with zoom for consistency
+  const scale = 1 / Math.pow(zoom, 0.4);
   switch (type) {
     case 'land':
-      return `${4 * scale},${2 * scale}`;
+      return `${3 * scale},${1.5 * scale}`;
     case 'maritime':
-      return `${6 * scale},${3 * scale}`;
+      return `${4 * scale},${2 * scale}`;
     case 'air':
-      return `${2 * scale},${4 * scale}`;
+      return `${1.5 * scale},${3 * scale}`;
   }
 }
 
@@ -75,9 +96,13 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
   highlightedRoute,
   zoom = 1,
 }) => {
+  // Filter routes by type AND by zoom-based visibility
   const routes = TRAFFICKING_ROUTES.filter((route) =>
-    visibleTypes.includes(route.type)
+    visibleTypes.includes(route.type) && isRouteVisible(route.volume, zoom)
   );
+
+  // Get zoom-adjusted opacity
+  const routeOpacity = getRouteOpacity(zoom);
 
   return (
     <g className="traffic-routes">
@@ -173,16 +198,16 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
 
         return (
           <g key={route.id}>
-            {/* Background glow layer - subtle ambient glow */}
+            {/* Background glow layer - very subtle ambient glow */}
             <Line
               from={route.from.coordinates}
               to={route.to.coordinates}
               stroke={ROUTE_COLORS[route.type]}
-              strokeWidth={strokeWidth * 3}
+              strokeWidth={strokeWidth * 1.5}
               strokeLinecap="round"
               style={{
-                opacity: isDimmed ? 0.05 : 0.15,
-                filter: 'blur(3px)',
+                opacity: isDimmed ? 0.01 : routeOpacity * 0.1,
+                filter: 'blur(1px)',
               }}
             />
 
@@ -196,7 +221,7 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
               strokeDasharray={dashArray}
               markerEnd={`url(#arrow-${route.type})`}
               style={{
-                opacity: isDimmed ? 0.2 : 0.9,
+                opacity: isDimmed ? 0.1 : routeOpacity,
                 filter: isHighlighted ? `url(#glow-${route.type})` : undefined,
                 animation: `route-flow ${animDuration} linear infinite`,
                 transition: 'opacity 300ms ease-out',
