@@ -52,7 +52,7 @@ export const ROUTE_COLORS = {
 // Country label configuration for map display
 export interface CountryLabelConfig {
   id: string;
-  name: string;
+  name: string | string[]; // Single string or array for multiline
   coordinates: [number, number]; // [longitude, latitude]
   offsetX?: number;
   offsetY?: number;
@@ -89,15 +89,15 @@ export const COUNTRY_LABELS: CountryLabelConfig[] = [
   { id: 'USA', name: 'UNITED STATES OF AMERICA', coordinates: [-98, 39], fontSize: 'lg' },
   { id: 'CAN', name: 'CANADA', coordinates: [-106, 56], fontSize: 'lg' },
 
-  // Consumer (Europe)
-  { id: 'GBR', name: 'UNITED KINGDOM', coordinates: [-2, 54], fontSize: 'sm' },
-  { id: 'DEU', name: 'FEDERAL REPUBLIC OF GERMANY', coordinates: [10, 51], fontSize: 'sm' },
-  { id: 'FRA', name: 'FRENCH REPUBLIC', coordinates: [2, 47], fontSize: 'sm' },
-  { id: 'ESP', name: 'KINGDOM OF SPAIN', coordinates: [-4, 40], fontSize: 'sm' },
-  { id: 'ITA', name: 'ITALIAN REPUBLIC', coordinates: [12, 43], fontSize: 'sm' },
-  { id: 'AUT', name: 'REPUBLIC OF AUSTRIA', coordinates: [14, 47.5], fontSize: 'sm' },
-  { id: 'NLD', name: 'KINGDOM OF THE NETHERLANDS', coordinates: [5.5, 52.5], fontSize: 'sm' },
-  { id: 'BEL', name: 'KINGDOM OF BELGIUM', coordinates: [4.5, 50.5], fontSize: 'sm' },
+  // Consumer (Europe) - Using multiline labels for readability in dense region
+  { id: 'GBR', name: ['UNITED', 'KINGDOM'], coordinates: [-3, 55], fontSize: 'sm' },
+  { id: 'DEU', name: ['FEDERAL REPUBLIC', 'OF GERMANY'], coordinates: [10, 51], fontSize: 'sm' },
+  { id: 'FRA', name: ['FRENCH', 'REPUBLIC'], coordinates: [2, 46], fontSize: 'sm' },
+  { id: 'ESP', name: ['KINGDOM', 'OF SPAIN'], coordinates: [-4, 40], fontSize: 'sm' },
+  { id: 'ITA', name: ['ITALIAN', 'REPUBLIC'], coordinates: [12, 42], fontSize: 'sm' },
+  { id: 'AUT', name: ['REPUBLIC', 'OF AUSTRIA'], coordinates: [16, 47.5], fontSize: 'sm' },
+  { id: 'NLD', name: ['KINGDOM OF', 'THE NETHERLANDS'], coordinates: [5.5, 53.5], fontSize: 'sm' },
+  { id: 'BEL', name: ['KINGDOM', 'OF BELGIUM'], coordinates: [4.5, 50.5], fontSize: 'sm' },
 
   // Other
   { id: 'CHN', name: "PEOPLE'S REPUBLIC OF CHINA", coordinates: [104, 35], fontSize: 'lg' },
