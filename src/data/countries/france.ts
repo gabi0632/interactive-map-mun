@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * France
@@ -17,6 +17,29 @@ export const france: Country = {
     seizures: 23200, // kg in 2023
     traffickingRoutes: ["GUF", "MTQ", "ESP", "COL", "BRA"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "GUF",
+      fromCountryName: "French Guiana",
+      type: "air",
+      volume: "high",
+      description: "French Guiana to Paris - mule route"
+    },
+    {
+      fromCountryId: "COL",
+      fromCountryName: "Colombia",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Colombia"
+    },
+    {
+      fromCountryId: "ARG",
+      fromCountryName: "Argentina",
+      type: "air",
+      volume: "low",
+      description: "Air route from Argentina"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Caribbean and French Territories Programme",

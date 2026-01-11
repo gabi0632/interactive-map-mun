@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * Netherlands
@@ -17,6 +17,85 @@ export const netherlands: Country = {
     seizures: 35000, // kg in 2024
     traffickingRoutes: ["COL", "ECU", "BRA", "VEN", "PER"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "BRA",
+      fromCountryName: "Brazil",
+      type: "maritime",
+      volume: "high",
+      description: "Brazil to Rotterdam - major cocaine entry point"
+    },
+    {
+      fromCountryId: "BRA",
+      fromCountryName: "Brazil",
+      type: "air",
+      volume: "medium",
+      description: "Air route via Schiphol"
+    },
+    {
+      fromCountryId: "ECU",
+      fromCountryName: "Ecuador",
+      type: "maritime",
+      volume: "high",
+      description: "Ecuador to Rotterdam"
+    },
+    {
+      fromCountryId: "ARG",
+      fromCountryName: "Argentina",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Argentina"
+    },
+    {
+      fromCountryId: "CHL",
+      fromCountryName: "Chile",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Chile"
+    },
+    {
+      fromCountryId: "PAN",
+      fromCountryName: "Panama",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to Rotterdam"
+    },
+    {
+      fromCountryId: "CRI",
+      fromCountryName: "Costa Rica",
+      type: "maritime",
+      volume: "medium",
+      description: "Costa Rica to Netherlands"
+    },
+    {
+      fromCountryId: "VEN",
+      fromCountryName: "Venezuela",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Venezuela"
+    },
+    {
+      fromCountryId: "PER",
+      fromCountryName: "Peru",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Peru"
+    },
+    {
+      fromCountryId: "DOM",
+      fromCountryName: "Dominican Republic",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Dominican Republic"
+    },
+    {
+      fromCountryId: "GUF",
+      fromCountryName: "French Guiana",
+      type: "air",
+      volume: "medium",
+      description: "Air route from French Guiana"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP Donor and Partner",

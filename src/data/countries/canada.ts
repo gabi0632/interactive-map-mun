@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * Canada
@@ -17,6 +17,22 @@ export const canada: Country = {
     seizures: 15000, // kg per year (estimated based on CBSA enforcement)
     traffickingRoutes: ["USA", "MEX", "COL"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "MEX",
+      fromCountryName: "Mexico",
+      type: "land",
+      volume: "medium",
+      description: "Mexico to Canada via US corridor"
+    },
+    {
+      fromCountryId: "VEN",
+      fromCountryName: "Venezuela",
+      type: "air",
+      volume: "low",
+      description: "Air route from Venezuela"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Global Programme Support",

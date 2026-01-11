@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Chile Country Data
@@ -19,6 +19,57 @@ export const chile: Country = {
     seizures: 12500,
     traffickingRoutes: ["USA", "ESP", "NLD", "AUS", "NZL", "CHN", "JPN"]
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "maritime",
+      volume: "medium",
+      description: "Chile to US West Coast"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Madrid"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route to Rotterdam"
+    },
+    {
+      toCountryId: "AUS",
+      toCountryName: "Australia",
+      type: "maritime",
+      volume: "low",
+      description: "Chile to Australia - Pacific route"
+    },
+    {
+      toCountryId: "NZL",
+      toCountryName: "New Zealand",
+      type: "maritime",
+      volume: "low",
+      description: "Pacific route to New Zealand"
+    },
+    {
+      toCountryId: "CHN",
+      toCountryName: "China",
+      type: "maritime",
+      volume: "low",
+      description: "Chile to China - trans-Pacific"
+    },
+    {
+      toCountryId: "JPN",
+      toCountryName: "Japan",
+      type: "maritime",
+      volume: "low",
+      description: "Trans-Pacific route to Japan"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Port Security Initiative",

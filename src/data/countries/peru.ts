@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Peru Country Data
@@ -21,6 +21,57 @@ export const peru: Country = {
     eradicationEfforts: 22000,
     traffickingRoutes: ["BRA", "BOL", "ECU", "COL", "ESP", "BEL", "NLD"],
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "BRA",
+      toCountryName: "Brazil",
+      type: "land",
+      volume: "high",
+      description: "Peru to Brazil via Amazon"
+    },
+    {
+      toCountryId: "BOL",
+      toCountryName: "Bolivia",
+      type: "land",
+      volume: "medium",
+      description: "Cross-border route to Bolivia"
+    },
+    {
+      toCountryId: "ECU",
+      toCountryName: "Ecuador",
+      type: "land",
+      volume: "medium",
+      description: "Northern border route to Ecuador"
+    },
+    {
+      toCountryId: "COL",
+      toCountryName: "Colombia",
+      type: "land",
+      volume: "medium",
+      description: "Cross-border route to Colombia"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Madrid"
+    },
+    {
+      toCountryId: "BEL",
+      toCountryName: "Belgium",
+      type: "air",
+      volume: "medium",
+      description: "Air route via Brussels to Antwerp"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Amsterdam/Schiphol"
+    }
+  ],
   unodcPrograms: [
     {
       name: "CRIMJUST",

@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * French Guiana
@@ -20,6 +20,29 @@ export const frenchGuiana: Country = {
     seizures: 2500, // kg per year (estimated)
     traffickingRoutes: ["FRA", "NLD", "BEL", "BRA", "SUR"],
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "FRA",
+      toCountryName: "France",
+      type: "air",
+      volume: "high",
+      description: "French Guiana to Paris - mule route"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Amsterdam"
+    },
+    {
+      toCountryId: "BEL",
+      toCountryName: "Belgium",
+      type: "air",
+      volume: "low",
+      description: "Air route to Brussels"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Caribbean and French Territories Programme",

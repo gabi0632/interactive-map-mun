@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * Belgium
@@ -17,6 +17,57 @@ export const belgium: Country = {
     seizures: 44000, // kg in 2024
     traffickingRoutes: ["COL", "ECU", "BRA", "VEN", "PER"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "BRA",
+      fromCountryName: "Brazil",
+      type: "maritime",
+      volume: "high",
+      description: "Brazil to Antwerp - major European port"
+    },
+    {
+      fromCountryId: "ECU",
+      fromCountryName: "Ecuador",
+      type: "maritime",
+      volume: "high",
+      description: "Ecuador to Antwerp - major route"
+    },
+    {
+      fromCountryId: "ARG",
+      fromCountryName: "Argentina",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Argentina"
+    },
+    {
+      fromCountryId: "PAN",
+      fromCountryName: "Panama",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to Antwerp"
+    },
+    {
+      fromCountryId: "PER",
+      fromCountryName: "Peru",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Peru"
+    },
+    {
+      fromCountryId: "DOM",
+      fromCountryName: "Dominican Republic",
+      type: "air",
+      volume: "low",
+      description: "Air route from Dominican Republic"
+    },
+    {
+      fromCountryId: "GUF",
+      fromCountryName: "French Guiana",
+      type: "air",
+      volume: "low",
+      description: "Air route from French Guiana"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Container Control Programme (CCP) Partner",

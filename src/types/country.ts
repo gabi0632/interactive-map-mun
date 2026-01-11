@@ -9,6 +9,56 @@
 export type CountryRole = "producer" | "transit" | "consumer" | "mixed" | "other";
 
 /**
+ * Type of trafficking route
+ */
+export type RouteType = "land" | "maritime" | "air";
+
+/**
+ * Volume/intensity of trafficking on a route
+ */
+export type RouteVolume = "high" | "medium" | "low";
+
+/**
+ * Outgoing trafficking route from this country
+ */
+export interface OutgoingRoute {
+  /** Destination country ISO 3166-1 alpha-3 code */
+  toCountryId: string;
+
+  /** Destination country name for display */
+  toCountryName: string;
+
+  /** Type of route (land, maritime, air) */
+  type: RouteType;
+
+  /** Volume/intensity of trafficking */
+  volume: RouteVolume;
+
+  /** Optional description of the route */
+  description?: string;
+}
+
+/**
+ * Incoming trafficking route to this country (for consumer countries)
+ */
+export interface IncomingRoute {
+  /** Source country ISO 3166-1 alpha-3 code */
+  fromCountryId: string;
+
+  /** Source country name for display */
+  fromCountryName: string;
+
+  /** Type of route (land, maritime, air) */
+  type: RouteType;
+
+  /** Volume/intensity of trafficking */
+  volume: RouteVolume;
+
+  /** Optional description of the route */
+  description?: string;
+}
+
+/**
  * Statistical data related to drug trafficking activities
  */
 export interface CountryStats {
@@ -98,6 +148,12 @@ export interface Country {
 
   /** Drug trafficking statistics */
   stats: CountryStats;
+
+  /** Outgoing trafficking routes from this country */
+  outgoingRoutes?: OutgoingRoute[];
+
+  /** Incoming trafficking routes to this country (for consumer countries) */
+  incomingRoutes?: IncomingRoute[];
 
   /** Active UNODC programs in the country */
   unodcPrograms: UNODCProgram[];

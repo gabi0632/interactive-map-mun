@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Venezuela Country Data
@@ -19,6 +19,50 @@ export const venezuela: Country = {
     seizures: 225000,
     traffickingRoutes: ["USA", "ESP", "NLD", "BRA", "CAN"]
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "BRA",
+      toCountryName: "Brazil",
+      type: "land",
+      volume: "medium",
+      description: "Venezuela to Brazil via southern border"
+    },
+    {
+      toCountryId: "DOM",
+      toCountryName: "Dominican Republic",
+      type: "maritime",
+      volume: "medium",
+      description: "Caribbean route to Dominican Republic"
+    },
+    {
+      toCountryId: "ESP",
+      toCountryName: "Spain",
+      type: "maritime",
+      volume: "medium",
+      description: "Trans-Atlantic route to Spain"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "maritime",
+      volume: "medium",
+      description: "Venezuela to Florida"
+    },
+    {
+      toCountryId: "NLD",
+      toCountryName: "Netherlands",
+      type: "air",
+      volume: "medium",
+      description: "Air route to Amsterdam/Schiphol"
+    },
+    {
+      toCountryId: "CAN",
+      toCountryName: "Canada",
+      type: "air",
+      volume: "low",
+      description: "Air route to Canada"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Technical Cooperation on Drug Monitoring",

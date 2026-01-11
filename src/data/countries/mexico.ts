@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, OutgoingRoute } from "@/types/country";
 
 /**
  * Mexico Country Data
@@ -17,6 +17,29 @@ export const mexico: Country = {
     seizures: 180000, // kg per year (approximate)
     traffickingRoutes: ["USA", "CAN"], // Primary destination markets
   },
+  outgoingRoutes: [
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "land",
+      volume: "high",
+      description: "Mexico-US border crossing - primary trafficking corridor"
+    },
+    {
+      toCountryId: "USA",
+      toCountryName: "United States",
+      type: "air",
+      volume: "medium",
+      description: "Air routes to US destinations"
+    },
+    {
+      toCountryId: "CAN",
+      toCountryName: "Canada",
+      type: "land",
+      volume: "medium",
+      description: "Mexico to Canada via US corridor"
+    }
+  ],
   unodcPrograms: [
     {
       name: "PCCP (Passenger and Cargo Control Programme)",

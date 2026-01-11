@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * United Kingdom
@@ -17,6 +17,29 @@ export const unitedKingdom: Country = {
     seizures: 35000, // kg per year (estimated based on UK enforcement data)
     traffickingRoutes: ["ESP", "NLD", "BEL", "COL"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "BRA",
+      fromCountryName: "Brazil",
+      type: "air",
+      volume: "medium",
+      description: "Brazil to UK"
+    },
+    {
+      fromCountryId: "ECU",
+      fromCountryName: "Ecuador",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Ecuador"
+    },
+    {
+      fromCountryId: "ARG",
+      fromCountryName: "Argentina",
+      type: "air",
+      volume: "low",
+      description: "Air route from Argentina"
+    }
+  ],
   unodcPrograms: [
     {
       name: "Maritime Security Programme",

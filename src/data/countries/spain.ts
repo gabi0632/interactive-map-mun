@@ -1,4 +1,4 @@
-import { Country } from "@/types/country";
+import { Country, IncomingRoute } from "@/types/country";
 
 /**
  * Spain
@@ -17,6 +17,85 @@ export const spain: Country = {
     seizures: 142000, // kg in 2023
     traffickingRoutes: ["COL", "ECU", "PER", "MAR"],
   },
+  incomingRoutes: [
+    {
+      fromCountryId: "COL",
+      fromCountryName: "Colombia",
+      type: "air",
+      volume: "high",
+      description: "Colombia to Spain - major European entry point"
+    },
+    {
+      fromCountryId: "BRA",
+      fromCountryName: "Brazil",
+      type: "maritime",
+      volume: "high",
+      description: "Brazil to Europe via Atlantic"
+    },
+    {
+      fromCountryId: "BRA",
+      fromCountryName: "Brazil",
+      type: "air",
+      volume: "high",
+      description: "Air route from Brazil"
+    },
+    {
+      fromCountryId: "VEN",
+      fromCountryName: "Venezuela",
+      type: "maritime",
+      volume: "medium",
+      description: "Trans-Atlantic route from Venezuela"
+    },
+    {
+      fromCountryId: "ECU",
+      fromCountryName: "Ecuador",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Ecuador"
+    },
+    {
+      fromCountryId: "ARG",
+      fromCountryName: "Argentina",
+      type: "maritime",
+      volume: "high",
+      description: "Argentina to Spain - primary route"
+    },
+    {
+      fromCountryId: "ARG",
+      fromCountryName: "Argentina",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Argentina"
+    },
+    {
+      fromCountryId: "PAN",
+      fromCountryName: "Panama",
+      type: "maritime",
+      volume: "high",
+      description: "Panama to Spain"
+    },
+    {
+      fromCountryId: "CRI",
+      fromCountryName: "Costa Rica",
+      type: "maritime",
+      volume: "medium",
+      description: "Maritime route from Costa Rica"
+    },
+    {
+      fromCountryId: "CHL",
+      fromCountryName: "Chile",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Chile"
+    },
+    {
+      fromCountryId: "DOM",
+      fromCountryName: "Dominican Republic",
+      type: "air",
+      volume: "medium",
+      description: "Air route from Dominican Republic"
+    }
+  ],
   unodcPrograms: [
     {
       name: "EU-LATAM Cooperation Programme",
