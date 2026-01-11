@@ -19,19 +19,39 @@ interface TrafficRoutesProps {
 
 /**
  * Get stroke width based on route volume and zoom level
- * Routes get THINNER when zoomed in to reduce clutter on mobile
+ * Routes get MUCH THINNER when zoomed in to reduce clutter on mobile
  */
 function getStrokeWidth(volume: TraffickingRoute['volume'], zoom: number = 1): number {
   const baseWidth = {
-    high: 0.5,
-    medium: 0.35,
-    low: 0.2,
+    high: 0.4,
+    medium: 0.25,
+    low: 0.15,
   }[volume];
 
-  // Inverse scale with zoom - routes get thinner when zoomed in
-  // This reduces visual clutter when pinch-zooming on mobile
-  const scaled = baseWidth / Math.pow(zoom, 0.5);
-  return Math.max(0.08, Math.min(scaled, 1.5)); // Clamp between 0.08 and 1.5
+  // Very aggressive inverse scale with zoom - routes get much thinner when zoomed in
+  // This significantly reduces visual clutter when pinch-zooming on mobile
+  const scaled = baseWidth / Math.pow(zoom, 0.8);
+  return Math.max(0.03, Math.min(scaled, 1)); // Clamp between 0.03 and 1
+}
+
+/**
+ * Get opacity based on zoom level - fade routes when zoomed in
+ */
+function getRouteOpacity(zoom: number = 1): number {
+  // Routes become more transparent when zoomed in
+  const baseOpacity = 0.6;
+  const opacity = baseOpacity / Math.pow(zoom, 0.3);
+  return Math.max(0.2, Math.min(opacity, 0.6));
+}
+
+/**
+ * Determine if a route should be visible based on zoom and volume
+ * At higher zoom levels, hide lower volume routes to reduce clutter
+ */
+function isRouteVisible(volume: TraffickingRoute['volume'], zoom: number = 1): boolean {
+  if (zoom < 1.5) return true; // Show all routes at low zoom
+  if (zoom < 2.5) return volume !== 'low'; // Hide low volume at medium zoom
+  return volume === 'high'; // Only show high volume at high zoom
 }
 
 /**
@@ -76,9 +96,13 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
   highlightedRoute,
   zoom = 1,
 }) => {
+  // Filter routes by type AND by zoom-based visibility
   const routes = TRAFFICKING_ROUTES.filter((route) =>
-    visibleTypes.includes(route.type)
+    visibleTypes.includes(route.type) && isRouteVisible(route.volume, zoom)
   );
+
+  // Get zoom-adjusted opacity
+  const routeOpacity = getRouteOpacity(zoom);
 
   return (
     <g className="traffic-routes">
@@ -179,11 +203,11 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
               from={route.from.coordinates}
               to={route.to.coordinates}
               stroke={ROUTE_COLORS[route.type]}
-              strokeWidth={strokeWidth * 2}
+              strokeWidth={strokeWidth * 1.5}
               strokeLinecap="round"
               style={{
-                opacity: isDimmed ? 0.02 : 0.08,
-                filter: 'blur(2px)',
+                opacity: isDimmed ? 0.01 : routeOpacity * 0.1,
+                filter: 'blur(1px)',
               }}
             />
 
@@ -197,7 +221,7 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
               strokeDasharray={dashArray}
               markerEnd={`url(#arrow-${route.type})`}
               style={{
-                opacity: isDimmed ? 0.15 : 0.7,
+                opacity: isDimmed ? 0.1 : routeOpacity,
                 filter: isHighlighted ? `url(#glow-${route.type})` : undefined,
                 animation: `route-flow ${animDuration} linear infinite`,
                 transition: 'opacity 300ms ease-out',
