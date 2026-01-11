@@ -19,6 +19,33 @@ const FONT_SIZES: Record<NonNullable<CountryLabelConfig['fontSize']>, number> = 
   lg: 2.8,
 };
 
+// Helper to render text content (single line or multiline)
+const renderTextContent = (
+  name: string | string[],
+  scaledSize: number,
+  offsetX: number,
+  offsetY: number
+) => {
+  if (typeof name === 'string') {
+    return name;
+  }
+
+  // Multiline: render each line as a tspan
+  const lineHeight = scaledSize * 1.2;
+  const totalHeight = (name.length - 1) * lineHeight;
+  const startY = -totalHeight / 2;
+
+  return name.map((line, index) => (
+    <tspan
+      key={index}
+      x={offsetX}
+      dy={index === 0 ? startY : lineHeight}
+    >
+      {line}
+    </tspan>
+  ));
+};
+
 /**
  * CountryLabels Component
  *
@@ -35,11 +62,13 @@ export const CountryLabels: React.FC<CountryLabelsProps> = ({
     ? COUNTRY_LABELS.filter((label) => visibleCountries.includes(label.id))
     : COUNTRY_LABELS;
 
-  // Scale font size based on zoom - smaller base, scales up when zoomed in
+  // Scale font size inversely with zoom - labels get smaller when zoomed in
+  // This prevents labels from overlapping in dense regions like Europe
   const getScaledFontSize = (baseSize: number) => {
-    // At zoom 1, use base size; zoom in = slightly larger, zoom out = smaller
-    const scaled = baseSize * Math.pow(zoom, 0.3);
-    return Math.max(1.5, Math.min(scaled, 8)); // Clamp between 1.5 and 8
+    // At zoom 1, use base size; zoom in = smaller labels, zoom out = larger labels
+    // Using inverse relationship: divide by sqrt(zoom) for smoother scaling
+    const scaled = baseSize / Math.pow(zoom, 0.4);
+    return Math.max(1.2, Math.min(scaled, 4)); // Clamp between 1.2 and 4
   };
 
   return (
@@ -49,14 +78,17 @@ export const CountryLabels: React.FC<CountryLabelsProps> = ({
         const baseFontSize = FONT_SIZES[label.fontSize || 'md'];
         const scaledSize = getScaledFontSize(baseFontSize);
 
+        const offsetX = label.offsetX || 0;
+        const offsetY = label.offsetY || 0;
+
         return (
           <Marker key={label.id} coordinates={label.coordinates}>
             {/* Text shadow for better readability - scales with font */}
             <text
               textAnchor="middle"
               dominantBaseline="middle"
-              dx={label.offsetX || 0}
-              dy={label.offsetY || 0}
+              dx={offsetX}
+              dy={offsetY}
               style={{
                 fontFamily: 'system-ui, -apple-system, sans-serif',
                 fontSize: `${scaledSize}px`,
@@ -71,15 +103,15 @@ export const CountryLabels: React.FC<CountryLabelsProps> = ({
                 letterSpacing: '0.05em',
               }}
             >
-              {label.name}
+              {renderTextContent(label.name, scaledSize, offsetX, offsetY)}
             </text>
 
             {/* Main text label */}
             <text
               textAnchor="middle"
               dominantBaseline="middle"
-              dx={label.offsetX || 0}
-              dy={label.offsetY || 0}
+              dx={offsetX}
+              dy={offsetY}
               style={{
                 fontFamily: 'system-ui, -apple-system, sans-serif',
                 fontSize: `${scaledSize}px`,
@@ -92,7 +124,7 @@ export const CountryLabels: React.FC<CountryLabelsProps> = ({
                 transition: 'fill 150ms ease-out',
               }}
             >
-              {label.name}
+              {renderTextContent(label.name, scaledSize, offsetX, offsetY)}
             </text>
           </Marker>
         );
