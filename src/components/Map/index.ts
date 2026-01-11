@@ -12,3 +12,4 @@ export { TrafficRoutes } from './TrafficRoutes';
 export { CompassRose } from './CompassRose';
 export { MapControls } from './MapControls';
 export type { PanDirection } from './MapControls';
+export { CountryFilter } from './CountryFilter';

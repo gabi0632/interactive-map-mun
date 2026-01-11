@@ -15,6 +15,8 @@ interface TrafficRoutesProps {
   highlightedRoute?: string | null;
   /** Current zoom level */
   zoom?: number;
+  /** Selected source countries to filter routes by (empty = no routes) */
+  selectedCountries?: string[];
 }
 
 /**
@@ -94,11 +96,27 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
   visibleTypes,
   highlightedRoute,
   zoom = 1,
+  selectedCountries,
 }) => {
-  // Filter routes by type AND by zoom-based visibility
-  const routes = TRAFFICKING_ROUTES.filter((route) =>
-    visibleTypes.includes(route.type) && isRouteVisible(route.volume, zoom)
-  );
+  // Filter routes by:
+  // 1. Route type (land/maritime/air)
+  // 2. Source country (if selectedCountries provided)
+  // 3. Zoom-based visibility (hide low volume routes at high zoom)
+  const routes = TRAFFICKING_ROUTES.filter((route) => {
+    // Type filter
+    if (!visibleTypes.includes(route.type)) return false;
+
+    // Country filter - if selectedCountries is provided, filter by source country
+    if (selectedCountries !== undefined) {
+      if (selectedCountries.length === 0) return false; // No countries = no routes
+      if (!selectedCountries.includes(route.from.countryId)) return false;
+    }
+
+    // Zoom-based visibility
+    if (!isRouteVisible(route.volume, zoom)) return false;
+
+    return true;
+  });
 
   // Get zoom-adjusted opacity
   const routeOpacity = getRouteOpacity(zoom);
