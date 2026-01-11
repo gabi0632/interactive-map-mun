@@ -16,6 +16,7 @@ import { useResponsive } from '@/hooks';
 
 import { CountryHeader } from './CountryHeader';
 import { CountryStats } from './CountryStats';
+import { CountryRoutes } from './CountryRoutes';
 import { CountryPrograms } from './CountryPrograms';
 import { CountryOrganizations } from './CountryOrganizations';
 import { PolicyStance } from './PolicyStance';
@@ -72,6 +73,18 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
       <CountryStats stats={country.stats} />
 
       <Separator />
+
+      {/* Trafficking Routes */}
+      <CountryRoutes
+        outgoingRoutes={country.outgoingRoutes}
+        incomingRoutes={country.incomingRoutes}
+      />
+
+      {/* Only show separator if routes exist */}
+      {((country.outgoingRoutes && country.outgoingRoutes.length > 0) ||
+        (country.incomingRoutes && country.incomingRoutes.length > 0)) && (
+        <Separator />
+      )}
 
       {/* UNODC Programs */}
       <CountryPrograms programs={country.unodcPrograms} />
