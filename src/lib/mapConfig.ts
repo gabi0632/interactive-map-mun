@@ -13,6 +13,7 @@ export const COUNTRIES_IN_SCOPE = [
   'USA', 'CAN',                  // Consumer
   'GBR', 'DEU', 'FRA',           // Consumer (Europe)
   'ESP', 'ITA', 'AUT',           // Consumer/Diplomatic (Europe)
+  'NLD', 'BEL',                  // Consumer (Europe)
   'CHN', 'RUS'                   // Other
 ] as const;
 
@@ -27,6 +28,7 @@ export const LATIN_AMERICA_COUNTRIES = [
   'USA', 'CAN',                  // Consumer (North America)
   'GBR', 'DEU', 'FRA',           // Consumer (Europe)
   'ESP', 'ITA', 'AUT',           // Consumer (Europe)
+  'NLD', 'BEL',                  // Consumer (Europe)
   'CHN', 'RUS'                   // Other key players
 ] as const;
 
@@ -94,6 +96,8 @@ export const COUNTRY_LABELS: CountryLabelConfig[] = [
   { id: 'ESP', name: 'KINGDOM OF SPAIN', coordinates: [-4, 40], fontSize: 'sm' },
   { id: 'ITA', name: 'ITALIAN REPUBLIC', coordinates: [12, 43], fontSize: 'sm' },
   { id: 'AUT', name: 'REPUBLIC OF AUSTRIA', coordinates: [14, 47.5], fontSize: 'sm' },
+  { id: 'NLD', name: 'KINGDOM OF THE NETHERLANDS', coordinates: [5.5, 52.5], fontSize: 'sm' },
+  { id: 'BEL', name: 'KINGDOM OF BELGIUM', coordinates: [4.5, 50.5], fontSize: 'sm' },
 
   // Other
   { id: 'CHN', name: "PEOPLE'S REPUBLIC OF CHINA", coordinates: [104, 35], fontSize: 'lg' },
@@ -131,6 +135,8 @@ export const ISO_NUMERIC_TO_ALPHA3: Record<string, string> = {
   '724': 'ESP', // Spain
   '380': 'ITA', // Italy
   '040': 'AUT', // Austria
+  '528': 'NLD', // Netherlands
+  '056': 'BEL', // Belgium
   // Other
   '156': 'CHN', // China
   '643': 'RUS', // Russia

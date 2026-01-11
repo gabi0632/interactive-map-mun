@@ -26,7 +26,7 @@ import { brazil } from "./brazil";
 import { argentina } from "./argentina";
 import { chile } from "./chile";
 
-// Consumer countries (8)
+// Consumer countries (10)
 import { usa } from "./usa";
 import { canada } from "./canada";
 import { unitedKingdom } from "./united-kingdom";
@@ -35,6 +35,8 @@ import { france } from "./france";
 import { spain } from "./spain";
 import { italy } from "./italy";
 import { austria } from "./austria";
+import { netherlands } from "./netherlands";
+import { belgium } from "./belgium";
 
 // Other role countries (2)
 import { china } from "./china";
@@ -84,6 +86,8 @@ export const consumerCountries: Country[] = [
   spain,
   italy,
   austria,
+  netherlands,
+  belgium,
 ];
 
 /**
@@ -92,7 +96,7 @@ export const consumerCountries: Country[] = [
 export const otherCountries: Country[] = [china, russia, frenchGuiana];
 
 /**
- * All countries in the dataset (26 total)
+ * All countries in the dataset (28 total)
  */
 export const allCountries: Country[] = [
   ...producerCountries,
@@ -169,6 +173,8 @@ export {
   spain,
   italy,
   austria,
+  netherlands,
+  belgium,
   // Other
   china,
   russia,
