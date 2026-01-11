@@ -9,7 +9,7 @@ import { Country } from "@/types/country";
  */
 export const chile: Country = {
   id: "CHL",
-  name: "Chile",
+  name: "Republic of Chile",
   capital: "Santiago",
   population: 19629590,
   flag: "🇨🇱",

@@ -9,6 +9,7 @@ export const COUNTRIES_IN_SCOPE = [
   'CRI', 'PAN',                  // Transit
   'ECU', 'VEN', 'BRA',           // Mixed
   'DOM', 'ARG', 'CHL',           // Mixed/Transit
+  'GUF',                         // Overseas territory
   'USA', 'CAN',                  // Consumer
   'GBR', 'DEU', 'FRA',           // Consumer (Europe)
   'ESP', 'ITA', 'AUT',           // Consumer/Diplomatic (Europe)
@@ -22,6 +23,7 @@ export const LATIN_AMERICA_COUNTRIES = [
   'CRI', 'PAN',                  // Transit
   'ECU', 'VEN', 'BRA',           // Mixed
   'DOM', 'ARG', 'CHL',           // Mixed/Transit
+  'GUF',                         // Overseas territory
   'USA', 'CAN',                  // Consumer (North America)
   'GBR', 'DEU', 'FRA',           // Consumer (Europe)
   'ESP', 'ITA', 'AUT',           // Consumer (Europe)
@@ -55,44 +57,47 @@ export interface CountryLabelConfig {
   fontSize?: 'sm' | 'md' | 'lg';
 }
 
-// Country labels with coordinates (centroids)
+// Country labels with coordinates (centroids) - using official names matching country data
 export const COUNTRY_LABELS: CountryLabelConfig[] = [
   // Producers (South America)
-  { id: 'COL', name: 'COLOMBIA', coordinates: [-74, 4], fontSize: 'md' },
-  { id: 'PER', name: 'PERU', coordinates: [-76, -10], fontSize: 'md' },
-  { id: 'BOL', name: 'BOLIVIA', coordinates: [-65, -17], fontSize: 'sm' },
+  { id: 'COL', name: 'REPUBLIC OF COLOMBIA', coordinates: [-74, 4], fontSize: 'md' },
+  { id: 'PER', name: 'REPUBLIC OF PERU', coordinates: [-76, -10], fontSize: 'md' },
+  { id: 'BOL', name: 'PLURINATIONAL STATE OF BOLIVIA', coordinates: [-65, -17], fontSize: 'sm' },
 
-  // Transit (Central America & Caribbean) - shortened names for world view
-  { id: 'MEX', name: 'MEXICO', coordinates: [-102, 24], fontSize: 'md' },
-  { id: 'GTM', name: 'GTM', coordinates: [-90.5, 15], fontSize: 'sm' },
-  { id: 'HND', name: 'HND', coordinates: [-86, 15], fontSize: 'sm' },
-  { id: 'SLV', name: 'SLV', coordinates: [-89, 13], fontSize: 'sm' },
-  { id: 'CRI', name: 'C.RICA', coordinates: [-84, 9.5], fontSize: 'sm' },
-  { id: 'PAN', name: 'PAN', coordinates: [-80, 8.5], fontSize: 'sm' },
-  { id: 'DOM', name: 'DOM', coordinates: [-70, 19], fontSize: 'sm' },
+  // Transit (Central America & Caribbean)
+  { id: 'MEX', name: 'UNITED MEXICAN STATES', coordinates: [-102, 24], fontSize: 'md' },
+  { id: 'GTM', name: 'REPUBLIC OF GUATEMALA', coordinates: [-90.5, 15], fontSize: 'sm' },
+  { id: 'HND', name: 'REPUBLIC OF HONDURAS', coordinates: [-86, 15], fontSize: 'sm' },
+  { id: 'SLV', name: 'REPUBLIC OF EL SALVADOR', coordinates: [-89, 13], fontSize: 'sm' },
+  { id: 'CRI', name: 'REPUBLIC OF COSTA RICA', coordinates: [-84, 9.5], fontSize: 'sm' },
+  { id: 'PAN', name: 'REPUBLIC OF PANAMA', coordinates: [-80, 8.5], fontSize: 'sm' },
+  { id: 'DOM', name: 'DOMINICAN REPUBLIC', coordinates: [-70, 19], fontSize: 'sm' },
 
   // Mixed (South America)
-  { id: 'ECU', name: 'ECUADOR', coordinates: [-78.5, -1.5], fontSize: 'sm' },
-  { id: 'VEN', name: 'VENEZUELA', coordinates: [-66, 8], fontSize: 'md' },
-  { id: 'BRA', name: 'BRAZIL', coordinates: [-52, -10], fontSize: 'lg' },
-  { id: 'ARG', name: 'ARGENTINA', coordinates: [-65, -38], fontSize: 'md' },
-  { id: 'CHL', name: 'CHILE', coordinates: [-70, -30], fontSize: 'sm' },
+  { id: 'ECU', name: 'REPUBLIC OF ECUADOR', coordinates: [-78.5, -1.5], fontSize: 'sm' },
+  { id: 'VEN', name: 'BOLIVARIAN REPUBLIC OF VENEZUELA', coordinates: [-66, 8], fontSize: 'md' },
+  { id: 'BRA', name: 'FEDERATIVE REPUBLIC OF BRAZIL', coordinates: [-52, -10], fontSize: 'lg' },
+  { id: 'ARG', name: 'ARGENTINE REPUBLIC', coordinates: [-65, -38], fontSize: 'md' },
+  { id: 'CHL', name: 'REPUBLIC OF CHILE', coordinates: [-70, -30], fontSize: 'sm' },
+
+  // Overseas Territories (South America)
+  { id: 'GUF', name: 'FRENCH GUIANA', coordinates: [-53, 4], fontSize: 'sm' },
 
   // Consumer (North America)
-  { id: 'USA', name: 'UNITED STATES', coordinates: [-98, 39], fontSize: 'lg' },
+  { id: 'USA', name: 'UNITED STATES OF AMERICA', coordinates: [-98, 39], fontSize: 'lg' },
   { id: 'CAN', name: 'CANADA', coordinates: [-106, 56], fontSize: 'lg' },
 
   // Consumer (Europe)
-  { id: 'GBR', name: 'UK', coordinates: [-2, 54], fontSize: 'sm' },
-  { id: 'DEU', name: 'GERMANY', coordinates: [10, 51], fontSize: 'sm' },
-  { id: 'FRA', name: 'FRANCE', coordinates: [2, 47], fontSize: 'sm' },
-  { id: 'ESP', name: 'SPAIN', coordinates: [-4, 40], fontSize: 'sm' },
-  { id: 'ITA', name: 'ITALY', coordinates: [12, 43], fontSize: 'sm' },
-  { id: 'AUT', name: 'AUSTRIA', coordinates: [14, 47.5], fontSize: 'sm' },
+  { id: 'GBR', name: 'UNITED KINGDOM', coordinates: [-2, 54], fontSize: 'sm' },
+  { id: 'DEU', name: 'FEDERAL REPUBLIC OF GERMANY', coordinates: [10, 51], fontSize: 'sm' },
+  { id: 'FRA', name: 'FRENCH REPUBLIC', coordinates: [2, 47], fontSize: 'sm' },
+  { id: 'ESP', name: 'KINGDOM OF SPAIN', coordinates: [-4, 40], fontSize: 'sm' },
+  { id: 'ITA', name: 'ITALIAN REPUBLIC', coordinates: [12, 43], fontSize: 'sm' },
+  { id: 'AUT', name: 'REPUBLIC OF AUSTRIA', coordinates: [14, 47.5], fontSize: 'sm' },
 
   // Other
-  { id: 'CHN', name: 'CHINA', coordinates: [104, 35], fontSize: 'lg' },
-  { id: 'RUS', name: 'RUSSIA', coordinates: [100, 60], fontSize: 'lg' },
+  { id: 'CHN', name: "PEOPLE'S REPUBLIC OF CHINA", coordinates: [104, 35], fontSize: 'lg' },
+  { id: 'RUS', name: 'RUSSIAN FEDERATION', coordinates: [100, 60], fontSize: 'lg' },
 ];
 
 // Mapping from ISO 3166-1 numeric codes to alpha-3 codes
@@ -129,6 +134,8 @@ export const ISO_NUMERIC_TO_ALPHA3: Record<string, string> = {
   // Other
   '156': 'CHN', // China
   '643': 'RUS', // Russia
+  // Overseas Territories
+  '254': 'GUF', // French Guiana
 };
 
 export const GEO_URL = '/geo/world-110m.json';

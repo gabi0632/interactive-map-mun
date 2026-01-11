@@ -2,7 +2,7 @@ import { Country } from "@/types/country";
 
 export const russia: Country = {
   id: "RUS",
-  name: "Russia",
+  name: "Russian Federation",
   capital: "Moscow",
   population: 144000000,
   flag: "🇷🇺",

@@ -7,7 +7,7 @@ import { Country } from "@/types/country";
  */
 export const peru: Country = {
   id: "PER",
-  name: "Peru",
+  name: "Republic of Peru",
   capital: "Lima",
   population: 34352719,
   flag: "🇵🇪",
