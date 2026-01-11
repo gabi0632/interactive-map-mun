@@ -46,16 +46,6 @@ function getRouteOpacity(zoom: number = 1): number {
 }
 
 /**
- * Determine if a route should be visible based on zoom and volume
- * Routes are always visible - user can filter by country selection
- */
-function isRouteVisible(_volume: TraffickingRoute['volume'], _zoom: number = 1): boolean {
-  // Always show all routes - let users filter via country selection
-  // Previously hid low/medium volume routes at high zoom, but this was confusing on mobile
-  return true;
-}
-
-/**
  * Get dash array configuration for each route type
  * Scales inversely with zoom for consistent visual appearance
  */
@@ -101,7 +91,7 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
   // Filter routes by:
   // 1. Route type (land/maritime/air)
   // 2. Source country (if selectedCountries provided)
-  // 3. Zoom-based visibility (hide low volume routes at high zoom)
+  // Note: All routes visible at all zoom levels - users filter via country selection
   const routes = TRAFFICKING_ROUTES.filter((route) => {
     // Type filter
     if (!visibleTypes.includes(route.type)) return false;
@@ -111,9 +101,6 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
       if (selectedCountries.length === 0) return false; // No countries = no routes
       if (!selectedCountries.includes(route.from.countryId)) return false;
     }
-
-    // Zoom-based visibility
-    if (!isRouteVisible(route.volume, zoom)) return false;
 
     return true;
   });
