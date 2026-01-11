@@ -128,6 +128,16 @@ Examples:
 
 ## Context Management System
 
+### CRITICAL: Always Check Context First
+
+**When starting ANY task, if the user does not provide context:**
+
+1. Use the `/new-context` skill to create a new context file for fresh tasks
+2. Use the `/update-context` skill to check and update existing context when continuing work
+3. Read the latest context file from `.claude/context/` to understand ongoing work
+
+**This ensures continuity between sessions and prevents duplicate or conflicting work.**
+
 ### Rules for Context Files
 
 Each session MUST maintain its own context file:
@@ -138,6 +148,7 @@ Each session MUST maintain its own context file:
 4. Sub-agents MUST update the active context file with their progress
 5. NEVER delete context content - only ADD or mark tasks as COMPLETED
 6. Context files track: task description, progress, sub-agent outputs, decisions
+7. **ALWAYS read the most recent context file when starting work to understand current state**
 
 ### Creating a New Context
 
