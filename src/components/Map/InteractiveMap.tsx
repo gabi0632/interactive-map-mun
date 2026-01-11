@@ -185,6 +185,12 @@ interface InteractiveMapProps {
 
   /** Initial center position */
   center?: [number, number];
+
+  /** Selected source countries to filter routes by */
+  selectedSourceCountries?: string[];
+
+  /** Callback when zoom changes (for wheel/trackpad zoom) */
+  onZoomChange?: (newZoom: number) => void;
 }
 
 /**
@@ -201,6 +207,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   visibleRouteTypes = ['land', 'maritime', 'air'],
   zoom: initialZoom,
   center: initialCenter,
+  selectedSourceCountries,
+  onZoomChange,
 }) => {
   const { isMobile, isTouchDevice } = useResponsive();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
@@ -221,6 +229,33 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const handleMoveEnd = useCallback((position: { coordinates: [number, number]; zoom: number }) => {
     setCurrentZoom(position.zoom);
   }, []);
+
+  /**
+   * Handle wheel/trackpad zoom - prevent browser zoom and update map zoom
+   * Only active on desktop (non-touch devices)
+   */
+  const handleWheel = useCallback(
+    (event: React.WheelEvent) => {
+      // Skip on touch devices - they use pinch zoom via ZoomableGroup
+      if (isTouchDevice) return;
+
+      // Prevent browser zoom
+      event.preventDefault();
+
+      // If no callback provided, don't try to update parent
+      if (!onZoomChange) return;
+
+      // Calculate zoom factor based on scroll direction
+      // deltaY > 0 = scroll down = zoom out, deltaY < 0 = scroll up = zoom in
+      const zoomFactor = event.deltaY > 0 ? 0.9 : 1.1;
+      const newZoom = Math.min(Math.max(currentZoom * zoomFactor, 0.8), 8);
+
+      // Update parent with new zoom
+      onZoomChange(newZoom);
+      setCurrentZoom(newZoom);
+    },
+    [isTouchDevice, currentZoom, onZoomChange]
+  );
 
   // Projection config - world view with Americas and Asia visible
   // Note: center is handled by ZoomableGroup, not projection
@@ -337,7 +372,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
 
   return (
-    <div className="w-full h-full relative overflow-hidden">
+    <div className="w-full h-full relative overflow-hidden" onWheel={handleWheel}>
       <ComposableMap
         projection="geoMercator"
         projectionConfig={projectionConfig}
@@ -426,7 +461,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           </Geographies>
 
           {/* Trafficking routes layer */}
-          <TrafficRoutes visibleTypes={visibleRouteTypes} zoom={currentZoom} />
+          <TrafficRoutes visibleTypes={visibleRouteTypes} zoom={currentZoom} selectedCountries={selectedSourceCountries} />
 
           {/* Country labels layer */}
           <CountryLabels

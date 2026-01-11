@@ -3,7 +3,7 @@
 import { useState, Suspense, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { FileText } from 'lucide-react';
-import { MapLegend, MapSkeleton, MapControls, type PanDirection } from '@/components/Map';
+import { MapLegend, MapSkeleton, MapControls, CountryFilter, type PanDirection } from '@/components/Map';
 import { CountryPanel } from '@/components/CountryPanel';
 import { DocumentViewer } from '@/components/DocumentViewer';
 import { SearchBar } from '@/components/Search';
@@ -39,6 +39,13 @@ export default function Home() {
   ]);
   const [isDocumentOpen, setIsDocumentOpen] = useState(false);
 
+  // Source countries filter for routes - default: Brazil, Venezuela, Colombia
+  const [selectedSourceCountries, setSelectedSourceCountries] = useState<string[]>([
+    'BRA',
+    'VEN',
+    'COL',
+  ]);
+
   // Map zoom and center state - use responsive defaults
   const [zoom, setZoom] = useState<number>(isMobile ? ZOOM_LEVELS.DEFAULT_MOBILE : ZOOM_LEVELS.DEFAULT);
   const [center, setCenter] = useState<[number, number]>(isMobile ? DEFAULT_CENTER_MOBILE : DEFAULT_CENTER);
@@ -70,6 +77,12 @@ export default function Home() {
   const handleZoomOut = useCallback(() => {
     setZoom((prev) => Math.max(prev / 1.3, ZOOM_LEVELS.MIN));
     setMapKey((k) => k + 1);
+  }, []);
+
+  // Wheel zoom handler - smooth zoom without map remount
+  const handleZoomChange = useCallback((newZoom: number) => {
+    setZoom(newZoom);
+    // Don't increment mapKey - let the map handle smooth zoom
   }, []);
 
   // Pan handler - increment key to force map update
@@ -141,6 +154,17 @@ export default function Home() {
             <SearchBar onSelectCountry={handleSearchSelect} />
           </div>
 
+          {/* Country Filter - desktop only */}
+          <div className="pointer-events-auto hidden sm:block">
+            <div className="bg-slate-900/95 backdrop-blur-md rounded-lg px-2 py-1.5 shadow-xl border border-slate-700/50">
+              <CountryFilter
+                selectedCountries={selectedSourceCountries}
+                onSelectionChange={setSelectedSourceCountries}
+                maxSelection={4}
+              />
+            </div>
+          </div>
+
           {/* Right: UNODC Badge - clickable link */}
           <a
             href="https://www.unodc.org/"
@@ -162,6 +186,17 @@ export default function Home() {
         <div className="pointer-events-auto mt-2 sm:hidden">
           <SearchBar onSelectCountry={handleSearchSelect} />
         </div>
+
+        {/* Mobile Country Filter - below search */}
+        <div className="pointer-events-auto mt-2 sm:hidden">
+          <div className="bg-slate-900/95 backdrop-blur-md rounded-lg px-2 py-1.5 shadow-xl border border-slate-700/50">
+            <CountryFilter
+              selectedCountries={selectedSourceCountries}
+              onSelectionChange={setSelectedSourceCountries}
+              maxSelection={4}
+            />
+          </div>
+        </div>
       </header>
 
       {/* Map Container - full screen */}
@@ -176,6 +211,8 @@ export default function Home() {
               visibleRouteTypes={visibleRouteTypes}
               zoom={zoom}
               center={center}
+              selectedSourceCountries={selectedSourceCountries}
+              onZoomChange={handleZoomChange}
             />
           </Suspense>
         </ErrorBoundary>

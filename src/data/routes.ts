@@ -966,3 +966,63 @@ export function getRoutesForCountry(countryId: string): TraffickingRoute[] {
       route.from.countryId === countryId || route.to.countryId === countryId
   );
 }
+
+/**
+ * Country names for route origin countries
+ */
+export const ROUTE_COUNTRY_NAMES: Record<string, string> = {
+  COL: 'Colombia',
+  BRA: 'Brazil',
+  VEN: 'Venezuela',
+  PER: 'Peru',
+  ECU: 'Ecuador',
+  BOL: 'Bolivia',
+  ARG: 'Argentina',
+  CHL: 'Chile',
+  MEX: 'Mexico',
+  PAN: 'Panama',
+  CRI: 'Costa Rica',
+  GTM: 'Guatemala',
+  HND: 'Honduras',
+  SLV: 'El Salvador',
+  DOM: 'Dominican Republic',
+  GUF: 'French Guiana',
+};
+
+/**
+ * Get all source countries (route origins) with their route counts
+ * Sorted by route count descending
+ */
+export function getSourceCountryOptions(): { code: string; name: string; routeCount: number }[] {
+  const counts: Record<string, number> = {};
+
+  TRAFFICKING_ROUTES.forEach((route) => {
+    counts[route.from.countryId] = (counts[route.from.countryId] || 0) + 1;
+  });
+
+  return Object.entries(counts)
+    .filter(([code]) => ROUTE_COUNTRY_NAMES[code]) // Only include named countries
+    .map(([code, routeCount]) => ({
+      code,
+      name: ROUTE_COUNTRY_NAMES[code],
+      routeCount,
+    }))
+    .sort((a, b) => b.routeCount - a.routeCount);
+}
+
+/**
+ * Filter routes by selected source countries
+ * Returns routes where the origin is one of the selected countries
+ */
+export function getRoutesBySourceCountries(
+  countryCodes: string[],
+  types?: RouteType[]
+): TraffickingRoute[] {
+  if (countryCodes.length === 0) return [];
+
+  return TRAFFICKING_ROUTES.filter((route) => {
+    const matchesCountry = countryCodes.includes(route.from.countryId);
+    const matchesType = !types || types.length === 0 || types.includes(route.type);
+    return matchesCountry && matchesType;
+  });
+}
