@@ -19,34 +19,35 @@ interface TrafficRoutesProps {
 
 /**
  * Get stroke width based on route volume and zoom level
- * Routes get thinner when zoomed out, thicker when zoomed in
+ * Routes get THINNER when zoomed in to reduce clutter on mobile
  */
 function getStrokeWidth(volume: TraffickingRoute['volume'], zoom: number = 1): number {
   const baseWidth = {
-    high: 0.6,
-    medium: 0.4,
-    low: 0.25,
+    high: 0.5,
+    medium: 0.35,
+    low: 0.2,
   }[volume];
 
-  // Scale with zoom - routes get slightly thicker when zoomed in
-  const scaled = baseWidth * Math.pow(zoom, 0.4);
-  return Math.max(0.15, Math.min(scaled, 3)); // Clamp between 0.15 and 3
+  // Inverse scale with zoom - routes get thinner when zoomed in
+  // This reduces visual clutter when pinch-zooming on mobile
+  const scaled = baseWidth / Math.pow(zoom, 0.5);
+  return Math.max(0.08, Math.min(scaled, 1.5)); // Clamp between 0.08 and 1.5
 }
 
 /**
  * Get dash array configuration for each route type
- * Scales with zoom for consistent visual appearance
+ * Scales inversely with zoom for consistent visual appearance
  */
 function getDashConfig(type: RouteType, zoom: number = 1): string {
-  // Base dash patterns - scaled with zoom
-  const scale = Math.pow(zoom, 0.3);
+  // Base dash patterns - scale inversely with zoom for consistency
+  const scale = 1 / Math.pow(zoom, 0.4);
   switch (type) {
     case 'land':
-      return `${4 * scale},${2 * scale}`;
+      return `${3 * scale},${1.5 * scale}`;
     case 'maritime':
-      return `${6 * scale},${3 * scale}`;
+      return `${4 * scale},${2 * scale}`;
     case 'air':
-      return `${2 * scale},${4 * scale}`;
+      return `${1.5 * scale},${3 * scale}`;
   }
 }
 
@@ -173,16 +174,16 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
 
         return (
           <g key={route.id}>
-            {/* Background glow layer - subtle ambient glow */}
+            {/* Background glow layer - very subtle ambient glow */}
             <Line
               from={route.from.coordinates}
               to={route.to.coordinates}
               stroke={ROUTE_COLORS[route.type]}
-              strokeWidth={strokeWidth * 3}
+              strokeWidth={strokeWidth * 2}
               strokeLinecap="round"
               style={{
-                opacity: isDimmed ? 0.05 : 0.15,
-                filter: 'blur(3px)',
+                opacity: isDimmed ? 0.02 : 0.08,
+                filter: 'blur(2px)',
               }}
             />
 
@@ -196,7 +197,7 @@ export const TrafficRoutes: React.FC<TrafficRoutesProps> = ({
               strokeDasharray={dashArray}
               markerEnd={`url(#arrow-${route.type})`}
               style={{
-                opacity: isDimmed ? 0.2 : 0.9,
+                opacity: isDimmed ? 0.15 : 0.7,
                 filter: isHighlighted ? `url(#glow-${route.type})` : undefined,
                 animation: `route-flow ${animDuration} linear infinite`,
                 transition: 'opacity 300ms ease-out',

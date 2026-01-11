@@ -47,9 +47,9 @@ const COUNTRY_HUBS: Record<string, [number, number]> = {
   BOL: [-65, -17],  // Bolivia - La Paz area
 
   // South America Transit/Mixed
-  VEN: [-67, 8],    // Venezuela
-  ECU: [-79, -1],   // Ecuador
-  BRA: [-47, -15],  // Brazil - central
+  VEN: [-67, 8],    // Venezuela - Caracas
+  ECU: [-79.9, -2], // Ecuador - Guayaquil port area
+  BRA: [-43, -23],  // Brazil - Rio/Santos coast (for maritime routes)
   ARG: [-58, -34],  // Argentina - Buenos Aires area
   CHL: [-70.5, -33], // Chile - Santiago area
   PRY: [-57.5, -25], // Paraguay - Asuncion
