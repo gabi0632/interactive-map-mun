@@ -71,22 +71,22 @@ function RouteItem({
   const color = getRouteTypeColor(type);
 
   return (
-    <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
+    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors overflow-hidden">
       {/* Route type icon */}
       <div
-        className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+        className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center"
         style={{ backgroundColor: `${color}20`, color }}
       >
         <RouteTypeIcon type={type} />
       </div>
 
       {/* Route info */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+      <div className="flex-1 min-w-0 overflow-hidden">
+        <div className="flex items-center gap-1 sm:gap-2">
           {direction === 'incoming' && (
             <ArrowLeft className="w-3 h-3 text-gray-400 flex-shrink-0" />
           )}
-          <span className="font-medium text-gray-900 dark:text-gray-100 truncate">
+          <span className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100 truncate">
             {countryName}
           </span>
           {direction === 'outgoing' && (
@@ -103,7 +103,7 @@ function RouteItem({
       {/* Volume badge */}
       <span
         className={cn(
-          'flex-shrink-0 text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full',
+          'flex-shrink-0 text-[10px] font-semibold uppercase px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap',
           getVolumeBadgeClass(volume)
         )}
       >
@@ -131,7 +131,7 @@ export function CountryRoutes({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 overflow-hidden">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
         Trafficking Routes
       </h3>
