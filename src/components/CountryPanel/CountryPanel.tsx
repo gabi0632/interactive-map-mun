@@ -61,9 +61,9 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
     };
   }, [isOpen, isTablet, isMobile, onClose]);
 
-  // Shared panel content
+  // Shared panel content - use smaller padding on mobile for more content space
   const panelContent = country ? (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 overflow-x-hidden">
       {/* Country Header */}
       <CountryHeader country={country} />
 
@@ -130,7 +130,10 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
           aria-labelledby="mobile-panel-title"
         >
           {/* Sticky header with close button */}
-          <div className="sticky top-0 bg-white border-b z-10 px-4 py-3 flex items-center justify-between safe-area-inset-top">
+          <div
+            className="sticky top-0 bg-white border-b z-10 px-4 py-3 flex items-center justify-between"
+            style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}
+          >
             <h2 id="mobile-panel-title" className="font-semibold text-lg truncate pr-4">
               {country?.name || 'Country Information'}
             </h2>
@@ -145,10 +148,16 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
             </Button>
           </div>
 
-          {/* Scrollable content */}
-          <ScrollArea className="h-[calc(100dvh-57px)]">
+          {/* Scrollable content - account for header and safe area bottom */}
+          <div
+            className="overflow-y-auto overflow-x-hidden"
+            style={{
+              height: 'calc(100dvh - 57px - env(safe-area-inset-top, 0px))',
+              paddingBottom: 'max(24px, env(safe-area-inset-bottom))'
+            }}
+          >
             {panelContent}
-          </ScrollArea>
+          </div>
         </div>
       </>
     );
@@ -172,16 +181,20 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
           className={`
             fixed bottom-0 left-0 right-0 z-[100]
             bg-white rounded-t-2xl shadow-2xl
-            max-h-[70vh] overflow-hidden
+            flex flex-col
             transform transition-transform duration-300 ease-out
             ${isOpen ? 'translate-y-0' : 'translate-y-full'}
           `}
+          style={{
+            maxHeight: '70vh',
+            paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+          }}
           role="dialog"
           aria-modal="true"
           aria-labelledby="bottom-sheet-title"
         >
           {/* Drag handle indicator */}
-          <div className="flex justify-center pt-3 pb-2">
+          <div className="flex-shrink-0 flex justify-center pt-3 pb-2">
             <div className="w-12 h-1.5 bg-gray-300 rounded-full" />
           </div>
 
@@ -203,10 +216,10 @@ export function CountryPanel({ country, isOpen, onClose }: CountryPanelProps) {
             </h2>
           )}
 
-          {/* Scrollable content */}
-          <ScrollArea className="h-full">
+          {/* Scrollable content - flex-1 to take remaining space */}
+          <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
             {panelContent}
-          </ScrollArea>
+          </div>
         </div>
       </>
     );
