@@ -21,7 +21,7 @@ This is incorrect/misleading because:
 - [x] Research correct drug seizure data using data-researcher agent
 - [x] Update data with accurate, sourced values (2,160 → 4,500 kg)
 - [x] Run code review - APPROVED
-- [ ] Commit and push changes
+- [x] Commit and push changes (commit: 40a9837)
 
 ## Sub-agent Updates
 
@@ -51,4 +51,4 @@ This is incorrect/misleading because:
 - Need to verify data against UNODC sources
 - Consider most recent available year for seizure data
 
-## Status: ACTIVE
+## Status: COMPLETED
