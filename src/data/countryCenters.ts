@@ -25,6 +25,9 @@ export const COUNTRY_CENTERS: Record<string, [number, number]> = {
   ARG: [-64.0, -34.0],  // Argentina (centered on Buenos Aires area)
   CHL: [-70.6, -33.4],  // Chile (centered on Santiago - narrow country)
 
+  // Transit countries (additional)
+  URY: [-55.8, -32.5],  // Uruguay
+
   // Consumer countries
   USA: [-95.7, 37.1],   // United States
   CAN: [-106.3, 56.1],  // Canada
@@ -34,10 +37,15 @@ export const COUNTRY_CENTERS: Record<string, [number, number]> = {
   ESP: [-3.7, 40.5],    // Spain
   ITA: [12.6, 41.9],    // Italy
   AUT: [14.6, 47.5],    // Austria
+  NLD: [5.3, 52.1],     // Netherlands
+  BEL: [4.5, 50.8],     // Belgium
 
   // Other countries
   CHN: [104.2, 35.9],   // China
   RUS: [105.3, 61.5],   // Russia
+
+  // Overseas territories
+  GUF: [-53.1, 3.9],    // French Guiana
 };
 
 /**

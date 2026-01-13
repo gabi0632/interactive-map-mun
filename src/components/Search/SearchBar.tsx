@@ -30,12 +30,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   className,
 }) => {
   const [query, setQuery] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Derive results from query using useMemo (avoids setState in useEffect)
+  // Derive results from query using useMemo
   const results = useMemo((): SearchResult[] => {
     if (!query.trim()) return [];
 
@@ -59,21 +59,22 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       .slice(0, 8); // Limit to 8 results
   }, [query]);
 
-  // Update isOpen and selectedIndex when results change
-  useEffect(() => {
-    if (results.length > 0 && query) {
-      setIsOpen(true);
-      setSelectedIndex(0);
-    } else {
-      setIsOpen(false);
+  // Compute whether dropdown should be shown (derived state, no useEffect needed)
+  const isOpen = isFocused && results.length > 0 && query.trim().length > 0;
+
+  // Reset selectedIndex when results change - using useMemo to compute safely
+  const safeSelectedIndex = useMemo(() => {
+    if (selectedIndex >= results.length) {
+      return 0;
     }
-  }, [results.length, query]);
+    return selectedIndex;
+  }, [selectedIndex, results.length]);
 
   // Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        setIsFocused(false);
       }
     };
 
@@ -97,29 +98,31 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       case 'Enter':
         if (!isOpen || results.length === 0) return;
         event.preventDefault();
-        if (results[selectedIndex]) {
-          handleSelect(results[selectedIndex].id);
+        if (results[safeSelectedIndex]) {
+          handleSelect(results[safeSelectedIndex].id);
         }
         break;
       case 'Escape':
         event.preventDefault();
         setQuery('');
-        setIsOpen(false);
+        setIsFocused(false);
         inputRef.current?.blur();
         break;
     }
   };
 
   const handleSelect = (countryId: string) => {
-    onSelectCountry(countryId);
+    // Close dropdown and clear query before triggering the callback
+    // This ensures the panel opens cleanly without interference
     setQuery('');
-    setIsOpen(false);
+    setIsFocused(false);
     inputRef.current?.blur();
+    // Trigger country selection callback - opens the same CountryPanel as map click
+    onSelectCountry(countryId);
   };
 
   const handleClear = () => {
     setQuery('');
-    setIsOpen(false);
     inputRef.current?.focus();
   };
 
@@ -151,7 +154,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          onFocus={() => query && results.length > 0 && setIsOpen(true)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => {
+            // Don't blur immediately - allow click on dropdown items
+            // The click outside handler will close the dropdown
+          }}
           placeholder="Search countries..."
           aria-label="Search countries"
           aria-expanded={isOpen}
@@ -193,10 +200,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 onClick={() => handleSelect(result.id)}
                 onMouseEnter={() => setSelectedIndex(index)}
                 role="option"
-                aria-selected={index === selectedIndex}
+                aria-selected={index === safeSelectedIndex}
                 className={cn(
                   'w-full px-3 py-2.5 flex items-center gap-3 text-left transition-colors',
-                  index === selectedIndex
+                  index === safeSelectedIndex
                     ? 'bg-white/10'
                     : 'hover:bg-white/5'
                 )}

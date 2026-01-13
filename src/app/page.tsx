@@ -115,14 +115,21 @@ export default function Home() {
   }, [isMobile]);
 
   // Search select handler - zoom to country and open panel
+  // Opens the same CountryPanel as map click, but also centers/zooms the map
   const handleSearchSelect = useCallback((countryId: string) => {
+    // First, open the panel (same as map click)
+    setSelectedCountryId(countryId);
+
+    // Then update map view to center on the country
     const countryCenter = getCountryCenter(countryId);
     if (countryCenter) {
       setCenter(countryCenter);
       setZoom(ZOOM_LEVELS.COUNTRY_FOCUS);
+      // Defer map re-render to ensure panel opens first
+      requestAnimationFrame(() => {
+        setMapKey((k) => k + 1);
+      });
     }
-    setSelectedCountryId(countryId);
-    setMapKey((k) => k + 1);
   }, []);
 
   const selectedCountry = selectedCountryId ? getCountryById(selectedCountryId) : null;
