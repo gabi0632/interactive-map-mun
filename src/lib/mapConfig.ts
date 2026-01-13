@@ -6,7 +6,7 @@ export const MAP_SCALE = 400;
 export const COUNTRIES_IN_SCOPE = [
   'COL', 'PER', 'BOL',           // Producers
   'MEX', 'GTM', 'HND', 'SLV',    // Transit
-  'CRI', 'PAN',                  // Transit
+  'CRI', 'PAN', 'URY',           // Transit
   'ECU', 'VEN', 'BRA',           // Mixed
   'DOM', 'ARG', 'CHL',           // Mixed/Transit
   'GUF',                         // Overseas territory
@@ -21,7 +21,7 @@ export const COUNTRIES_IN_SCOPE = [
 export const CLICKABLE_COUNTRIES = [
   'COL', 'PER', 'BOL',           // Producers
   'MEX', 'GTM', 'HND', 'SLV',    // Transit
-  'CRI', 'PAN',                  // Transit
+  'CRI', 'PAN', 'URY',           // Transit
   'ECU', 'VEN', 'BRA',           // Mixed
   'DOM', 'ARG', 'CHL',           // Mixed/Transit
   'GUF',                         // Overseas territory
@@ -74,6 +74,7 @@ export const COUNTRY_LABELS: CountryLabelConfig[] = [
   { id: 'CRI', name: 'REPUBLIC OF COSTA RICA', coordinates: [-84, 9.5], fontSize: 'sm' },
   { id: 'PAN', name: 'REPUBLIC OF PANAMA', coordinates: [-80, 8.5], fontSize: 'sm' },
   { id: 'DOM', name: 'DOMINICAN REPUBLIC', coordinates: [-70, 19], fontSize: 'sm' },
+  { id: 'URY', name: 'ORIENTAL REPUBLIC OF URUGUAY', coordinates: [-56, -33], fontSize: 'sm' },
 
   // Mixed (South America)
   { id: 'ECU', name: 'REPUBLIC OF ECUADOR', coordinates: [-78.5, -1.5], fontSize: 'sm' },
@@ -119,6 +120,7 @@ export const ISO_NUMERIC_TO_ALPHA3: Record<string, string> = {
   '188': 'CRI', // Costa Rica
   '591': 'PAN', // Panama
   '214': 'DOM', // Dominican Republic
+  '858': 'URY', // Uruguay
   // Latin America - Mixed
   '218': 'ECU', // Ecuador
   '862': 'VEN', // Venezuela
