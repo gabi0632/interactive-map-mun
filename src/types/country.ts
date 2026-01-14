@@ -59,6 +59,80 @@ export interface IncomingRoute {
 }
 
 /**
+ * Drug types tracked in statistics
+ */
+export type DrugType = "cocaine" | "cannabis" | "heroin" | "methamphetamine" | "fentanyl" | "other_synthetics";
+
+/**
+ * Seizure data broken down by drug type
+ * All values in kilograms unless otherwise noted
+ */
+export interface DrugSeizures {
+  /** Cocaine seizures in kg */
+  cocaine?: number;
+  /** Cannabis/marijuana seizures in kg */
+  cannabis?: number;
+  /** Heroin seizures in kg */
+  heroin?: number;
+  /** Methamphetamine seizures in kg */
+  methamphetamine?: number;
+  /** Fentanyl seizures in kg */
+  fentanyl?: number;
+  /** Coca base/paste seizures in kg */
+  cocaBase?: number;
+  /** Other synthetic drugs in kg */
+  otherSynthetics?: number;
+  /** Reference year for the data */
+  year?: number;
+  /** Explanatory note about the data */
+  note?: string;
+}
+
+/**
+ * Estimated transit volume for transit countries
+ * All values in metric tons per year unless otherwise noted
+ */
+export interface TransitVolume {
+  /** Cocaine transit in metric tons/year */
+  cocaine?: number;
+  /** Cannabis transit in metric tons/year */
+  cannabis?: number;
+  /** Heroin transit in metric tons/year */
+  heroin?: number;
+  /** Methamphetamine transit in metric tons/year */
+  methamphetamine?: number;
+  /** Fentanyl transit in metric tons/year */
+  fentanyl?: number;
+  /** Reference year for the data */
+  year?: number;
+  /** Explanatory note about the data */
+  note?: string;
+}
+
+/**
+ * Consumption estimates for consumer countries
+ * Values can be in metric tons/year or number of users
+ */
+export interface ConsumptionEstimate {
+  /** Cocaine consumption - metric tons/year or users */
+  cocaine?: number;
+  /** Cannabis consumption - metric tons/year or users */
+  cannabis?: number;
+  /** Heroin consumption - metric tons/year or users */
+  heroin?: number;
+  /** Methamphetamine consumption - metric tons/year or users */
+  methamphetamine?: number;
+  /** Fentanyl consumption - metric tons/year or users */
+  fentanyl?: number;
+  /** Reference year for the data */
+  year?: number;
+  /** Unit of measurement: metric_tons or users */
+  metric?: "metric_tons" | "users";
+  /** Explanatory note about the data */
+  note?: string;
+}
+
+/**
  * Statistical data related to drug trafficking activities
  */
 export interface CountryStats {
@@ -68,8 +142,17 @@ export interface CountryStats {
   /** Cocaine production in metric tons */
   cocaineProduction?: number;
 
-  /** Drug seizures in kilograms per year */
+  /** @deprecated Use drugSeizures for detailed breakdown. Total drug seizures in kg/year */
   seizures?: number;
+
+  /** Detailed drug seizures by type */
+  drugSeizures?: DrugSeizures;
+
+  /** Estimated transit volumes (for transit countries) */
+  transitVolume?: TransitVolume;
+
+  /** Consumption estimates (for consumer countries) */
+  consumption?: ConsumptionEstimate;
 
   /** Eradication efforts in hectares */
   eradicationEfforts?: number;

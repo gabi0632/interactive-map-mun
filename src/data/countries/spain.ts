@@ -14,7 +14,17 @@ export const spain: Country = {
   roleDescription:
     "One of Europe's primary cocaine entry points from Latin America. In 2023, Spain was the European country with the highest volume of cocaine seizures at 142 tonnes, ahead of Belgium (121 tonnes) and Netherlands (60 tonnes). Spain has repositioned itself as the primary point of entry into Europe due to its past as the epicenter of Latin American organized crime in the region. Sailboats, containers, semi-submersibles, airplanes, and boats reach Spanish waters from Latin America, Africa, and Europe. Spanish adults are the most likely to consume cocaine during their lifetime at 11.2%.",
   stats: {
-    seizures: 142000, // kg in 2023
+    drugSeizures: {
+      cocaine: 142000, // kg (2023) - highest in Europe that year
+      year: 2023,
+      note: "2024 record: 13 tonnes single seizure from Ecuador (Nov 2024). Spain reclaimed position as cocaine gateway to Europe. 2022: 58,334 kg. Historical trend shows dramatic increases."
+    },
+    consumption: {
+      cocaine: 3200000, // estimated users - 11.2% lifetime prevalence (highest in Europe)
+      year: 2022,
+      metric: "users",
+      note: "Spanish adults most likely to consume cocaine in lifetime at 11.2%. Young adults (15-34) prevalence: 3.2% (2021-2022)."
+    },
     traffickingRoutes: ["COL", "ECU", "PER", "MAR"],
   },
   incomingRoutes: [

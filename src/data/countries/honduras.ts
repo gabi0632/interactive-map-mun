@@ -14,8 +14,18 @@ export const honduras: Country = {
   roleDescription:
     "Honduras is a major transit point for cocaine shipments moving from South America to the United States, facing severe challenges from corruption, gang infiltration, and institutional weakness. The country serves as a key node where drugs arrive via air and sea before continuing overland to Guatemala and Mexico. Recent data shows a shift from aerial to maritime trafficking methods.",
   stats: {
-    seizures: 7000, // kg per year (2024 data - first 4 months)
-    traffickingRoutes: ["GTM", "MEX", "USA"], // Transit destinations
+    drugSeizures: {
+      cocaine: 561, // kg (2023) - 93% DROP from 7,100 kg in 2022
+      cannabis: 107700, // kg (2023) - significant marijuana seizures
+      year: 2023,
+      note: "Dramatic 2023 drop likely due to traffickers shifting routes after increased 2022 DEA cooperation. 2024 Q1: 1,377 kg cocaine seized. 4.7 million coca plants confiscated (2023), down from 6.5 million record (2022)."
+    },
+    transitVolume: {
+      cocaine: 80, // metric tons/year estimated - major corridor despite low 2023 seizures
+      year: 2023,
+      note: "Route shift caused 93% cocaine seizure drop, but remains major transit corridor"
+    },
+    traffickingRoutes: ["GTM", "MEX", "USA"],
   },
   outgoingRoutes: [
     {

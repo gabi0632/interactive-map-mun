@@ -14,8 +14,23 @@ export const mexico: Country = {
   roleDescription:
     "Mexico serves as the primary transit corridor for cocaine moving from South America to the United States, while also emerging as the world's leading producer of synthetic opioids, particularly fentanyl. Major cartels operate as decentralized networks controlling vast territories and trafficking routes. The country faces unprecedented violence as cartels compete for control of lucrative smuggling corridors.",
   stats: {
-    seizures: 180000, // kg per year (approximate)
-    traffickingRoutes: ["USA", "CAN"], // Primary destination markets
+    drugSeizures: {
+      cocaine: 41800, // kg (2022) - more than double the 15,100 kg in 2021
+      methamphetamine: 82808, // kg (2021) at US border
+      fentanyl: 1100, // kg - largest single seizure in history (Dec 2024), equivalent to 20 million doses
+      heroin: 2339, // kg (2020) declining to 679 kg (2022) at US border
+      cannabis: 25500, // kg (2024) at US border - declined from 1,350 MT in 2013
+      year: 2022,
+      note: "Mexico is the primary source of fentanyl and methamphetamine to the US. Fentanyl seizures tripled post-September 2024."
+    },
+    transitVolume: {
+      cocaine: 250, // metric tons/year estimated transiting to US
+      methamphetamine: 150, // metric tons/year - Mexico is world's largest producer
+      fentanyl: 50, // metric tons/year estimated production
+      year: 2023,
+      note: "Primary transit corridor for South American cocaine to US, plus major synthetic drug producer"
+    },
+    traffickingRoutes: ["USA", "CAN"],
   },
   outgoingRoutes: [
     {

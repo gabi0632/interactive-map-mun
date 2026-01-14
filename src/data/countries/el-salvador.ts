@@ -14,8 +14,17 @@ export const elSalvador: Country = {
   roleDescription:
     "El Salvador is not a cocaine producer but is heavily affected by gang-related drug trafficking and violence. The country serves as a secondary transit corridor for drugs moving through Central America, with powerful gangs like MS-13 and Barrio 18 controlling local distribution and providing logistical support to international trafficking organizations.",
   stats: {
-    seizures: 2500, // kg per year (approximate)
-    traffickingRoutes: ["GTM", "MEX", "USA"], // Transit destinations
+    drugSeizures: {
+      cocaine: 22600, // kg (2024) - 606% INCREASE from ~3,200 kg in 2023
+      year: 2024,
+      note: "Massive 2024 increase attributed to President Bukele's security crackdown and international cooperation. At least 13,000 kg seized in international waters via cooperation with US Navy."
+    },
+    transitVolume: {
+      cocaine: 30, // metric tons/year estimated
+      year: 2024,
+      note: "Growing enforcement effectiveness under Bukele administration"
+    },
+    traffickingRoutes: ["GTM", "MEX", "USA"],
   },
   outgoingRoutes: [
     {

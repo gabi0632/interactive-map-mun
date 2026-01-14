@@ -18,7 +18,16 @@ export const uruguay: Country = {
   roleDescription:
     "Uruguay is an emerging transit point for cocaine shipments destined for Europe and West Africa. While historically one of South America's safest countries, its strategic coastal location and busy ports — especially Montevideo — have increasingly attracted international trafficking networks. Record amounts of cocaine have been intercepted in containers, with shipments traced to European destinations like Belgium, Netherlands, and Germany. Uruguay is also internationally known as the first country to fully legalize and regulate cannabis (2013), creating a unique public-health focused drug governance model.",
   stats: {
-    seizures: 4500, // 2022 data - more representative of transit hub role (peaked at ~12,000 kg in 2019)
+    drugSeizures: {
+      cocaine: 4500, // kg (2022) - peaked at ~12,000 kg in 2019
+      year: 2022,
+      note: "Emerging transit hub to Europe. Notable seizures: 2.16 tons to Belgium (Dec 2023), 4 tons to Hamburg (largest German seizure ever). Montevideo port key exit point."
+    },
+    transitVolume: {
+      cocaine: 20, // metric tons/year estimated
+      year: 2022,
+      note: "First country to fully legalize cannabis (2013). PCC and 'Ndrangheta use Montevideo as key transit point."
+    },
     traffickingRoutes: ["BEL", "NLD", "DEU", "ESP"],
   },
   outgoingRoutes: [

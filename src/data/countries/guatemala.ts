@@ -14,8 +14,18 @@ export const guatemala: Country = {
   roleDescription:
     "Guatemala serves as a critical land corridor for cocaine moving from South America through Central America to Mexico and the United States. The country faces challenges from weak institutions, corruption, and strong cartel presence. Los Huistas and other local groups facilitate transfers between Colombian producers and Mexican cartels, particularly CJNG.",
   stats: {
-    seizures: 6000, // kg per year (2024 data)
-    traffickingRoutes: ["MEX", "USA"], // Primary destinations
+    drugSeizures: {
+      cocaine: 18200, // kg (2024) - 264% increase under President Arévalo
+      cannabis: 1169, // kg (2022)
+      year: 2024,
+      note: "Dramatic 2024 increase: 5,000 kg (2023) → 18,200 kg (2024). 4 million coca plants destroyed (2022), increased to 7.9 million (2023)."
+    },
+    transitVolume: {
+      cocaine: 50, // metric tons/year estimated - Northern Triangle corridor
+      year: 2023,
+      note: "2024 increase suggests route shift back to Central America or significantly increased enforcement"
+    },
+    traffickingRoutes: ["MEX", "USA"],
   },
   outgoingRoutes: [
     {

@@ -16,7 +16,16 @@ export const argentina: Country = {
   role: "mixed",
   roleDescription: "Used increasingly as a transit zone and money-laundering hub. Argentina is one of South America's key transit and launching points for Andean cocaine headed across the Atlantic, leveraging strong trade ties to Europe and strategic location. The country faces money laundering risks from drug trafficking, tax evasion, corruption, and smuggling. Despite not suffering from the high violence levels affecting other regional nations, Argentina struggles with deep-seated corruption across state institutions. The country has become a critical node for financial crimes supporting drug trafficking networks.",
   stats: {
-    seizures: 8500,
+    drugSeizures: {
+      cocaine: 8500, // kg (estimated annual)
+      year: 2023,
+      note: "Key transit and money-laundering hub. Strong trade ties to Europe. Rosario region is trafficking hotspot along Paraná River."
+    },
+    transitVolume: {
+      cocaine: 50, // metric tons/year estimated transiting to Europe
+      year: 2023,
+      note: "One of South America's key launching points for Andean cocaine to Europe. Money laundering risk from tax evasion, corruption, and smuggling."
+    },
     traffickingRoutes: ["ESP", "ITA", "NLD", "BEL", "GBR", "FRA"]
   },
   outgoingRoutes: [

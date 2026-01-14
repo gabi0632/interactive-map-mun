@@ -13,12 +13,17 @@ export const peru: Country = {
   flag: "🇵🇪",
   role: "producer",
   roleDescription:
-    "Peru is the world's second-largest coca cultivator and cocaine producer, accounting for approximately 27% of global coca cultivation and an estimated 25-30% of global cocaine production. Coca cultivation reached an all-time high of 95,000 hectares in 2022, increasing 18% from 2021. Remote valleys in the VRAEM region (Apurimac, Ene, and Mantaro rivers valley) serve as the primary production zones. Almost 90% of Peru's coca production is destined for the illicit drug trade, with most cocaine exported to European markets.",
+    "Peru is the world's second-largest coca cultivator and cocaine producer, accounting for approximately 26-27% of global coca cultivation. After reaching a record 95,000 hectares in 2022, coca cultivation declined for the first time in 8 years to 92,784 hectares in 2023. The VRAEM region (Apurimac, Ene, and Mantaro rivers valley) remains the largest cultivation area with 38,253 hectares. Almost 90% of Peru's coca production is destined for the illicit drug trade, with cocaine exported primarily to European and Brazilian markets.",
   stats: {
-    cocaCultivation: 95000,
-    cocaineProduction: 686,
-    seizures: 45000,
-    eradicationEfforts: 22000,
+    cocaCultivation: 92784, // hectares (2023 UNODC/DEVIDA) - first decline in 8 years
+    cocaineProduction: 870, // metric tons (2022 UNODC estimate)
+    eradicationEfforts: 22000, // hectares (estimated, concentrated in VRAEM)
+    drugSeizures: {
+      cocaine: 48000, // kg (2023 estimate) - cocaine HCl decreased 4.4% vs 2022
+      cocaBase: 72000, // kg (2023 estimate) - increased 53% vs 2022
+      year: 2023,
+      note: "Peru saw first cultivation decline in 8 years in 2023. Shift toward coca base seizures indicates changing production patterns."
+    },
     traffickingRoutes: ["BRA", "BOL", "ECU", "COL", "ESP", "BEL", "NLD"],
   },
   outgoingRoutes: [

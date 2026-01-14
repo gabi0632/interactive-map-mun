@@ -15,10 +15,16 @@ export const colombia: Country = {
   roleDescription:
     "Colombia remains the world's largest coca and cocaine producer, accounting for over 60% of global cocaine production. Cultivation is driven by rural poverty, armed conflict, weak state presence in remote areas, and persistent international demand. Despite decades of eradication efforts, coca cultivation reached 253,000 hectares in 2023, with potential cocaine production surging to record levels of 2,664 metric tons annually.",
   stats: {
-    cocaCultivation: 253000,
-    cocaineProduction: 2664,
-    seizures: 771300,
-    eradicationEfforts: 5687,
+    cocaCultivation: 253000, // hectares (2023 UNODC)
+    cocaineProduction: 2664, // metric tons (2023 UNODC) - 53% increase from 2022
+    eradicationEfforts: 20323, // hectares (2023)
+    drugSeizures: {
+      cocaine: 739500, // kg (2023) - 12.1% increase from 659,000 kg in 2022
+      cocaBase: 87300, // kg (2022 data)
+      cannabis: 484000, // kg (2022)
+      year: 2023,
+      note: "Colombia accounts for ~60-67% of global coca cultivation and is the world's largest cocaine producer"
+    },
     traffickingRoutes: ["USA", "MEX", "ECU", "VEN", "BRA", "PAN"],
   },
   outgoingRoutes: [

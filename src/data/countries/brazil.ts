@@ -16,7 +16,17 @@ export const brazil: Country = {
   role: "mixed",
   roleDescription: "Brazil is one of the world's most important cocaine export hubs to Europe, with major ports—particularly Santos—serving as primary departure points for cocaine originating in Colombia, Peru, and Bolivia. A large share of Europe-bound cocaine transits through Brazilian ports, alongside secondary routes to West Africa. The Primeiro Comando da Capital (PCC) plays a central role in coordinating exports and maintains long-standing partnerships with Italy's 'Ndrangheta. Brazil also faces rising domestic cocaine consumption, giving it a dual role as both transit hub and consumer market. Government policy emphasizes port inspections, border control, anti-money-laundering measures, and international cooperation through UNODC initiatives, while domestic debates continue over enforcement versus decriminalization.",
   stats: {
-    seizures: 45000, // kg per year - Brazil routinely seizes tens of metric tons annually
+    drugSeizures: {
+      cocaine: 74500, // kg (2024) Federal Police - increased from 72,500 kg in 2023
+      cannabis: 450000, // kg (estimated - significant domestic seizures)
+      year: 2024,
+      note: "Federal Police figures only - actual totals higher with state police. 730 MT total drugs seized 2013-2023 (73.7% increase over period). Port of Santos alone: 6,000 kg in first 5 months of 2024."
+    },
+    transitVolume: {
+      cocaine: 200, // metric tons/year estimated transiting to Europe
+      year: 2023,
+      note: "Brazil is main cocaine consumer in Latin America and major export hub to Europe via container ports (Santos, Paranaguá, Rio)"
+    },
     traffickingRoutes: ["NLD", "BEL", "ESP", "PRT", "ITA", "GBR", "AGO", "NGA"]
   },
   outgoingRoutes: [

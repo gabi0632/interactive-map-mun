@@ -14,7 +14,17 @@ export const austria: Country = {
   roleDescription:
     "Primarily a diplomatic actor as host of UNODC headquarters in Vienna. Austria hosts one of four UN headquarters globally (along with New York, Geneva, and Nairobi). The Vienna International Centre, opened in 1979, serves as the central hub for UNODC operations worldwide, employing around 3,400 people as of 2020. Austria's neutral status and geopolitical position during the Cold War made it an ideal platform for international dialogue, a role it continues to fulfill in coordinating global responses to drug trafficking.",
   stats: {
-    seizures: 800, // kg per year (estimated, limited transit route)
+    drugSeizures: {
+      cocaine: 800, // kg (estimated - limited transit route)
+      year: 2022,
+      note: "Austria primarily a diplomatic actor as UNODC headquarters host. Limited transit compared to port countries."
+    },
+    consumption: {
+      cocaine: 500000, // estimated users - 5.6% young adult prevalence (HIGHEST in Europe)
+      year: 2022,
+      metric: "users",
+      note: "HIGHEST cocaine prevalence in Europe: 5.6% of young adults (15-34) used cocaine in 2021-2022."
+    },
     traffickingRoutes: ["DEU", "ITA", "SVN"],
   },
   incomingRoutes: [

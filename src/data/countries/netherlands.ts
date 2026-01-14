@@ -14,7 +14,19 @@ export const netherlands: Country = {
   roleDescription:
     "The Netherlands serves as one of Europe's primary cocaine entry points and distribution hubs, with the Port of Rotterdam functioning as the main gateway for cocaine shipments from Latin America. In 2023, authorities seized a record 60,000 kg of cocaine, though seizures declined to 35,000 kg in 2024 as traffickers diversified routes to smaller European ports. The country faces unprecedented challenges from violent organized crime groups, particularly the Moroccan-Dutch criminal networks known as the Mocro Mafia, which control a significant portion of Europe's cocaine trade.",
   stats: {
-    seizures: 35000, // kg in 2024
+    drugSeizures: {
+      cocaine: 60000, // kg (2023) - record year, declined to 35,000 kg in 2024 as traffickers shifted routes
+      heroin: 2426, // kg (2022) Rotterdam Port
+      cannabis: 3149, // kg (2022) Rotterdam Port
+      year: 2023,
+      note: "2022: Rotterdam Port 46,789 kg, Vlissingen Port 4,157 kg. Largest ever single seizure: 8,000 kg from Ecuador via Panama. Airport seizures doubled to 2,250 kg (2023). Container scans increased 40%."
+    },
+    consumption: {
+      cocaine: 650000, // estimated users - 3.5% young adult prevalence
+      year: 2022,
+      metric: "users",
+      note: "Cocaine prevalence (young adults 15-34): 3.5% (2021-2022). Part of broader 14 million EU adults who tried cocaine."
+    },
     traffickingRoutes: ["COL", "ECU", "BRA", "VEN", "PER"],
   },
   incomingRoutes: [

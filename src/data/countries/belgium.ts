@@ -14,7 +14,17 @@ export const belgium: Country = {
   roleDescription:
     "Belgium serves as one of Europe's primary cocaine entry points through the Port of Antwerp-Bruges, Europe's second-largest container port. In 2023, authorities seized a record 121 tonnes of cocaine, declining to 44 tonnes in 2024 as traffickers adapted by splitting shipments into smaller loads. In October 2025, an Antwerp judge warned that Belgium risks becoming Europe's first 'narco-state,' as criminal organizations have established deep-rooted mafia-like structures that challenge law enforcement through systematic corruption, violence, and intimidation.",
   stats: {
-    seizures: 44000, // kg in 2024
+    drugSeizures: {
+      cocaine: 121000, // kg (2023) Antwerp + Zeebrugge ports - record year
+      year: 2023,
+      note: "2022: 110 tonnes, 2021: 91 tonnes. Antwerp accounts for 34% of all EU cocaine seizures. 2024 declined to 44 tonnes as traffickers split into smaller shipments. Origin: Colombia, Ecuador, Panama."
+    },
+    consumption: {
+      cocaine: 400000, // estimated users
+      year: 2022,
+      metric: "users",
+      note: "Part of broader European cocaine market. Belgium estimated to intercept only 10% of cocaine entering ports."
+    },
     traffickingRoutes: ["COL", "ECU", "BRA", "VEN", "PER"],
   },
   incomingRoutes: [

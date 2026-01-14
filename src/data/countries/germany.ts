@@ -14,7 +14,17 @@ export const germany: Country = {
   roleDescription:
     "A European consumer market and logistics hub targeted by traffickers. Germany seized 43 tonnes of cocaine in 2023, with large consignments amounting to 25 tonnes seized in the Port of Hamburg that year, double the quantity reported in 2022. The Port of Hamburg serves as a major entry point for cocaine destined for Central and Eastern European markets. Germany is part of the record-breaking EU cocaine seizures of 419 tonnes in 2023.",
   stats: {
-    seizures: 43000, // kg in 2023
+    drugSeizures: {
+      cocaine: 43000, // kg (2023) - Port of Hamburg alone: 25 tonnes (double 2022)
+      year: 2023,
+      note: "Part of record EU seizures of 419 tonnes in 2023. Hamburg is main entry point for Central/Eastern Europe."
+    },
+    consumption: {
+      cocaine: 700000, // estimated users
+      year: 2022,
+      metric: "users",
+      note: "Part of 14 million EU adults who tried cocaine. Germany is major logistics hub for onward distribution."
+    },
     traffickingRoutes: ["NLD", "BEL", "ESP", "COL"],
   },
   incomingRoutes: [

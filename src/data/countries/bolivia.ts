@@ -15,10 +15,14 @@ export const bolivia: Country = {
   roleDescription:
     "Bolivia is the world's third-largest coca cultivator with a unique legal framework permitting cultivation on up to 22,000 hectares for traditional Indigenous uses including coca leaf chewing and herbal infusions. However, actual cultivation reached 34,000 hectares in 2024, exceeding legal limits by 12,000 hectares. This excess production feeds illicit cocaine markets, with potential cocaine production estimated between 143-223 metric tons annually depending on methodology. Bolivia has emerged as a key hub in the global drug trade, providing refuge for high-value traffickers.",
   stats: {
-    cocaCultivation: 34000,
-    cocaineProduction: 183,
-    seizures: 28000,
-    eradicationEfforts: 8500,
+    cocaCultivation: 34000, // hectares (2024 UNODC) - 10% increase from 2023, exceeds legal limit by 12,000 ha
+    cocaineProduction: 183, // metric tons (midpoint of 143-223 MT range)
+    eradicationEfforts: 10001, // hectares (2024) - 3% decrease
+    drugSeizures: {
+      cocaine: 45936, // kg (2024) - 115% increase from previous year
+      year: 2024,
+      note: "Largest ever seizure: 9 tons in December 2023. Bolivia accounts for ~13% of global coca cultivation."
+    },
     traffickingRoutes: ["BRA", "ARG", "PER", "PRY", "CHL"],
   },
   outgoingRoutes: [

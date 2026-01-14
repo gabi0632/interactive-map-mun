@@ -14,7 +14,19 @@ export const unitedKingdom: Country = {
   roleDescription:
     "A major European market with increasing cocaine consumption and port infiltration by organized crime. The UK has a cocaine prevalence rate of 2.7% among the adult population (ages 15-64) reporting past-year consumption according to UNODC data. Self-reported data systematically underestimates true consumption, with validation studies revealing underreporting rates exceeding 50%. Major ports including Felixstowe, Southampton, and London Gateway serve as entry points for cocaine from Latin America.",
   stats: {
-    seizures: 35000, // kg per year (estimated based on UK enforcement data)
+    drugSeizures: {
+      cocaine: 28000, // kg (FY ending March 2024) - 52% increase from 2023
+      heroin: 441, // kg (FY ending March 2024) - down 54% from 950 kg, lowest since 1989
+      cannabis: 74000, // kg (FY ending March 2024) - 58% increase, highest since records began 1973
+      year: 2024,
+      note: "Total 119 tonnes seized (street value ~£3 billion). Border Force powder cocaine: 26.57 tonnes (+75% from 15.22 tonnes in 2023). 217,644 seizure incidents (+13%)."
+    },
+    consumption: {
+      cocaine: 1800000, // estimated users - 2.7% adult prevalence
+      year: 2023,
+      metric: "users",
+      note: "2.7% prevalence among adults 15-64 (past-year). Validation studies show underreporting exceeds 50%."
+    },
     traffickingRoutes: ["ESP", "NLD", "BEL", "COL"],
   },
   incomingRoutes: [

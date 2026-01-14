@@ -14,7 +14,17 @@ export const france: Country = {
   roleDescription:
     "High cocaine demand and major entry via maritime routes. In 2023, cocaine seizures in France amounted to 23.2 tonnes, representing a 16% decrease from the record 27.7 tonnes seized in 2022. Maritime transport is the main route for cocaine entering the country, accounting for 75.4% of seizures in 2022, though this dropped to 55% in 2023 due to enhanced security measures. The port of Le Havre is the main entry point with over 10 tonnes seized in 2021-2022, accounting for 78% of all cocaine seized in French ports.",
   stats: {
-    seizures: 23200, // kg in 2023
+    drugSeizures: {
+      cocaine: 23200, // kg (2023) - 16% decrease from record 27.7 tonnes in 2022
+      year: 2023,
+      note: "Maritime accounts for 55% of seizures (down from 75.4% in 2022). Port of Le Havre: 10+ tonnes (78% of all French port seizures). Emergency department cocaine cases: +17% in 2023."
+    },
+    consumption: {
+      cocaine: 2100000, // estimated users - 3.2% young adult prevalence
+      year: 2022,
+      metric: "users",
+      note: "Young adults (15-34) cocaine prevalence: 3.2% (2021-2022). Emergency visits for cocaine up 17% (21.2 to 28.8 per 100,000)."
+    },
     traffickingRoutes: ["GUF", "MTQ", "ESP", "COL", "BRA"],
   },
   incomingRoutes: [

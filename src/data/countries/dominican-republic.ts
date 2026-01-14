@@ -14,8 +14,17 @@ export const dominicanRepublic: Country = {
   roleDescription:
     "The Dominican Republic serves as a crucial Caribbean transit bridge for cocaine trafficking from South America to North America and Europe. The country's extensive coastline, busy airports, and commercial seaports make it a strategic transshipment point. Traffickers exploit both maritime routes (go-fast boats, fishing vessels) and air cargo to move cocaine through Dominican territory. The country has invested significantly in detection technology at ports and airports.",
   stats: {
-    seizures: 15000, // kg per year (approximate)
-    traffickingRoutes: ["USA", "PRI", "ESP", "NLD", "BEL"], // Primary destinations
+    drugSeizures: {
+      cocaine: 15000, // kg (estimated annual)
+      year: 2023,
+      note: "Crucial Caribbean transit bridge. Extensive coastline, busy airports, and seaports make it strategic transshipment point. Go-fast boats, fishing vessels, and air cargo used."
+    },
+    transitVolume: {
+      cocaine: 60, // metric tons/year estimated transiting
+      year: 2023,
+      note: "Key Caribbean hub for South American cocaine to North America and Europe. Detection technology investments at ports and airports."
+    },
+    traffickingRoutes: ["USA", "PRI", "ESP", "NLD", "BEL"],
   },
   outgoingRoutes: [
     {

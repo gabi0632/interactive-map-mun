@@ -14,7 +14,19 @@ export const canada: Country = {
   roleDescription:
     "Growing market for synthetic drugs and cocaine. About 2.6% of Canadians aged 15+ reported cocaine use in 2020, making Canada one of the higher-consumption countries. In 2023, cocaine saw the most police-reported incidents of illegal trafficking at 8,203 incidents (20.46 per 100,000 population), up 11.7% from one year earlier. Wastewater analysis shows 5 Canadian cities would rank among the 10 cities with the highest levels of cocaine in Europe.",
   stats: {
-    seizures: 15000, // kg per year (estimated based on CBSA enforcement)
+    drugSeizures: {
+      cocaine: 239, // kg (Pacific Region Jan-Oct 2023)
+      methamphetamine: 7900, // kg (Pacific Region Jan-Oct 2023)
+      fentanyl: 5, // kg (2024) - +775% from 2023 indicating very low baseline
+      year: 2023,
+      note: "Regional data only. Southbound seizures (drugs leaving Canada to US): 25,000 kg total in 2023. Total narcotic seizure incidents: 6,389 (Pacific Region)."
+    },
+    consumption: {
+      cocaine: 1000000, // estimated users - 2.6% prevalence
+      year: 2020,
+      metric: "users",
+      note: "2.6% of Canadians 15+ reported cocaine use in 2020. 8,203 police trafficking incidents (2023, +11.7%). 5 Canadian cities would rank among top 10 European cities for wastewater cocaine levels."
+    },
     traffickingRoutes: ["USA", "MEX", "COL"],
   },
   incomingRoutes: [

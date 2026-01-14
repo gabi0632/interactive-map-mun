@@ -14,8 +14,17 @@ export const panama: Country = {
   roleDescription:
     "Panama serves as a critical maritime chokepoint for global cocaine trafficking due to the Panama Canal and extensive port infrastructure. The country's strategic position bridging the Pacific and Caribbean makes it a focal point for traffickers shipping cocaine to North America, Europe, Asia, and Africa. Colombian and Mexican cartels exploit Panama's advanced logistics infrastructure, free trade zones, and busy commercial ports. Record cocaine seizures in 2025 highlight the escalating use of Panamanian ports, particularly Colón.",
   stats: {
-    seizures: 85000, // kg per year (2025 estimates - record highs)
-    traffickingRoutes: ["USA", "ESP", "NLD", "BEL", "ITA"], // Global destinations
+    drugSeizures: {
+      cocaine: 99300, // kg (2024) - slight increase from 95,670 kg in 2023
+      year: 2024,
+      note: "2022 was historical record: 108,820 kg cocaine + 138,410 kg total drugs. Panama remains 3rd highest seizure country in region after Colombia and Ecuador. 636 arrests in 180+ operations (2023)."
+    },
+    transitVolume: {
+      cocaine: 150, // metric tons/year estimated transiting through Canal and ports
+      year: 2023,
+      note: "Critical maritime chokepoint - Panama Canal handles 5% of world trade. Cocaine from Colombia transits to North America, Europe, Asia, and Africa."
+    },
+    traffickingRoutes: ["USA", "ESP", "NLD", "BEL", "ITA"],
   },
   outgoingRoutes: [
     {

@@ -16,7 +16,16 @@ export const chile: Country = {
   role: "mixed",
   roleDescription: "Strong institutions but growing vulnerability due to containerized shipping routes through ports like San Antonio and Valparaíso. Chile serves as a key destination and transit hub for cocaine due to its proximity to major producing countries Peru and Bolivia, and functions as a re-export point for shipments to Europe, the United States, Asia, and Oceania. Traffickers increasingly use non-traditional coastal ports to evade detection. San Antonio port in the Valparaíso region is prioritized by criminal organizations due to border porosity and lack of control. Criminal groups and seizures are concentrated in the Santiago Metropolitan and Valparaíso regions.",
   stats: {
-    seizures: 12500,
+    drugSeizures: {
+      cocaine: 12500, // kg (estimated annual)
+      year: 2023,
+      note: "Transit hub leveraging proximity to Peru and Bolivia. San Antonio port prioritized by criminals due to border porosity. Seizures concentrated in Santiago and Valparaíso regions."
+    },
+    transitVolume: {
+      cocaine: 35, // metric tons/year estimated
+      year: 2023,
+      note: "Re-export point for shipments to Europe, US, Asia, and Oceania. Traffickers use non-traditional coastal ports to evade detection."
+    },
     traffickingRoutes: ["USA", "ESP", "NLD", "AUS", "NZL", "CHN", "JPN"]
   },
   outgoingRoutes: [

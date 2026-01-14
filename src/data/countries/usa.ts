@@ -14,7 +14,22 @@ export const usa: Country = {
   roleDescription:
     "Major destination market for cocaine, methamphetamine, and fentanyl. North America had an estimated 6.5 million cocaine users in 2022, representing 28% of global users. Cocaine consumption has increased significantly between 2019-2025, with cocaine-involved overdose deaths reaching about 29,000 in 2023. The U.S. is cheaper, purer, and more widespread than in decades.",
   stats: {
-    seizures: 145000, // kg per year (estimated based on interdiction efforts)
+    drugSeizures: {
+      cocaine: 130000, // kg (FY2023 estimate based on CBP/DEA data)
+      methamphetamine: 63500, // kg (140,000 lbs FY2023)
+      fentanyl: 12250, // kg (27,000 lbs CBP FY2023; 43,000+ lbs DHS total)
+      heroin: 2500, // kg (declining trend)
+      cannabis: 68000, // kg (150,000 lbs FY2023)
+      year: 2023,
+      note: "CBP seized ~549,000 lbs total drugs nationwide (FY2023). Fentanyl is primary crisis - 72,776 fentanyl-related deaths in 2023."
+    },
+    consumption: {
+      cocaine: 4300000, // users aged 12+ (2024 NSDUH) - down from 4.8M in 2021
+      fentanyl: 29000, // deaths/year (cocaine-involved overdoses reached ~29,000 in 2023)
+      year: 2024,
+      metric: "users",
+      note: "North America has ~6.5 million cocaine users (28% of global users). Cocaine prevalence: 1.5% of population 12+. 87,000 total overdose deaths projected for 2024 (24% decline)."
+    },
     traffickingRoutes: ["MEX", "COL", "PER", "BOL"],
   },
   incomingRoutes: [

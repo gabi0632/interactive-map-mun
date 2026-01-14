@@ -14,8 +14,17 @@ export const costaRica: Country = {
   roleDescription:
     "Costa Rica is increasingly targeted by drug traffickers due to its extensive Pacific and Caribbean coastlines, strong transport infrastructure, and stable democratic institutions. As a non-militarized country, Costa Rica relies on police forces and international partnerships for drug interdiction. Maritime trafficking routes exploit the country's coastal geography for cocaine shipments heading to North America and Europe.",
   stats: {
-    seizures: 25000, // kg per year (approximate)
-    traffickingRoutes: ["USA", "MEX", "NLD", "ESP"], // Destinations
+    drugSeizures: {
+      cocaine: 27000, // kg (2024) - increased from 21,400 kg in 2023
+      year: 2024,
+      note: "Major 2023 seizure: 2,148 kg in Limón (Caribbean port). Homicide rate increased 41% year-on-year due to cocaine trafficking competition. Operation Caribe launched in 2024."
+    },
+    transitVolume: {
+      cocaine: 60, // metric tons/year estimated via Pacific and Caribbean routes
+      year: 2023,
+      note: "Port of Limón key Caribbean exit point. Criminals hide drugs in legitimate cargo containers."
+    },
+    traffickingRoutes: ["USA", "MEX", "NLD", "ESP"],
   },
   outgoingRoutes: [
     {

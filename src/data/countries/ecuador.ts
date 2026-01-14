@@ -16,7 +16,16 @@ export const ecuador: Country = {
   role: "mixed",
   roleDescription: "Ecuador has transformed into a critical export platform for cocaine, especially through Guayaquil's ports and the emerging Posorja facility. The country faces an escalating security crisis as criminal organizations exploit its strategic location and port infrastructure. Violence has surged dramatically, with 2025 projecting 9,100 deaths (a 40% increase). The Port of Posorja emerged as the #1 loading port in Latin America for cocaine seized in Rotterdam (2024), surpassing Guayaquil. Approximately 80% of cocaine now heads to Europe and 20% to the U.S., a reversal from pre-pandemic patterns.",
   stats: {
-    seizures: 95000,
+    drugSeizures: {
+      cocaine: 220000, // kg (2023) - third consecutive year exceeding 200 tons
+      year: 2023,
+      note: "Ecuador is #2 in region after Colombia for seizures. Historical trend: 82,000 kg (2019) → 128,000 kg (2020) → 210,000 kg (2021) → 201,000 kg (2022) → 220,000 kg (2023)"
+    },
+    transitVolume: {
+      cocaine: 350, // metric tons/year - estimated one-third of Colombian cocaine passes through Ecuador
+      year: 2023,
+      note: "Strategic position: bordered by top 2 producers (Colombia, Peru), Pacific access to Asia, Canal access to Europe. 80% of cocaine now heads to Europe, 20% to US."
+    },
     traffickingRoutes: ["BEL", "DEU", "NLD", "ESP", "GBR"]
   },
   outgoingRoutes: [

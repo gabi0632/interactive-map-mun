@@ -14,7 +14,17 @@ export const italy: Country = {
   roleDescription:
     "Italian mafia groups, notably the 'Ndrangheta, remain central actors in the global cocaine trade. The 'Ndrangheta controls up to 80% of Europe's cocaine flow and is considered one of the most powerful criminal organizations in the world. The organization dominates the transnational cocaine trade with strong ties to drug trafficking organizations in Latin America, primarily Colombia, and maintains direct ties with South American cartels, facilitating large-scale shipments through ports including Gioia Tauro, Rotterdam, and Antwerp.",
   stats: {
-    seizures: 28000, // kg per year (estimated based on Italian enforcement)
+    drugSeizures: {
+      cocaine: 28000, // kg (estimated 2022-2023) - part of EU's 323 tonne total in 2022
+      year: 2023,
+      note: "'Ndrangheta controls up to 80% of Europe's cocaine flow. Port of Gioia Tauro is key entry point. Italy has strong asset confiscation laws."
+    },
+    consumption: {
+      cocaine: 1000000, // estimated users
+      year: 2022,
+      metric: "users",
+      note: "Part of 14 million EU adults who tried cocaine. 'Ndrangheta dominates distribution."
+    },
     traffickingRoutes: ["COL", "NLD", "BEL", "ESP"],
   },
   incomingRoutes: [
